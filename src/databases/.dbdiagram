@@ -1,0 +1,376 @@
+Enum core.orderStatus {
+  "Created"
+  "AcceptOrder"
+  "WaitingToShip"
+  "Shipping"
+  "Shipped"
+  "Completed"
+  "Cancelled"
+  "Failed"
+}
+
+Enum core.paymentStatus {
+  "Paid"
+  "NotPaid"
+}
+
+Enum core.productType {
+  "normal"
+  "master"
+  "variant"
+  "set"
+}
+
+Enum core.role {
+  "system"
+  "customer"
+}
+
+Enum core.billing {
+  "basket"
+  "order"
+}
+
+
+
+// User & Customer
+Table Users {
+  userId int [pk, increment] 
+  uuid string
+  email string
+  password string
+  firstName string
+  lastName string
+  phoneNumber string
+  roles array
+  status smallint
+  updatedAt datetime
+}
+
+Table KeyTokens {
+  userId int
+  refreshToken string
+  publicKey string
+  refreshTokenUsed array
+}
+
+
+Table Customers {
+  customerId int [pk, increment]
+  customerNo string //random string
+  gender int
+  birthday datetime
+  codeActive string
+  avatar string
+}
+
+Table Address {
+  addressId int
+  street string
+  zipCode string
+  city string
+  country string
+}
+
+Table AddressBooks {
+ customerId int
+ addressId int
+ selected boolean
+}
+
+// Site config
+table GroupsConfig {
+  groupConfigId int [pk, increment]
+  name string
+}
+
+table SitesConfig {
+  siteConfigId int  [pk, increment]
+  groupConfigId int
+  key string
+  value string
+}
+
+// service 
+table Services {
+  serviceId int [pk, increment]
+  name string
+  host string
+  username string
+  password string
+  port string
+  status smallint
+}
+
+
+// Catalog & category
+Table Catalogs {
+  catalogId int [pk, increment]
+  name varchar
+  status smallint
+  updatedAt datetime
+}
+
+
+Table Categories {
+  categoryId int [pk, increment]
+  catalogId int
+  name varchar
+  status smallint
+  updatedAt datetime
+}
+
+
+//Product attributes
+Table ProductAttributes{
+  productId int
+  brand string
+  color string
+  size string
+  model string
+  type core.productType
+  image string
+  images string
+  shortDesc string
+  longDesc string
+}
+
+
+// Product
+Table Product {
+  productId int [pk, increment]
+  categoryId int
+  SKU string
+  name string
+	usePromotion boolean // Bật lên thì áp dụng giảm giá cho sản phẩm được
+  taxId int
+  status smallint
+  updatedAt datetime
+}
+
+
+Table ProductInventory {
+  productId int
+  stock int
+  preOrder int
+  expectedDate date
+  status smallint
+}
+
+
+
+Table ProductPrice { 
+  productId int [pk]
+  grossPrice float
+  netPrice float
+  taxId int
+}
+
+
+
+
+
+// ke thua tu product master
+Table Variants {
+  masterId int
+  variantId int
+}
+
+// bao gom cac product trong 1 PDP
+Table ProductSets {
+  id int
+  masterId int
+  productSetId int
+}
+
+
+Table Baskets {
+  basketId int
+  billingId int
+  totalItems int
+  totalGrossPrice float
+  totalNetPrice float
+  totalTaxPrice float
+  updatedAt string
+}
+
+Table BasketItems {
+  basketItemId int
+  basketId int // reference Basket
+  productId int // reference productId
+  quantity int
+  netPrice float
+  grossPrice float
+  taxPrice float
+}
+
+
+
+// Order
+Table Orders {
+  orderId int [pk, increment]
+  orderNo uuid
+	orderStatus core.orderStatus
+  totalGrossPrice float
+  totalNetPrice float
+  totalTaxPrice float
+  expectedDate date //guess customer give order
+	cancelReason string 
+  createdAt string
+  updatedAt string
+}
+
+
+Table Billings {
+  billingId int
+  orderId int
+  customerNo string
+  customerEmail string
+	firstName string
+  lastName string
+  phoneNumber string
+  shippingAddress string
+  type core.billing
+  note text
+}
+
+
+Table OrderItems {
+  orderItemId int
+  orderId int
+  productId int
+  quantity int
+  netPrice int
+  grossPrice int
+  taxPrice int
+}
+
+table PaymentMethods {
+  paymentMethodId int
+  paymentMethodName string
+  status smallint
+}
+
+table PaymentTransactions {
+  id int
+  transactionId uuid
+  orderId int
+  paymentMethodId int
+  paymentStatus core.paymentStatus
+}
+
+
+
+table Shippings {
+  shippingId int
+  shippingNo string
+  orderId int
+  shippingMethod string
+  shippingCarrier string
+  trackingNumber string
+  shippingDate string
+}
+
+
+table Tax {
+  taxId int
+  taxName string
+  taxValue int
+  status smallint
+}
+
+
+
+// Table WishList {
+//   wishListId int [pk]
+//   customerId int
+//   products array // list products id
+// }
+
+
+
+// Table Coupons {
+//   id int [pk, increment]
+//   codePrefix string
+//   type int  // SINGLE_CODE - MULTIPLE_CODES - SYSTEM_CODES
+//   redemptionLimitPerCode int // so luong doi ma
+//   redemptionLimitPerCustomer int // so lan doi cho moi khach hang
+//   redemptionLimitPerTimeFrame int // so lan doi cho moi khung thoi gian
+//   redemptionLimitTimeFrame int // khung thoi gian bat dau va ket thuc cua ma doi thuong
+//   status smallint
+//   createdAt datetime
+//   updatedAt datetime
+// }
+
+
+// Table Promotions {
+//   id int [pk, increment]
+//   combinablePromotions string
+// 	conditionalDescription string
+//   name string
+//   rank int // muc do uu tien
+//   description string
+//   image string
+//   exclusivity int 
+//   // NO - Can be combined with any promotion.
+//   // CLASS - Can't be combined with promotions of the same class.
+//   // GLOBAL - Can't be combined with any promotion.
+  
+//   discountProducts json
+//   discount json
+//   promotionClass json
+//   status smallint
+// 	createdAt datetime
+// 	updatedAt datetime
+// }
+
+// Table Reviews {
+//   reviewId int
+//   customerId int
+//   productId int
+//   reviewText text
+//   reviewRating int
+//   status smallint
+// }
+
+
+
+Ref: "public"."Catalogs"."catalogId" < "public"."Categories"."catalogId"
+
+Ref: "public"."Customers"."customerId" < "public"."Users"."userId"
+
+Ref: "public"."Address"."addressId" < "public"."AddressBooks"."addressId"
+
+Ref: "public"."AddressBooks"."customerId" < "public"."Customers"."customerId"
+
+
+Ref: "public"."Product"."categoryId" < "public"."Categories"."categoryId"
+
+Ref: "public"."ProductAttributes"."productId" < "public"."Product"."productId"
+
+
+Ref: "public"."PaymentTransactions"."orderId" < "public"."Orders"."orderId"
+
+
+Ref: "public"."OrderItems"."orderId" < "public"."Orders"."orderId"
+
+Ref: "public"."PaymentTransactions"."paymentMethodId" < "public"."PaymentMethods"."paymentMethodId"
+
+Ref: "public"."ProductInventory"."productId" < "public"."Product"."productId"
+
+Ref: "public"."ProductPrice"."productId" < "public"."Product"."productId"
+
+Ref: "public"."Product"."taxId" < "public"."Tax"."taxId"
+
+Ref: "public"."Variants"."masterId" < "public"."Product"."productId"
+
+Ref: "public"."ProductSets"."masterId" < "public"."Product"."productId"
+
+Ref: "public"."Shippings"."orderId" < "public"."Orders"."orderId"
+
+
+Ref: "public"."BasketItems"."basketId" < "public"."Baskets"."basketId"
+
+Ref: "public"."SitesConfig"."groupConfigId" < "public"."GroupsConfig"."groupConfigId"
+
+Ref: "public"."KeyTokens"."userId" < "public"."Users"."userId"

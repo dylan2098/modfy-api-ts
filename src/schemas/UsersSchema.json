@@ -1,0 +1,28 @@
+{
+    "type": "object",
+    "required": [
+        "email",
+        "password",
+        "firstName",
+        "lastName",
+        "phoneNumber"
+    ],
+    "additionalProperties": true,
+    "properties": {
+        "email": {
+            "type": "string"
+        },
+        "password": {
+            "type": "string"
+        },
+        "firstName": {
+            "type": "string"
+        },
+        "lastName": {
+            "type": "string"
+        },
+        "phoneNumber": {
+            "type": "string"
+        }
+    }
+}
