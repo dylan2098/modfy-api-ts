@@ -36,7 +36,7 @@ class UserService {
             firstName,
             lastName,
             phoneNumber,
-            roles: [role.GUEST] as string[]
+            roles: [role.GUEST]
         })
 
         if(!newUser || !newUser.length) {

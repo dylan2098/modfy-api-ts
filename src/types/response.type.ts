@@ -1,4 +1,4 @@
-export type DataErrorType = {
+export type ResponseType = {
   error?: boolean;
   code: number;
   message: string;

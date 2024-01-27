@@ -1,16 +1,14 @@
-import { Response } from 'express';
+import { Request, Response } from "express";
+import userService from "../services/user.service";
+import { CreatedSuccessResponse } from "../utils/success.response";
 
-export class CreatedSuccessResponse {
-    metadata : any;
 
-    constructor(metadata: number[]) {
-        this.metadata = metadata;
-    }
-
-    send(res: Response) {
-        res.status(201).json({
-            success: true,
-            metadata: this.metadata
-        });
-    }
+class UserController {
+  signUp = async (req: Request, res: Response) => {
+    new CreatedSuccessResponse({
+      metadata: await userService.signUp(req.body) as any
+    }).send(res);
+  };
 }
+
+export default new UserController();

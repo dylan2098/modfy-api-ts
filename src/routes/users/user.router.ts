@@ -1,7 +1,7 @@
 'use strict';
 
-import userController from '../../controllers/user.controller.js';
-import asyncHandler from '../../helpers/asyncHandler.js';
+import userController from '../../controllers/user.controller';
+import asyncHandler from '../../helpers/asyncHandler';
 
 import { Router } from "express";
 const router = Router();

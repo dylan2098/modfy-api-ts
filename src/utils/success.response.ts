@@ -6,17 +6,17 @@ export class SuccessResponse {
     code: number;
     error: boolean;
     message: string;
-    metadata: never[];
+    metadata: any;
 
-    constructor({ message = '', statusCode = StatusCode.OK, reasonStatusCode = ReasonStatusCode.OK, metadata = [] }) {
-        this.error = false;
-        this.code = statusCode;
-        this.message = !message ? reasonStatusCode : message;
-        this.metadata = metadata;
+    constructor({ message = '', statusCode = StatusCode.OK, reasonStatusCode = ReasonStatusCode.OK, metadata = []}) {
+      this.error = false;
+      this.code = statusCode;
+      this.message = !message ? reasonStatusCode : message;
+      this.metadata = metadata;
     }
 
     send(res: Response, headers = {}) {
-        return res.status(this.code).json(this);
+      return res.status(this.code).json(this);
     }
 }
 

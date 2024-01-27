@@ -8,7 +8,7 @@ import limiter from "./middlewares/limiter";
 import stackError from "./helpers/stackError";
 import router from "./routes";
 import utils from "./utils/utils.js";
-import { DataErrorType } from "./types/response.type";
+import { ResponseType } from "./types/response.type";
 
 const app = express();
 app.use(
@@ -44,10 +44,10 @@ app.use((req, res, next) => {
 });
 
 // manage errors
-app.use((error: DataErrorType, req: Request, res: Response, next: NextFunction) => {
+app.use((error: ResponseType, req: Request, res: Response, next: NextFunction) => {
   const code = error.code || 500;
 
-  const body: DataErrorType = {
+  const body: ResponseType = {
     error: true,
     code: code,
     message: error.message || "Internal Server Error",
