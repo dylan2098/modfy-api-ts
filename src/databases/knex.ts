@@ -1,48 +1,38 @@
-import knex from 'knex';
+import knex, { Knex } from 'knex';
 import knexCfg from '../configs/knex.config';
 
-// class Database {
-//     instance: any;
+class Database {
+    private instance: Knex | undefined; // Use Knex type from the import
 
-//     constructor() {
-//         this.connect();
-//     }
+    constructor() {
+        this.connect();
+    }
 
-//     connect() {
-//         this.instance = knex(knexCfg);
+    connect() {
+      this.instance = knex(knexCfg);
 
-//         // check connect
-//         this.instance.raw("SELECT 1")
-//         .then(() => {
-//             console.log("PostgreSQL connected");
-//         })
-//         .catch((error: any) => {
-//             console.error(error);
-//             console.log("PostgreSQL not connected");
-//         });
+      // Check connection
+      this.instance.raw("SELECT 1")
+      .then(() => {
+        console.log("PostgreSQL connected");
+        return this.instance; // Return the instance for chaining
+      })
+      .catch((error: any) => {
+        console.error(error);
+        console.log("PostgreSQL not connected");
+        throw error; // Rethrow to handle errors appropriately
+      });
 
-//         return this.instance;
-//     }
-    
-//     getInstance() {
-//         if(!this.instance) {
-//             this.instance = new Database();
-//         }
-        
-//         return this.instance;
-//     }
-// }
+      return this.instance; // Add return statement
+    }
 
-// export default new Database().getInstance();
+    getInstance() {
+      if (!this.instance) {
+          return this.connect();
+      }
 
-knex(knexCfg).raw("SELECT 1")
-.then(() => {
-    console.log("PostgreSQL connected");
-})
-.catch((e) => {
-    console.error(e);
-    console.log("PostgreSQL not connected");
-});
+      return this.instance; // Return existing instance
+    }
+}
 
-
-export default knex(knexCfg);
+export default new Database().getInstance();
