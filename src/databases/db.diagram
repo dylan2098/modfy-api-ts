@@ -56,6 +56,9 @@ Table Users {
   us_first_name string
   us_last_name string
   us_phone_number string
+  us_gender int
+  us_birthday datetime
+  us_avtar string
   us_status smallint
   us_updated_at datetime
 }
@@ -94,13 +97,6 @@ Table KeyTokens {
 }
 
 
-Table Customers {
-  cus_id int [pk, increment]
-  cus_gender int
-  cus_birthday datetime
-  cus_avatar string
-}
-
 Table Address {
   addr_id int
   addr_street string
@@ -111,7 +107,7 @@ Table Address {
 
 Table AddressBooks {
   addr_id int
-  cus_id int
+  us_id int
   selected boolean
 }
 
@@ -162,15 +158,15 @@ Table Categories {
 //Product attributes
 Table ProductAttributes{
   product_id int
-  pattr_brand string
-  pattr_color string
-  pattr_size string
-  pattr_model string
-  pattr_type core.product_type
-  pattr_image string
-  pattr_images string
-  pattr_short_description string
-  pattr_long_description string
+  pdattr_brand string
+  pdattr_color string
+  pdattr_size string
+  pdattr_model string
+  pdattr_type core.product_type
+  pdattr_image string
+  pdattr_images string
+  pdattr_short_description string
+  pdattr_long_description string
 }
 
 
@@ -376,11 +372,7 @@ Ref: "public"."RoleMenu"."menu_id" < "public"."Menus"."menu_id"
 
 Ref: "public"."UserRole"."us_id" < "public"."Users"."us_id"
 
-Ref: "public"."Customers"."cus_id" < "public"."Users"."us_id"
-
 Ref: "public"."AddressBooks"."addr_id" < "public"."Address"."addr_id"
-
-Ref: "public"."AddressBooks"."cus_id" < "public"."Customers"."cus_id"
 
 Ref: "public"."Catalogs"."catalog_id" < "public"."Categories"."catalog_id"
 
@@ -415,3 +407,5 @@ Ref: "public"."Orders"."order_id" < "public"."Shippings"."order_id"
 Ref: "public"."Orders"."order_id" < "public"."Billings"."order_id"
 
 Ref: "public"."Billings"."billing_id" < "public"."Baskets"."billing_id"
+
+Ref: "public"."Users"."us_id" < "public"."AddressBooks"."us_id"

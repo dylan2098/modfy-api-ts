@@ -1,11 +1,11 @@
 'use strict';
 
-import StatusCode from "../core/statusCode";
-import ReasonStatusCode from "../core/reasonPhrase";
+import StatusCode from '../core/statusCode';
+import ReasonStatusCode from '../core/reasonPhrase';
 
 export class Errors extends Error {
   status: number;
-  
+
   constructor(message = '', statusCode = StatusCode.BAD_REQUEST) {
     super(message);
     this.status = statusCode;

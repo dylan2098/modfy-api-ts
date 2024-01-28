@@ -1,9 +1,9 @@
 'use strict';
 
-import { NextFunction } from "express";
+import { NextFunction } from 'express';
 
 export default (fn: Function) => {
-    return (req: Request, res: Response, next: NextFunction) => {
-        fn(req, res, next).catch(next); // error passed on to the error handling route
-    };
+  return (req: Request, res: Response, next: NextFunction) => {
+    fn(req, res, next).catch(next); // error passed on to the error handling route
+  };
 };

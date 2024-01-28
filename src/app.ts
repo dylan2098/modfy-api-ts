@@ -1,14 +1,14 @@
-import express, { NextFunction, Request, Response } from "express";
-import "dotenv/config";
-import morgan from "morgan";
-import helmet from "helmet";
-import compression from "compression";
-import cors from "cors";
-import limiter from "./middlewares/limiter";
-import stackError from "./helpers/stackError";
-import router from "./routes";
-import utils from "./utils/utils.js";
-import { ResponseType } from "./types/response.type";
+import express, { NextFunction, Request, Response } from 'express';
+import 'dotenv/config';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import compression from 'compression';
+import cors from 'cors';
+import limiter from './middlewares/limiter';
+import stackError from './helpers/stackError';
+import router from './routes';
+import utils from './utils/utils.js';
+import { ResponseType } from './types/response.type';
 
 const app = express();
 app.use(
@@ -18,11 +18,11 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  const delay = parseInt(process.env.DELAY || "0");
+  const delay = parseInt(process.env.DELAY || '0');
   setTimeout(next, delay);
 });
 
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 app.use(helmet());
 app.use(compression());
 app.use(express.json());
@@ -31,14 +31,14 @@ app.use(limiter);
 // utf8
 app.use(
   express.urlencoded({
-    extended: true
+    extended: true,
   })
 );
 
-app.use("/", router);
+app.use('/', router);
 
 app.use((req, res, next) => {
-  const error: any = new Error("Not Found");
+  const error: any = new Error('Not Found');
   error.code = 404;
   next(error);
 });
@@ -50,12 +50,12 @@ app.use((error: ResponseType, req: Request, res: Response, next: NextFunction) =
   const body: ResponseType = {
     error: true,
     code: code,
-    message: error.message || "Internal Server Error",
+    message: error.message || 'Internal Server Error',
     metadata: [],
   };
 
-  if (utils.environment() === "development") {
-    body.stack = stackError(error.stack || "No stack trace available");
+  if (utils.environment() === 'development') {
+    body.stack = stackError(error.stack || 'No stack trace available');
   }
 
   return res.status(code).json(body);

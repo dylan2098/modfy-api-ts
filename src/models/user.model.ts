@@ -1,33 +1,33 @@
-"use strict";
+'use strict';
 
-import table from "../databases/table";
-import knex from "../databases/knex";
-import { UserType } from "../types/user.type";
-import utils from "../utils/utils";
+import table from '../databases/table';
+import knex from '../databases/knex';
+import { UserType } from '../types/user.type';
+import utils from '../utils/utils';
 
 class UserModel {
   async find({ userId, email }: UserType) {
     let sql = knex.select().from(table.users);
 
     if (userId) {
-      sql.where("userId", userId);
+      sql.where('userId', userId);
     }
 
     if (email) {
-      sql.where("email", email);
+      sql.where('email', email);
     }
 
     return await sql;
   }
 
   create(payload: UserType) {
-    const column = ["userId"];
+    const column = ['userId'];
     return knex(table.users).returning(column).insert(payload);
   }
 
   update(payload: UserType) {
     payload.createdAt = utils.defaultNow();
-    return knex(table.users).where("userId", payload.userId).update(payload);
+    return knex(table.users).where('userId', payload.userId).update(payload);
   }
 }
 
