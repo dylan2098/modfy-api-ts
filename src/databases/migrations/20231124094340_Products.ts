@@ -1,82 +1,90 @@
-export async function up(knex) {
-    return knex.schema
-    .createTable('Catalogs', (table) => {
-        table.increments('catalogId').primary().unique();
-        table.string('name', 100).notNullable();
-        table.smallint('status').defaultTo(0);
-        table.datetime('updatedAt', { precision: 6 }).defaultTo(knex.fn.now(6))
-    })
+import type { Knex } from 'knex';
+import { v4 as uuidv4 } from 'uuid';
 
-    .createTable('Categories', (table) => {
-        table.increments('categoryId').primary().unique();
-        table.integer('catalogId').references('catalogId').inTable('Catalogs');
-        table.string('name', 100).notNullable();
-        table.smallint('status').defaultTo(0);
-        table.datetime('updatedAt', { precision: 6 }).defaultTo(knex.fn.now(6))
-    })
+export async function up(knex: Knex): Promise<void> {
+  return knex.schema.createTable('Catalogs', (table) => {
+    table.increments('catalog_id').primary().unique();
+    table.uuid('catalog_uuid').defaultTo(uuidv4());
+    table.string('catalog_name', 100).notNullable();
+    table.smallint('catalog_status').defaultTo(0);
+    table.datetime('catalog_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6));
+  })
 
-    .createTable('Tax', (table) => {
-        table.increments('taxId').primary().unique();
-        table.string('taxName');
-        table.integer('taxValue');
-        table.smallint('status').defaultTo(0);
-    })
+  .createTable('Categories', (table) => {
+    table.increments('category_id').primary().unique();
+    table.uuid('category_uuid').defaultTo(uuidv4());
+    table.integer('catalog_id').references('catalog_id').inTable('Catalogs');
+    table.string('category_name', 100).notNullable();
+    table.smallint('category_status').defaultTo(0);
+    table.datetime('category_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6));
+    table.index(['category_uuid', 'category_name'], 'category_idx');
+  })
 
-    .createTable('Products', (table) => {
-        table.increments('productId').primary().unique();
-        table.integer('categoryId').references('categoryId').inTable('Categories');
-        table.string('SKU', 20);
-        table.string('name');
-        table.boolean('usePromotion').defaultTo(true);
-        table.integer('taxId').references('taxId').inTable('Tax');
-        table.smallint('status').defaultTo(0);
-        table.datetime('updatedAt', { precision: 6 }).defaultTo(knex.fn.now(6))
-    })
+  .createTable('Taxes', (table) => {
+    table.increments('tax_id').primary().unique();
+    table.string('tax_name');
+    table.float('tax_value');
+    table.smallint('tax_status').defaultTo(0);
+  })
 
-    .createTable('ProductAttributes', (table) => {
-        table.increments('productId').references('productId').inTable('Products');
-        table.string('brand', 50);
-        table.string('color', 50);
-        table.string('size', 50);
-        table.string('model', 50);
-        table.string('type', 10).defaultTo("normal");
-        table.string('image');
-        table.string('images', 50);
-        table.string('shortDesc');
-        table.string('longDesc');
-    })
+  .createTable('Products', (table) => {
+    table.increments('product_id').primary().unique();
+    table.uuid('product_uuid').defaultTo(uuidv4());
+    table.integer('category_id').references('category_id').inTable('Categories');
+    table.integer('inventory_id').references('inventory_id').inTable('Inventories');
+    table.string('product_sku', 20);
+    table.string('product_name');
+    table.boolean('product_allow_use_promotion').defaultTo(true);
+    table.integer('tax_id').references('tax_id').inTable('Taxes');
+    table.smallint('product_status').defaultTo(0);
+    table.datetime('product_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6));
+    table.index(['product_uuid','category_id', 'product_sku', 'product_name'], 'product_idx');
+  })
 
-    .createTable('ProductInventories', (table) => {
-        table.increments('productId').references('productId').inTable('Products');
-        table.integer('stock').defaultTo(0);
-        table.integer('preOrder').defaultTo(0);
-        table.string('expectedDate', 20);
-        table.smallint('status').defaultTo(0);
-    })
+  .createTable('ProductAttributes', (table) => {
+    table.increments('product_id').references('product_id').inTable('Products');
+    table.string('attribute_brand', 50);
+    table.string('attribute_color', 50);
+    table.string('attribute_size', 50);
+    table.string('attribute_model', 50);
+    table.string('attribute_type', 10).defaultTo('normal');
+    table.string('attribute_image');
+    table.string('attribute_images', 50);
+    table.string('attribute_short_description');
+    table.string('attribute_long_description');
+  })
 
-    .createTable('ProductPrices', (table) => {
-        table.increments('productId').references('productId').inTable('Products');
-        table.float('grossPrice');
-        table.float('netPrice');
-        table.integer('taxId').references('taxId').inTable('Tax');
-    })
+  .createTable('Inventories', (table) => {
+    table.increments('inventory_id').primary().unique();
+    table.integer('inventory_stock').defaultTo(0);
+    table.integer('inventory_mode').defaultTo(0); // normal, pre-order, back-order
+    table.string('inventory_expected_date', 20);
+    table.smallint('inventory_status').defaultTo(0); // available, out of stock
+  })
 
-    .createTable('ProductSets', (table) => {
-        table.increments('id').primary().unique();
-        table.integer('masterId').references('productId').inTable('Products');
-        table.integer('productSetId');
-    })
+  .createTable('ProductPrices', (table) => {
+    table.increments('product_id').references('product_id').inTable('Products');
+    table.float('product_gross_price');
+    table.float('product_net_price');
+    table.float('tax_id').references('tax_id').inTable('Taxes');
+  })
 
-    .createTable('Variants', (table) => {
-        table.increments('id').primary().unique();
-        table.integer('masterId').references('productId').inTable('Products');
-        table.integer('variantId');
-    })
+  .createTable('Sets', (table) => {
+    table.increments('product_set_id').primary().unique();
+    table.integer('master_id').references('productId').inTable('Products');
+    table.specificType('sets_id', 'integer ARRAY') //'INT[]'
+  })
+
+  .createTable('Variants', (table) => {
+    table.increments('product_variant_id').primary().unique();
+    table.integer('master_id').references('productId').inTable('Products');
+    table.specificType('variants_id', 'integer ARRAY') //'INT[]'
+  })
+  ;
 }
 
-    
-export async function down(knex) {
-    return knex.schema
+export async function down(knex: Knex): Promise<void> {
+  return knex.schema
     .dropTable('ProductAttributes')
     .dropTable('ProductPrices')
     .dropTable('ProductInventories')
@@ -85,6 +93,5 @@ export async function down(knex) {
     .dropTable('Products')
     .dropTable('Categories')
     .dropTable('Catalogs')
-    .dropTable('Tax')
-    ;
+    .dropTable('Tax');
 }

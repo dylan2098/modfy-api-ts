@@ -8,7 +8,7 @@ Enum core.order_status {
   "failed"
 }
 
-Enum core.us_status {
+Enum core.user_status {
   "pending"
   "active"
   "block"
@@ -37,30 +37,30 @@ Enum core.billing {
   "order"
 }
 
-Enum core.inv_mode {
+Enum core.inventory_mode {
   "normal"
   "preorder"
 }
 
-Enum core.inv_status {
+Enum core.inventory_status {
   "available"
   "out_of_stock"
 }
 
 // User & Customer
 Table Users {
-  us_id int [pk, increment] 
-  us_uuid string
-  us_email string
-  us_password string
-  us_first_name string
-  us_last_name string
-  us_phone_number string
-  us_gender int
-  us_birthday datetime
-  us_avtar string
-  us_status smallint
-  us_updated_at datetime
+  user_id int [pk, increment] 
+  user_uuid string
+  user_email string
+  user_password string
+  user_first_name string
+  user_last_name string
+  user_phone string
+  user_gender int
+  user_birthday datetime
+  user_avtar string
+  user_status smallint
+  user_updated_at datetime
 }
 
 Table Roles {
@@ -77,7 +77,7 @@ Table Menus {
 }
 
 Table UserRole {
-  us_id int
+  user_id int
   role_id int
 }
 
@@ -88,7 +88,7 @@ Table RoleMenu {
 
 
 Table KeyTokens {
-  us_id int
+  user_id int
   refresh_token string
   private_key string
   public_key string
@@ -98,42 +98,42 @@ Table KeyTokens {
 
 
 Table Address {
-  addr_id int
-  addr_street string
-  addr_zip_code string
-  addr_city string
-  addr_country string
+  address_id int
+  address_street string
+  address_zipcode string
+  address_city string
+  address_country string
 }
 
 Table AddressBooks {
-  addr_id int
-  us_id int
+  address_id int
+  user_id int
   selected boolean
 }
 
 // Site config
 table GroupsConfig {
-  gconfig_id int [pk, increment]
-  gconfig_name string
-  gconfig_status boolean
+  group_config_id int [pk, increment]
+  group_config_name string
+  group_config_status boolean
 }
 
 table Config {
   config_id int  [pk, increment]
-  gconfig_id int // group config_id
+  group_config_id int // group config_id
   config_key string
   config_value string
 }
 
 // service 
 table Services {
-  svc_id int [pk, increment]
-  svc_name string
-  svc_host string
-  svc_username string
-  svc_password string
-  svc_port string
-  svc_status smallint
+  service_id int [pk, increment]
+  service_name string
+  service_host string
+  service_username string
+  service_password string
+  service_port string
+  service_status smallint
 }
 
 
@@ -158,15 +158,15 @@ Table Categories {
 //Product attributes
 Table ProductAttributes{
   product_id int
-  pdattr_brand string
-  pdattr_color string
-  pdattr_size string
-  pdattr_model string
-  pdattr_type core.product_type
-  pdattr_image string
-  pdattr_images string
-  pdattr_short_description string
-  pdattr_long_description string
+  product_attribute_brand string
+  product_attribute_color string
+  product_attribute_size string
+  product_attribute_model string
+  product_attribute_type core.product_type
+  product_attribute_image string
+  product_attribute_images string
+  product_attribute_short_description string
+  product_attribute_long_description string
 }
 
 
@@ -185,11 +185,11 @@ Table Product {
 
 
 Table Inventory {
-  inv_id int
-  inv_stock int
-  inv_mode core.inv_mode
-  inv_expected_date date
-  inv_status core.inv_status
+  inventory_id int
+  inventory_stock int
+  inventory_mode core.inventory_mode
+  inventory_expected_date date
+  inventory_status core.inventory_status
 }
 
 
@@ -254,14 +254,14 @@ Table Orders {
 Table Billings {
   billing_id int
   order_id int
-  cus_uuid string
-  cus_email string
-	cus_first_name string
-  cus_last_name string
-  cus_phone_number string
-  cus_shipping_address string
+  customer_uuid string
+  customer_email string
+	customer_first_name string
+  customer_last_name string
+  customer_phone_number string
+  customer_shipping_address string
   billing_type core.billing
-  cus_note text
+  customer_note text
 }
 
 
@@ -370,15 +370,15 @@ Ref: "public"."UserRole"."role_id" < "public"."Roles"."role_id"
 
 Ref: "public"."RoleMenu"."menu_id" < "public"."Menus"."menu_id"
 
-Ref: "public"."UserRole"."us_id" < "public"."Users"."us_id"
+Ref: "public"."UserRole"."user_id" < "public"."Users"."user_id"
 
-Ref: "public"."AddressBooks"."addr_id" < "public"."Address"."addr_id"
+Ref: "public"."AddressBooks"."address_id" < "public"."Address"."address_id"
 
 Ref: "public"."Catalogs"."catalog_id" < "public"."Categories"."catalog_id"
 
-Ref: "public"."GroupsConfig"."gconfig_id" < "public"."Config"."config_id"
+Ref: "public"."GroupsConfig"."group_config_id" < "public"."Config"."config_id"
 
-Ref: "public"."Users"."us_id" < "public"."KeyTokens"."us_id"
+Ref: "public"."Users"."user_id" < "public"."KeyTokens"."user_id"
 
 Ref: "public"."Orders"."order_id" < "public"."OrderItems"."order_id"
 
@@ -394,7 +394,7 @@ Ref: "public"."Product"."product_id" < "public"."ProductPrice"."product_id"
 
 Ref: "public"."Product"."product_id" < "public"."Tax"."tax_id"
 
-Ref: "public"."Product"."product_id" < "public"."Inventory"."inv_id"
+Ref: "public"."Product"."product_id" < "public"."Inventory"."inventory_id"
 
 Ref: "public"."Baskets"."basket_id" < "public"."BasketItems"."basket_id"
 
@@ -408,4 +408,4 @@ Ref: "public"."Orders"."order_id" < "public"."Billings"."order_id"
 
 Ref: "public"."Billings"."billing_id" < "public"."Baskets"."billing_id"
 
-Ref: "public"."Users"."us_id" < "public"."AddressBooks"."us_id"
+Ref: "public"."Users"."user_id" < "public"."AddressBooks"."user_id"

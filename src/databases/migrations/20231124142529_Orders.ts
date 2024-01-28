@@ -1,51 +1,58 @@
-export async function up(knex) {
+import type { Knex } from 'knex';
+import { v4 as uuidv4 } from 'uuid';
+
+export async function up(knex: Knex): Promise<void> {
     return knex.schema
     .createTable('PaymentMethods', (table) => {
-        table.increments('paymentMethodId').primary().unique();
-        table.string('paymentMethodName').notNullable();
-        table.smallint('status').defaultTo(0);
+        table.increments('payment_method_id').primary().unique();
+        table.uuid('payment_method_uuid').defaultTo(uuidv4());
+        table.string('payment_method_name').notNullable();
+        table.smallint('payment_method_status').defaultTo(0);
     })
     .createTable('Orders', (table) => {
-        table.increments('orderId').primary().unique();
-        table.uuid('orderNo').notNullable();
-        table.float('totalGrossPrice').notNullable();
-        table.float('totalNetPrice').notNullable();
-        table.float('totalTaxPrice').notNullable();
-        table.string('expectedDate', 20);
-        table.string('cancelReason');
-        table.smallint('orderStatus').defaultTo(0);
-        table.datetime('createdAt', { precision: 6 }).defaultTo(knex.fn.now(6))
-        table.datetime('updatedAt', { precision: 6 }).defaultTo(knex.fn.now(6))
+        table.increments('order_id').primary().unique();
+        table.uuid('order_uuid').notNullable();
+        table.float('order_total_gross_price').notNullable();
+        table.float('order_total_net_price').notNullable();
+        table.float('order_total_tax_price').notNullable();
+        table.string('order_expected_date', 20);
+        table.string('order_cancel_reason');
+        table.smallint('order_status').defaultTo(0);
+        table.datetime('order_created_at', { precision: 6 }).defaultTo(knex.fn.now(6))
+        table.datetime('order_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6))
+        table.index(['order_uuid'], 'idx_order');
     })
     .createTable('PaymentTransactions', (table) => {
-        table.increments('id').primary().unique();
-        table.uuid('transactionId').notNullable();
-        table.integer('orderId').references('orderId').inTable('Orders');
-        table.integer('paymentMethodId').references('paymentMethodId').inTable('PaymentMethods');
-        table.smallint('paymentStatus').defaultTo(0);
+        table.increments('payment_transaction_id').primary().unique();
+        table.uuid('payment_transaction_uuid').defaultTo(uuidv4());
+        table.uuid('order_transaction_id').notNullable();
+        table.integer('order_id').references('orderId').inTable('Orders');
+        table.integer('payment_method_id').references('payment_method_id').inTable('PaymentMethods');
+        table.smallint('payment_status').defaultTo(0); // paid, not paid, refunded
     })
     .createTable('OrderItems', (table) => {
-        table.increments('orderItemId').primary().unique();
-        table.integer('orderId').references('orderId').inTable('Orders');
-        table.integer('productId').references('productId').inTable('Products');
-        table.integer('quantity').notNullable();
-        table.float('netPrice').notNullable();
-        table.float('grossPrice').notNullable();
-        table.float('taxPrice').notNullable();
+        table.increments('order_item_id').primary().unique();
+        table.integer('order_id').references('order_id').inTable('Orders');
+        table.integer('product_id').references('product_id').inTable('Products');
+        table.integer('product_quantity').notNullable();
+        table.float('product_net_price').notNullable();
+        table.float('product_gross_price').notNullable();
+        table.float('product_tax_price').notNullable();
     })
     .createTable('Shippings', (table) => {
-        table.increments('shippingId').primary().unique();
-        table.uuid('shippingNo').notNullable();
-        table.integer('orderId').references('orderId').inTable('Orders');
-        table.string('shippingMethod').notNullable();
-        table.string('shipingCarrier').notNullable();
-        table.string('trackingNumber').notNullable();
-        table.datetime('shippingDate', { precision: 6 }).defaultTo(knex.fn.now(6))
+        table.increments('shipping_id').primary().unique();
+        table.uuid('shipping_uuid').defaultTo(uuidv4());
+        table.integer('order_id').references('order_id').inTable('Orders');
+        table.uuid('order_uuid');
+        table.string('shipping_method').notNullable();
+        table.string('shipping_carrier').notNullable();
+        table.string('shipping_tracking_number').notNullable();
+        table.datetime('shipping_date', { precision: 6 }).defaultTo(knex.fn.now(6))
     })
 }
 
     
-export async function down(knex) {
+export async function down(knex: Knex): Promise<void> {
     return knex.schema
     .dropTable('Shippings')
     .dropTable('OrderItems')

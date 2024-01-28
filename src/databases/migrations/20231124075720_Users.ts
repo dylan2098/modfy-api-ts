@@ -4,22 +4,24 @@ import { v4 as uuidv4 } from 'uuid';
 export async function up(knex: Knex): Promise<void> {
   return knex.schema
     .createTable('Users', (table) => {
-      table.increments('us_id').primary().unique();
-      table.uuid('us_uuid').defaultTo(uuidv4());
-      table.string('us_email', 100).notNullable();
-      table.string('us_password', 255).notNullable();
-      table.string('us_first_name', 50).notNullable();
-      table.string('us_last_name', 50).notNullable();
-      table.string('us_phone', 20).notNullable();
-      table.smallint('us_gender');
-      table.string('us_birthday');
-      table.string('us_avtar');
-      table.smallint('us_status').defaultTo(0);
-      table.datetime('us_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6));
+      table.increments('user_id').primary().unique();
+      table.uuid('user_uuid').defaultTo(uuidv4());
+      table.string('user_email', 100).notNullable();
+      table.string('user_password', 255).notNullable();
+      table.string('user_first_name', 50).notNullable();
+      table.string('user_last_name', 50).notNullable();
+      table.string('user_phone', 20).notNullable();
+      table.smallint('user_gender');
+      table.string('user_birthday');
+      table.string('user_avtar');
+      table.smallint('user_status').defaultTo(0);
+      table.datetime('user_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6));
+      table.index(['user_uuid', 'user_email', 'user_phone', 'user_first_name', 'user_last_name', 'user_birthday'], 'user_idx');
     })
 
     .createTable('Roles', (table) => {
       table.increments('role_id').primary().unique();
+      table.uuid('role_uuid').defaultTo(uuidv4());
       table.string('role_name');
       table.string('role_description');
     })
@@ -33,7 +35,7 @@ export async function up(knex: Knex): Promise<void> {
 
     .createTable('UserRole', (table) => {
       table.increments('user_role_id').primary().unique();
-      table.integer('user_id').references('us_id').inTable('Users');
+      table.integer('user_id').references('user_id').inTable('Users');
       table.integer('role_id').references('role_id').inTable('Roles');
     })
 
@@ -45,38 +47,33 @@ export async function up(knex: Knex): Promise<void> {
 
     .createTable('KeyTokens', (table) => {
       table.increments('key_token_id').primary().unique();
-      table.integer('user_id').references('us_id').inTable('Users');
+      table.integer('user_id').references('user_id').inTable('Users');
       table.string('refresh_token');
       table.string('private_key');
+      table.string('public_key');
+      table.specificType('refresh_token_used', 'text ARRAY');
+      table.datetime('updated_at', { precision: 6 }).defaultTo(knex.fn.now(6));
+
     })
 
     .createTable('Addresses', (table) => {
-      table.increments('addressId').primary().unique();
-      table.string('street');
-      table.smallint('zipCode');
-      table.string('city', 20);
-      table.string('country', 50);
+      table.increments('address_id').primary().unique();
+      table.string('address_street');
+      table.string('address_zipcode');
+      table.string('address_city', 40);
+      table.string('address_country', 40);
     })
 
     .createTable('AddressBooks', (table) => {
-      table.increments('addressBookId');
-      table.integer('customerId').references('customerId').inTable('Customers');
-      table.integer('addressId').references('addressId').inTable('Addresses');
-      table.boolean('selected').defaultTo(false);
+      table.increments('address_book_id').primary().unique();
+      table.integer('user_id').references('user_id').inTable('Customers');
+      table.integer('address_id').references('address_id').inTable('Addresses');
+      table.boolean('address_selected').defaultTo(false);
     })
-
-    .createTable('KeyTokens', (table) => {
-      table.increments('userId').references('userId').inTable('Users');
-      table.string('refreshToken');
-      table.string('privateKey');
-      table.string('publicKey');
-      table.specificType('refreshTokenUsed', 'TEXT[]');
-    });
 }
 
 export async function down(knex: Knex): Promise<void> {
   return knex.schema
-    .dropTable('KeyTokens')
     .dropTable('UsersSystem')
     .dropTable('Customers')
     .dropTable('AddressBooks')

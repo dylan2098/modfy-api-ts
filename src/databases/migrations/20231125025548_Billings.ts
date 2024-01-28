@@ -1,21 +1,25 @@
-export async function up(knex) {
+import type { Knex } from 'knex';
+import { v4 as uuidv4 } from 'uuid';
+
+export async function up(knex: Knex): Promise<void> {
     return knex.schema
     .createTable('Billings', (table) => {
-        table.increments('billingId').primary().unique();
-        table.integer('orderId');
-        table.string('customerNo', 100);
-        table.string('customerEmail', 255).notNullable();
-        table.string('firstName', 50).notNullable();
-        table.string('lastName', 50).notNullable();
-        table.string('phoneNumber', 20).notNullable();
-        table.string('shippingAddress').notNullable();
-        table.string('type', 10).notNullable();
-        table.string('note');
+        table.increments('billing_id').primary().unique();
+        table.uuid('billing_uuid').defaultTo(uuidv4());
+        table.integer('order_id');
+        table.string('customer_uuid', 100);
+        table.string('customer_email', 255).notNullable();
+        table.string('customer_first_name', 50).notNullable();
+        table.string('customer_last_name', 50).notNullable();
+        table.string('customer_phone', 20).notNullable();
+        table.string('customer_shipping_address').notNullable();
+        table.string('billing_type', 10).notNullable(); // basket, order
+        table.string('customer_note');
     })
 }
 
     
-export async function down(knex) {
+export async function down(knex: Knex): Promise<void> {
     return knex.schema
     .dropTable('Billings');
 }
