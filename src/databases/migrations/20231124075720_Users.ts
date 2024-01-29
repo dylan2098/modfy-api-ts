@@ -13,8 +13,9 @@ export async function up(knex: Knex): Promise<void> {
       table.string('user_phone', 20).notNullable();
       table.smallint('user_gender');
       table.string('user_birthday');
-      table.string('user_avtar');
+      table.string('user_avatar');
       table.smallint('user_status').defaultTo(0);
+      table.datetime('user_created_at', { precision: 6 }).defaultTo(knex.fn.now(6));
       table.datetime('user_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6));
       table.index(['user_uuid', 'user_email', 'user_phone', 'user_first_name', 'user_last_name', 'user_birthday'], 'user_idx');
     })

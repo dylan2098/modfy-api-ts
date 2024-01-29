@@ -27,6 +27,7 @@ const config: KnexConfig = {
       max: parseInt(env.DEV_DB_POOL_MAX || '30'),
     },
     useNullAsDefault: true,
+    debug: true,
   },
   production: {
     client: env.PROD_DB_CLIENT,

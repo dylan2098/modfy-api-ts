@@ -9,6 +9,7 @@ import stackError from './helpers/stackError';
 import router from './routes';
 import utils from './utils/utils.js';
 import { ResponseType } from './types/response.type';
+import _ from 'lodash';
 
 const app = express();
 app.use(
@@ -45,7 +46,7 @@ app.use((req, res, next) => {
 
 // manage errors
 app.use((error: ResponseType, req: Request, res: Response, next: NextFunction) => {
-  const code = error.code || 500;
+  const code = _.isInteger(error.code) && error.code || 500;
 
   const body: ResponseType = {
     error: true,
@@ -54,9 +55,9 @@ app.use((error: ResponseType, req: Request, res: Response, next: NextFunction) =
     metadata: [],
   };
 
-  if (utils.environment() === 'development') {
-    body.stack = stackError(error.stack || 'No stack trace available');
-  }
+  // if (utils.environment() === 'development') {
+  //   body.stack = stackError(error.stack || 'No stack trace available');
+  // }
 
   return res.status(code).json(body);
 });
