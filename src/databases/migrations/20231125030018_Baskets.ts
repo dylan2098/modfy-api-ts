@@ -14,7 +14,7 @@ export async function up(knex: Knex): Promise<void> {
         table.datetime('basket_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6))
     })
     .createTable('BasketItems', (table) => {
-        table.increments('basket_item_id').primary().unique();;
+        table.increments('basket_item_id').primary().unique();
         table.integer('basket_id').references('basket_id').inTable('Baskets');
         table.integer('product_id').references('product_id').inTable('Products');
         table.integer('product_quantity').notNullable();
@@ -27,7 +27,7 @@ export async function up(knex: Knex): Promise<void> {
     
 export async function down(knex: Knex): Promise<void> {
     return knex.schema
-    .dropTable('Baskets')
     .dropTable('BasketItems')
+    .dropTable('Baskets')
     ;
 }

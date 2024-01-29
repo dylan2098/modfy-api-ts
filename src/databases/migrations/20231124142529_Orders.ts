@@ -26,7 +26,7 @@ export async function up(knex: Knex): Promise<void> {
         table.increments('payment_transaction_id').primary().unique();
         table.uuid('payment_transaction_uuid').defaultTo(uuidv4());
         table.uuid('order_transaction_id').notNullable();
-        table.integer('order_id').references('orderId').inTable('Orders');
+        table.integer('order_id').references('order_id').inTable('Orders');
         table.integer('payment_method_id').references('payment_method_id').inTable('PaymentMethods');
         table.smallint('payment_status').defaultTo(0); // paid, not paid, refunded
     })
@@ -57,7 +57,7 @@ export async function down(knex: Knex): Promise<void> {
     .dropTable('Shippings')
     .dropTable('OrderItems')
     .dropTable('PaymentTransactions')
-    .dropTable('Orders')
     .dropTable('PaymentMethods')
+    .dropTable('Orders')
     ;
 }

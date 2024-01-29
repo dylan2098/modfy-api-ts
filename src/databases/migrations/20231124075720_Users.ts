@@ -66,7 +66,7 @@ export async function up(knex: Knex): Promise<void> {
 
     .createTable('AddressBooks', (table) => {
       table.increments('address_book_id').primary().unique();
-      table.integer('user_id').references('user_id').inTable('Customers');
+      table.integer('user_id').references('user_id').inTable('Users');
       table.integer('address_id').references('address_id').inTable('Addresses');
       table.boolean('address_selected').defaultTo(false);
     })
@@ -74,9 +74,13 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
   return knex.schema
-    .dropTable('UsersSystem')
-    .dropTable('Customers')
-    .dropTable('AddressBooks')
+    .dropTable('Roles')
+    .dropTable('Menus')
     .dropTable('Addresses')
-    .dropTable('Users');
+    .dropTable('Users')
+    .dropTable('RoleMenu')
+    .dropTable('UserRole')
+    .dropTable('AddressBooks')
+    .dropTable('KeyTokens')
+    ;
 }
