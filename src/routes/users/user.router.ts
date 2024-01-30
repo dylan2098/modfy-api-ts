@@ -7,6 +7,6 @@ import { Router } from 'express';
 const router = Router();
 
 router.post('/users/signup', validate(schema), asyncHandler(userController.signUp));
-router.post('/users/active', asyncHandler(userController.authenticateEmail));
+router.get('/users/active/:code', asyncHandler(userController.authenticateEmail));
 
 export default router;

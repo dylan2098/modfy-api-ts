@@ -11,7 +11,7 @@ class UserController {
 
   authenticateEmail = async (req: Request, res: Response) => {
     new SuccessResponse({
-      metadata: (await userService.(req.params)) as any,
+      metadata: (await userService.authenticateEmail(req.params)) as any,
     }).send(res);
   }
 }

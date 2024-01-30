@@ -26,6 +26,6 @@ export default {
       type: 'string',
     },
   },
-  required: ['email', 'password', 'firstName', 'lastName', 'phone', 'avatar'],
+  required: ['email', 'password', 'firstName', 'lastName', 'phone'],
   additionalProperties: false,
 };
