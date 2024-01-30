@@ -1,11 +1,10 @@
-'use strict';
-
 import table from '../databases/table';
 import knex from '../databases/knex';
 import { UserType } from '../types/user.type';
 import utils from '../utils/utils';
 
 class UserModel {
+  
   convert(obj: UserType) {
     return {
       user_email: obj.email,
@@ -21,11 +20,11 @@ class UserModel {
     }
   }
 
-  async find({ userId, email, phone }: UserType) {
-    let sql = knex.select().from(table.users).returning(['user_uuid']);
+  async find({ userNo, email, phone }: UserType) {
+    let sql = knex.select().from(table.users).returning(knex.raw('user_uuid as "userNo"'));
 
-    if (userId) {
-      sql.where('user_id', userId);
+    if (userNo) {
+      sql.where('user_id', userNo);
     }
 
     if (email) {
@@ -48,12 +47,12 @@ class UserModel {
     payload.updatedAt = utils.defaultNow();
     
     const user = this.convert(payload);
-    return knex(table.users).returning(['user_uuid']).insert(user);
+    return knex(table.users).returning(knex.raw('user_uuid as "userNo"')).insert(user);
   }
 
   update(payload: UserType) {
     payload.updatedAt = utils.defaultNow();
-    return knex(table.users).where('user_uuid', payload.userId).update(payload);
+    return knex(table.users).where('user_uuid', payload.userNo).update(payload);
   }
 }
 

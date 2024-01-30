@@ -1,5 +1,3 @@
-'use strict';
-
 import StatusCode from '../core/statusCode';
 import ReasonStatusCode from '../core/reasonPhrase';
 

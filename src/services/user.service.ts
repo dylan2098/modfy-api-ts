@@ -1,5 +1,3 @@
-'use strict';
-
 import crypto from 'node:crypto';
 import userModel from '../models/user.model.js';
 import utils from '../utils/utils.js';
@@ -37,25 +35,38 @@ class UserService {
       const passwordHash = await hash(password as string);
       payload.password = passwordHash;
 
-      const newUser = await userModel.create(payload);
+      const newUser = await userModel.create(payload) as UserType[];
 
-      if (!newUser || !newUser.length) {
+      if (!newUser) {
         throw new BadRequestError('Create User Failed.');
       }
 
-      emitRegisterSuccess({
-        email, firstName, lastName
-      });
+      emitRegisterSuccess({ email, firstName, lastName, userNo: newUser[0].userNo});
 
       // const privateKey = crypto.randomBytes(64).toString('hex');
       // const publicKey = crypto.randomBytes(64).toString('hex');
 
       return newUser;
-
     } catch (error) {
       throw error;
     }
   };
+}
+
+
+export const authenticateEmail = async (param) => {
+  try {
+      const code = param.code;
+
+      if(!code) {
+        throw new BadRequestError('Active User Failed.');
+      }
+      
+      
+
+  } catch (error) {
+      throw error;
+  }
 }
 
 export default new UserService();

@@ -1,0 +1,12 @@
+{
+    "cloud_name": "dvweth7yl",
+    "api_key": "429776856742478",
+    "api_secret": "OITKAXtTvSaKLL-zA0wlGVWNN4A",
+    "api_environment_variable": "CLOUDINARY_URL=cloudinary://429776856742478:OITKAXtTvSaKLL-zA0wlGVWNN4A@dvweth7yl",
+    "base_delivery_url": "http://res.cloudinary.com/dvweth7yl",
+    "secret_delivery_url": "https://res.cloudinary.com/dvweth7yl",
+    "api_base_url": "https://api.cloudinary.com/v1_1/dvweth7yl",
+    "url_upload_video": "https://api.cloudinary.com/v1_1/dvweth7yl/video/upload",
+    "url_upload_image": "https://api.cloudinary.com/v1_1/dvweth7yl/image/upload",
+    "folder_upload": "n3got5z5"
+}

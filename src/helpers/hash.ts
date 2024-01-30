@@ -1,5 +1,3 @@
-'use strict';
-
 import bcrypt from 'bcrypt';
 
 const saltRound = parseInt(process.env.GEN_SALT || '10');

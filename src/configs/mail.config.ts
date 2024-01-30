@@ -1,6 +1,4 @@
-'use strict';
-
-import SMTPTransport from 'nodemailer/lib/smtp-transport/index.js';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 const env = process.env;
 
