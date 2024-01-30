@@ -5,8 +5,12 @@ import utils from '../utils/utils';
 
 class RoleModel {
 
-    create(payload: RoleType) {
+    find(payload: RoleType) {
         
+    }
+
+    create(payload: RoleType) {
+
     }
 
     update(payload: RoleType) {
