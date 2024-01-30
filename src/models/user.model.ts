@@ -2,11 +2,14 @@ import table from '../databases/table';
 import knex from '../databases/knex';
 import { UserType } from '../types/user.type';
 import utils from '../utils/utils';
-import { convertDataUser } from '../utils/user.util';
+import { convertDataUser } from '../utils/access/user.util';
+import _ from 'lodash';
 
 class UserModel {
-  async find({ userNo, email, phone }: UserType) {
+  async find(payload: UserType) {
     let sql = knex.select().from(table.users).returning(knex.raw('user_uuid as "userNo"'));
+
+    const { userNo, email, phone} = payload;
 
     if (userNo) {
       sql.where('user_uuid', userNo);

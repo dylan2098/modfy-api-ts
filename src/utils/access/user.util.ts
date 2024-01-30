@@ -1,4 +1,4 @@
-import { UserType } from '../types/user.type';
+import { UserType } from '../../types/user.type';
 
 export function convertDataUser(obj: UserType) {
   if (!obj) return {};
