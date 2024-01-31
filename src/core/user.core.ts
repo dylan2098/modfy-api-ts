@@ -12,7 +12,12 @@ export enum GENDER {
   MALE = 1
 }
 
-export enum STATUS {
+export enum USER_STATUS {
   ACTIVE = 1,
   DEACTIVE = 0
+}
+
+export enum ROLE_STATUS {
+  ACTIVE = 1,
+  BLOCK = 0
 }

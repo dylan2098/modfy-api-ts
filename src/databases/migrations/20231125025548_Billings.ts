@@ -1,11 +1,11 @@
 import type { Knex } from 'knex';
-import { v4 as uuidv4 } from 'uuid';
+
 
 export async function up(knex: Knex): Promise<void> {
     return knex.schema
     .createTable('Billings', (table) => {
         table.increments('billing_id').primary().unique();
-        table.uuid('billing_uuid').defaultTo(uuidv4());
+        table.uuid('billing_uuid').notNullable();;
         table.integer('order_id');
         table.string('customer_uuid', 100);
         table.string('customer_email', 255).notNullable();
@@ -14,6 +14,7 @@ export async function up(knex: Knex): Promise<void> {
         table.string('customer_phone', 20).notNullable();
         table.string('customer_shipping_address').notNullable();
         table.string('billing_type', 10).notNullable(); // basket, order
+        table.smallint('billing_status').defaultTo(0);
         table.string('customer_note');
     })
 }

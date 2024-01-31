@@ -1,11 +1,12 @@
 export type RoleType = {
-    id?: number;
+    roleId?: string;
     name?: string;
     description?: string;
+    status?: number;
 }
 
 export type MenuType = {
-    id?: number;
+    uuid?: string;
     name?: string;
     pid?: string;
     path?: string;

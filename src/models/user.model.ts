@@ -4,6 +4,7 @@ import { UserType } from '../types/user.type';
 import utils from '../utils/utils';
 import { convertDataUser } from '../utils/access/user.util';
 import _ from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 
 class UserModel {
   async find(payload: UserType) {
@@ -31,11 +32,12 @@ class UserModel {
   }
 
   create(payload: UserType) {
+    payload.userNo = uuidv4();
     payload.createdAt = utils.defaultNow();
     payload.updatedAt = utils.defaultNow();
     
-    const user = convertDataUser(payload);
-    return knex(table.users).returning(knex.raw('user_uuid as "userNo"')).insert(user);
+    const dataCreate = convertDataUser(payload);
+    return knex(table.users).returning(knex.raw('user_uuid as "userNo"')).insert(dataCreate);
   }
 
   update(payload: UserType) {

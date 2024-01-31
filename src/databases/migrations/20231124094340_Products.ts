@@ -1,10 +1,10 @@
 import type { Knex } from 'knex';
-import { v4 as uuidv4 } from 'uuid';
+
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('Catalogs', (table) => {
     table.increments('catalog_id').primary().unique();
-    table.uuid('catalog_uuid').defaultTo(uuidv4());
+    table.uuid('catalog_uuid').notNullable();;
     table.string('catalog_name', 100).notNullable();
     table.smallint('catalog_status').defaultTo(0);
     table.datetime('catalog_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6));
@@ -12,7 +12,7 @@ export async function up(knex: Knex): Promise<void> {
 
   .createTable('Categories', (table) => {
     table.increments('category_id').primary().unique();
-    table.uuid('category_uuid').defaultTo(uuidv4());
+    table.uuid('category_uuid').notNullable();;
     table.integer('catalog_id').references('catalog_id').inTable('Catalogs');
     table.string('category_name', 100).notNullable();
     table.smallint('category_status').defaultTo(0);
@@ -37,7 +37,7 @@ export async function up(knex: Knex): Promise<void> {
 
   .createTable('Products', (table) => {
     table.increments('product_id').primary().unique();
-    table.uuid('product_uuid').defaultTo(uuidv4());
+    table.uuid('product_uuid').notNullable();;
     table.integer('category_id').references('category_id').inTable('Categories');
     table.integer('inventory_id').references('inventory_id').inTable('Inventories');
     table.string('product_sku', 20);
@@ -66,6 +66,7 @@ export async function up(knex: Knex): Promise<void> {
     table.float('gross_price');
     table.float('net_price');
     table.integer('tax_id');
+    table.smallint('tax_status').defaultTo(0);
     table.foreign('tax_id').references('tax_id').inTable('Taxes');
   })
 
@@ -73,12 +74,14 @@ export async function up(knex: Knex): Promise<void> {
     table.increments('product_set_id').primary().unique();
     table.integer('master_id').references('product_id').inTable('Products');
     table.specificType('sets_id', 'integer ARRAY') //'INT[]'
+    table.smallint('sets_status').defaultTo(0);
   })
 
   .createTable('Variants', (table) => {
     table.increments('product_variant_id').primary().unique();
     table.integer('master_id').references('product_id').inTable('Products');
     table.specificType('variants_id', 'integer ARRAY') //'INT[]'
+    table.smallint('variants_status').defaultTo(0);
   })
 }
 

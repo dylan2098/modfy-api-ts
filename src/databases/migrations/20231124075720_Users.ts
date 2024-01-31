@@ -1,11 +1,11 @@
 import type { Knex } from 'knex';
-import { v4 as uuidv4 } from 'uuid';
+
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema
     .createTable('Users', (table) => {
       table.increments('user_id').primary().unique();
-      table.uuid('user_uuid').defaultTo(uuidv4());
+      table.uuid('user_uuid').notNullable();
       table.string('user_email', 100).notNullable();
       table.string('user_password', 255).notNullable();
       table.string('user_first_name', 50).notNullable();
@@ -22,16 +22,18 @@ export async function up(knex: Knex): Promise<void> {
 
     .createTable('Roles', (table) => {
       table.increments('role_id').primary().unique();
-      table.uuid('role_uuid').defaultTo(uuidv4());
+      table.uuid('role_uuid').notNullable();;
       table.string('role_name');
       table.string('role_description');
+      table.smallint('role_status').defaultTo(0);
     })
 
     .createTable('Menus', (table) => {
       table.increments('menu_id').primary().unique();
-      table.uuid('menu_uuid').defaultTo(uuidv4());
+      table.uuid('menu_uuid').notNullable();;
       table.string('menu_name');
       table.string('menu_path');
+      table.smallint('menu_status').defaultTo(0);
     })
 
     .createTable('UserRole', (table) => {
@@ -44,6 +46,7 @@ export async function up(knex: Knex): Promise<void> {
       table.increments('role_menu_id').primary().unique();
       table.integer('role_id').references('role_id').inTable('Roles');
       table.integer('menu_id').references('menu_id').inTable('Menus');
+      table.smallint('menu_role_status').defaultTo(0);
     })
 
     .createTable('KeyTokens', (table) => {
@@ -63,6 +66,7 @@ export async function up(knex: Knex): Promise<void> {
       table.string('address_zipcode');
       table.string('address_city', 40);
       table.string('address_country', 40);
+      table.smallint('address_status').defaultTo(0);
     })
 
     .createTable('AddressBooks', (table) => {
@@ -70,6 +74,7 @@ export async function up(knex: Knex): Promise<void> {
       table.integer('user_id').references('user_id').inTable('Users');
       table.integer('address_id').references('address_id').inTable('Addresses');
       table.boolean('address_selected').defaultTo(false);
+      table.smallint('address_book_status').defaultTo(0);
     })
 }
 

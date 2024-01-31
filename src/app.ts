@@ -55,9 +55,9 @@ app.use((error: ResponseType, req: Request, res: Response, next: NextFunction) =
     metadata: [],
   };
 
-  // if (utils.environment() === 'development') {
-  //   body.stack = stackError(error.stack || 'No stack trace available');
-  // }
+  if (utils.environment() === 'development') {
+    body.stack = stackError(error.stack || 'No stack trace available');
+  }
 
   return res.status(code).json(body);
 });

@@ -5,6 +5,10 @@ export function convertDataUser(obj: UserType) {
 
   const data = {};
 
+  if(obj.userNo) {
+    data['user_uuid'] = obj.userNo;
+  }
+
   if (obj.email) {
     data['user_email'] = obj.email;
   }

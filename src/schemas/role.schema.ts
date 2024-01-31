@@ -4,7 +4,7 @@ export default {
       name: {
         type: 'string',
       },
-      roleDescription: {
+      description: {
         type: 'string'
       }
     },

@@ -1,5 +1,5 @@
 import type { Knex } from 'knex';
-import { v4 as uuidv4 } from 'uuid';
+
 
 export async function up(knex: Knex): Promise<void> {
     return knex.schema
@@ -13,10 +13,11 @@ export async function up(knex: Knex): Promise<void> {
         table.integer('group_config_id').references('group_config_id').inTable('GroupConfig');
         table.string('config_key').notNullable();
         table.string('config_name').notNullable();
+        table.smallint('config_status').defaultTo(0);
     })
     .createTable('Services', (table) => {
         table.increments('service_id').primary().unique();
-        table.uuid('service_uuid').defaultTo(uuidv4());
+        table.uuid('service_uuid').notNullable();;
         table.string('service_name').notNullable();
         table.string('service_host').notNullable();
         table.string('service_username').notNullable();
