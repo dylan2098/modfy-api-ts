@@ -5,7 +5,6 @@ import helmet from 'helmet';
 import compression from 'compression';
 import cors from 'cors';
 import limiter from './middlewares/limiter';
-import stackError from './helpers/stackError';
 import router from './routes';
 import utils from './utils/utils.js';
 import { ResponseType } from './types/response.type';
@@ -55,9 +54,9 @@ app.use((error: ResponseType, req: Request, res: Response, next: NextFunction) =
     metadata: [],
   };
 
-  if (utils.environment() === 'development') {
-    body.stack = stackError(error.stack || 'No stack trace available');
-  }
+  // if (utils.environment() === 'development') {
+  //   body.stack = error.stack || 'No stack trace available';
+  // }
 
   return res.status(code).json(body);
 });

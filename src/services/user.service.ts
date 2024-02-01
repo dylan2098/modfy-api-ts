@@ -3,7 +3,7 @@ import userModel from "../models/user.model.js";
 import utils from "../utils/utils.js";
 import { hash } from "../helpers/hash.js";
 import { UserType } from "../types/user.type";
-import { STATUS } from "../core/user.core";
+import { USER_STATUS } from "../core/user.core";
 import { emitRegisterSuccess } from "../events/user.event.js";
 import {
   BadRequestError,
@@ -82,7 +82,7 @@ class UserService {
 
       const resultUpdate = await userModel.update({
         userNo: code,
-        status: STATUS.ACTIVE,
+        status: USER_STATUS.ACTIVE,
       });
 
       if(resultUpdate) {
