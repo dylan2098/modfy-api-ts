@@ -2,8 +2,8 @@ import crypto from "node:crypto";
 import userModel from "../models/user.model.js";
 import utils from "../utils/utils.js";
 import { hash } from "../helpers/hash.js";
-import { UserType } from "../types/user.type";
-import { USER_STATUS } from "../core/user.core";
+import { UserType } from "../types/access.type.js";
+import { USER_STATUS } from "../core/access.core.js";
 import { emitRegisterSuccess } from "../events/user.event.js";
 import {
   BadRequestError,

@@ -8,6 +8,7 @@ export default {
   addresses: 'Addresses',
   address_book: 'AddressBook',
   key_token: 'KeyToken',
+  menus: 'Menus',
 
   // product
   products: 'Products',

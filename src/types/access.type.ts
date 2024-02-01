@@ -12,3 +12,17 @@ export type UserType = {
     createdAt?: string;
     updatedAt?: string;
 }
+
+export type RoleType = {
+  roleId?: string;
+  name?: string;
+  description?: string;
+  status?: number;
+}
+
+export type MenuType = {
+  menuId?: string;
+  name?: string;
+  path?: string;
+  status?: number;
+}

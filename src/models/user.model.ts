@@ -1,10 +1,11 @@
 import table from '../databases/table';
 import knex from '../databases/knex';
-import { UserType } from '../types/user.type';
+import { UserType,  } from '../types/access.type';
 import utils from '../utils/utils';
-import { convertDataUser } from '../utils/access/user.util';
+import { convertData } from '../utils/convert.utils';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
+import { USER_CORE } from '../core/access.core';
 
 class UserModel {
   async find(payload: UserType) {
@@ -36,13 +37,13 @@ class UserModel {
     payload.createdAt = utils.defaultNow();
     payload.updatedAt = utils.defaultNow();
     
-    const dataCreate = convertDataUser(payload);
+    const dataCreate = convertData(payload, USER_CORE);
     return knex(table.users).returning(knex.raw('user_uuid as "userNo"')).insert(dataCreate);
   }
 
   update(payload: UserType) {
     payload.updatedAt = utils.defaultNow();
-    const dataUpdate = convertDataUser(payload);
+    const dataUpdate = convertData(payload, USER_CORE, 'update');
     return knex(table.users).where('user_uuid', payload.userNo).update(dataUpdate);
   }
 }

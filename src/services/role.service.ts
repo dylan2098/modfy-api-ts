@@ -1,6 +1,6 @@
-import { ROLE_STATUS } from '../core/user.core';
+import { ROLE_STATUS } from '../core/access.core';
 import roleModel from '../models/role.model';
-import { RoleType } from '../types/role.type';
+import { RoleType } from '../types/access.type';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response.js';
 
 class RoleService {

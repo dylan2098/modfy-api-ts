@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { SuccessResponse } from '../utils/success.response';
-import userRoute from './access/user.router';
-import roleRoute from './access/role.router';
+import userRoute from './access/user.route';
+import roleRoute from './access/role.route';
 
 const router = Router();
 

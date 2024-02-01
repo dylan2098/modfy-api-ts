@@ -10,6 +10,9 @@ export default {
     path: {
       type: "string",
     },
+    status: {
+      type: "number",
+    }
   },
   required: ["name", "pid", "path"],
   additionalProperties: false,
