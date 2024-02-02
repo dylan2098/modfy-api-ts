@@ -6,13 +6,13 @@ import { BadRequestError} from '../utils/error.response';
 class UserRoleService {
   create = async (payload: UserRoleType) => {
     try {
-      let { userId, roleId } = payload;
+      let { user_uuid, role_uuid } = payload;
 
-      if (!userId) {
+      if (!user_uuid) {
         throw new BadRequestError('Create failed');
       }
 
-      const isExists = await userRoleModel.existsOne({ userId, roleId });
+      const isExists = await userRoleModel.existsOne({ user_uuid, role_uuid });
       if (isExists) {
         throw new BadRequestError('Data exists');
       }
@@ -24,50 +24,6 @@ class UserRoleService {
       }
 
       return userRole;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  update = async (payload: UserRoleType) => {
-    try {
-      if (!payload || !payload.roleId) {
-        throw new BadRequestError('Update failed');
-      }
-
-      const { roleId } = payload;
-
-      const isExists = await userRoleModel.existsOne({ roleId });
-
-      if (!isExists) {
-        throw new BadRequestError('Role not exists');
-      }
-
-      const resultUpdate = await userRoleModel.update(payload);
-
-      return resultUpdate;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  delete = async (payload: UserRoleType) => {
-    try {
-      if (!payload || !payload.roleId) {
-        throw new BadRequestError('Delete failed');
-      }
-
-      const { roleId } = payload;
-
-      const isExists = await userRoleModel.existsOne({ roleId });
-
-      if (!isExists) {
-        throw new BadRequestError('Role not exists');
-      }
-
-      const resultDelete = await userRoleModel.update({ roleId, status: USER_ROLE_STATUS.BLOCK });
-
-      return resultDelete;
     } catch (error) {
       throw error;
     }

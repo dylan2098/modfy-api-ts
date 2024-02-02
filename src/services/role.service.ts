@@ -6,15 +6,15 @@ import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError
 class RoleService {
   create = async (payload: RoleType) => {
     try {
-      let { name } = payload;
+      let { role_name } = payload;
 
-      if (!name) {
+      if (!role_name) {
         throw new BadRequestError('Create role failed, name is required');
       }
 
-      name = name.toLowerCase();
+      role_name = role_name.toLowerCase();
 
-      const isExists = await roleModel.existsOne({ name });
+      const isExists = await roleModel.existsOne({ role_name });
       if (isExists) {
         throw new BadRequestError('Role exists');
       }
@@ -33,20 +33,20 @@ class RoleService {
 
   update = async (payload: RoleType) => {
     try {
-      if (!payload || !payload.roleId) {
+      if (!payload || !payload.role_uuid) {
         throw new BadRequestError('Update role failed');
       }
 
-      const { roleId } = payload;
+      const { role_uuid } = payload;
 
-      const isExists = await roleModel.existsOne({ roleId });
+      const isExists = await roleModel.existsOne({ role_uuid });
 
       if (!isExists) {
         throw new BadRequestError('Role not exists');
       }
 
-      if (payload.name) {
-        payload.name = payload.name.toLowerCase();
+      if (payload.role_name) {
+        payload.role_name = payload.role_name.toLowerCase();
       }
 
       const resultUpdate = await roleModel.update(payload);
@@ -59,19 +59,19 @@ class RoleService {
 
   delete = async (payload: RoleType) => {
     try {
-      if (!payload || !payload.roleId) {
+      if (!payload || !payload.role_uuid) {
         throw new BadRequestError('Delete role failed');
       }
 
-      const { roleId } = payload;
+      const { role_uuid } = payload;
 
-      const isExists = await roleModel.existsOne({ roleId });
+      const isExists = await roleModel.existsOne({ role_uuid });
 
       if (!isExists) {
         throw new BadRequestError('Role not exists');
       }
 
-      const resultDelete = await roleModel.update({ roleId, status: ROLE_STATUS.BLOCK });
+      const resultDelete = await roleModel.update({ role_uuid, role_status: ROLE_STATUS.BLOCK });
 
       return resultDelete;
     } catch (error) {

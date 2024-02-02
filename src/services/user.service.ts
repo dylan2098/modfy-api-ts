@@ -20,24 +20,24 @@ class UserService {
    */
   signUp = async (payload: UserType) => {
     try {
-      const { email, password, firstName, lastName, phone } = payload;
+      const { user_email, user_password, user_first_name, user_last_name, user_phone } = payload;
 
-      if (!utils.regexEmail(email as string)) {
+      if (!utils.regexEmail(user_email as string)) {
         throw new BadRequestError("Email invalid.");
       }
 
-      if (!utils.regexPhone(phone as string)) {
+      if (!utils.regexPhone(user_email as string)) {
         throw new BadRequestError("Phone invalid");
       }
 
       // check user exists
-      const userExists = await userModel.find({ email, phone });
+      const userExists = await userModel.find({ user_email, user_phone });
       if (userExists && userExists.length > 0) {
         throw new BadRequestError("User already registered.");
       }
 
-      const passwordHash = await hash(password as string);
-      payload.password = passwordHash;
+      const passwordHash = await hash(user_password as string);
+      payload.user_password = passwordHash;
 
       const newUser = (await userModel.create(payload)) as UserType[];
 
@@ -46,10 +46,10 @@ class UserService {
       }
 
       emitRegisterSuccess({
-        email,
-        firstName,
-        lastName,
-        userNo: newUser[0].userNo,
+        user_email,
+        user_first_name,
+        user_last_name,
+        user_uuid: newUser[0].user_uuid,
       });
 
 
@@ -75,14 +75,14 @@ class UserService {
         throw new BadRequestError("Active User Failed.");
       }
 
-      const user = await userModel.find({ userNo: code });
+      const user = await userModel.find({ user_uuid: code });
       if (!user || user.length == 0) {
         throw new BadRequestError("Active User Failed.");
       }
 
       const resultUpdate = await userModel.update({
-        userNo: code,
-        status: USER_STATUS.ACTIVE,
+        user_uuid: code,
+        user_status: USER_STATUS.ACTIVE,
       });
 
       if(resultUpdate) {

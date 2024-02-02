@@ -1,21 +1,18 @@
 import knex from '../databases/knex';
 import table from '../databases/table';
 import { UserRoleType } from '../types/access.type';
-import { convertData } from '../utils/convert.utils';
 
 const columnId = knex.raw(['role_uuid as "roleId"', 'user_uuid as "userId"']);
 
 class UserRoleModel {
-  
   async existsOne(payload: UserRoleType) {
-    const { roleId, userId } = payload;
+    const { role_uuid, user_uuid } = payload;
     const sql = knex.select(columnId).from(table.user_roles).first();
 
-    
-    if (roleId && userId) {
-      sql.where('role_uuid', roleId).andWhere('user_uuid', userId);
+    if (role_uuid && user_uuid) {
+      sql.where('role_uuid', role_uuid).andWhere('user_uuid', user_uuid);
     }
-    
+
     const result = await sql;
 
     if (result && result.roleId && result.userId) {
@@ -26,14 +23,14 @@ class UserRoleModel {
   }
 
   create(payload: UserRoleType) {
-    const dataCreate = convertData(payload, USER_ROLE_CORE);
-    return knex(table.user_roles).returning(columnId).insert(dataCreate);
+    return knex(table.user_roles).returning(['role_uuid', 'user_uuid']).insert(payload);
   }
 
   update(payload: UserRoleType) {
-    const uuid = payload.roleId;
-    const dataUpdate = convertData(payload, USER_ROLE_CORE);
-    return knex(table.user_roles).where('role_uuid', uuid).update(dataUpdate);
+    return knex(table.user_roles)
+      .where('role_uuid', payload.role_uuid)
+      .andWhere('user_uuid', payload.user_uuid)
+      .update(payload);
   }
 }
 

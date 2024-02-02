@@ -6,16 +6,16 @@ import { MENU_STATUS } from '../core/access/menu.core';
 class MenuService {
   async create(payload: MenuType) {
     try {
-      let { name, path } = payload;
+      let { menu_name, menu_path } = payload;
 
-      if (!name || !path) {
+      if (!menu_name || !menu_path) {
         throw new BadRequestError('Invalid data');
       }
 
-      name = name.toLowerCase();
-      path = path.toLowerCase();
+      menu_name = menu_name.toLowerCase();
+      menu_path = menu_path.toLowerCase();
 
-      const isExists = await menuModel.existsOne({ name, path });
+      const isExists = await menuModel.existsOne({ menu_name, menu_path });
       if (isExists) {
         throw new BadRequestError('Menu exists');
       }
@@ -42,24 +42,24 @@ class MenuService {
 
   async update(payload: MenuType) {
     try {
-      if (!payload || !payload.menuId) {
+      if (!payload || !payload.menu_uuid) {
         throw new BadRequestError('Update role failed');
       }
 
-      const { menuId } = payload;
+      const { menu_uuid } = payload;
 
-      const isExists = await menuModel.existsOne({ menuId });
+      const isExists = await menuModel.existsOne({ menu_uuid });
 
       if (!isExists) {
         throw new BadRequestError('Role not exists');
       }
 
-      if (payload.name) {
-        payload.name = payload.name.toLowerCase();
+      if (payload.menu_name) {
+        payload.menu_name = payload.menu_name.toLowerCase();
       }
 
-      if(payload.path) {
-        payload.path = payload.path.toLowerCase();
+      if(payload.menu_path) {
+        payload.menu_path = payload.menu_path.toLowerCase();
       }
 
       const resultUpdate = await menuModel.update(payload);
@@ -72,19 +72,19 @@ class MenuService {
 
   async delete(payload: MenuType) {
     try {
-      if (!payload || !payload.menuId) {
+      if (!payload || !payload.menu_uuid) {
         throw new BadRequestError('Delete failed');
       }
 
-      const { menuId } = payload;
+      const { menu_uuid } = payload;
 
-      const isExists = await menuModel.existsOne({ menuId });
+      const isExists = await menuModel.existsOne({ menu_uuid });
 
       if (!isExists) {
         throw new BadRequestError('Not exists');
       }
 
-      const resultDelete = await menuModel.update({ menuId, status: MENU_STATUS.BLOCK });
+      const resultDelete = await menuModel.update({ menu_uuid, menu_status: MENU_STATUS.BLOCK });
 
       return resultDelete;
     } catch (error) {
