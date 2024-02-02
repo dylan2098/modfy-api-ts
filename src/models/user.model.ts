@@ -5,7 +5,7 @@ import utils from '../utils/utils';
 import { convertData } from '../utils/convert.utils';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
-import { USER_CORE } from '../core/access.core';
+import { USER_CORE } from '../core/access/user.core';
 
 class UserModel {
   async find(payload: UserType) {

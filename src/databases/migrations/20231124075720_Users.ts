@@ -4,8 +4,7 @@ import type { Knex } from 'knex';
 export async function up(knex: Knex): Promise<void> {
   return knex.schema
     .createTable('Users', (table) => {
-      table.increments('user_id').primary().unique();
-      table.uuid('user_uuid').notNullable();
+      table.uuid('user_uuid').primary().unique().defaultTo(knex.fn.uuid());
       table.string('user_email', 100).notNullable();
       table.string('user_password', 255).notNullable();
       table.string('user_first_name', 50).notNullable();
@@ -17,20 +16,18 @@ export async function up(knex: Knex): Promise<void> {
       table.smallint('user_status').defaultTo(0);
       table.datetime('user_created_at', { precision: 6 }).defaultTo(knex.fn.now(6));
       table.datetime('user_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6));
-      table.index(['user_uuid', 'user_email', 'user_phone', 'user_first_name', 'user_last_name', 'user_birthday'], 'user_idx');
+      table.index(['user_uuid', 'user_email', 'user_phone', 'user_first_name', 'user_last_name'], 'user_idx');
     })
 
     .createTable('Roles', (table) => {
-      table.increments('role_id').primary().unique();
-      table.uuid('role_uuid').notNullable();;
+      table.uuid('role_uuid').primary().unique().defaultTo(knex.fn.uuid());
       table.string('role_name');
       table.string('role_description');
       table.smallint('role_status').defaultTo(0);
     })
 
     .createTable('Menus', (table) => {
-      table.increments('menu_id').primary().unique();
-      table.uuid('menu_uuid').notNullable();;
+      table.uuid('menu_uuid').primary().unique()
       table.string('menu_name');
       table.string('menu_path');
       table.smallint('menu_status').defaultTo(0);
@@ -38,30 +35,30 @@ export async function up(knex: Knex): Promise<void> {
 
     .createTable('UserRole', (table) => {
       table.increments('user_role_id').primary().unique();
-      table.integer('user_id').references('user_id').inTable('Users');
-      table.integer('role_id').references('role_id').inTable('Roles');
+      table.uuid('user_uuid').references('user_uuid').inTable('Users');
+      table.uuid('role_uuid').references('role_uuid').inTable('Roles');
+      table.smallint('user_role-status').defaultTo(0);
     })
 
     .createTable('RoleMenu', (table) => {
       table.increments('role_menu_id').primary().unique();
-      table.integer('role_id').references('role_id').inTable('Roles');
-      table.integer('menu_id').references('menu_id').inTable('Menus');
+      table.uuid('role_uuid').references('role_uuid').inTable('Roles');
+      table.uuid('menu_uuid').references('menu_uuid').inTable('Menus');
       table.smallint('menu_role_status').defaultTo(0);
     })
 
     .createTable('KeyTokens', (table) => {
       table.increments('key_token_id').primary().unique();
-      table.integer('user_id').references('user_id').inTable('Users');
+      table.uuid('user_uuid').references('user_uuid').inTable('Users');
       table.string('refresh_token');
       table.string('private_key');
       table.string('public_key');
       table.specificType('refresh_token_used', 'text ARRAY');
       table.datetime('updated_at', { precision: 6 }).defaultTo(knex.fn.now(6));
-
     })
 
     .createTable('Addresses', (table) => {
-      table.increments('address_id').primary().unique();
+      table.uuid('address_uuid').primary().unique().defaultTo(knex.fn.uuid());
       table.string('address_street');
       table.string('address_zipcode');
       table.string('address_city', 40);
@@ -70,9 +67,9 @@ export async function up(knex: Knex): Promise<void> {
     })
 
     .createTable('AddressBooks', (table) => {
-      table.increments('address_book_id').primary().unique();
-      table.integer('user_id').references('user_id').inTable('Users');
-      table.integer('address_id').references('address_id').inTable('Addresses');
+      table.uuid('address_book_uuid').primary().unique().defaultTo(knex.fn.uuid());
+      table.uuid('user_uuid').references('user_uuid').inTable('Users');
+      table.uuid('address_uuid').references('address_uuid').inTable('Addresses');
       table.boolean('address_selected').defaultTo(false);
       table.smallint('address_book_status').defaultTo(0);
     })

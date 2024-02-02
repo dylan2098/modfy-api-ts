@@ -8,7 +8,7 @@ export class SuccessResponse {
     message: string;
     metadata: any;
 
-    constructor({ message = '', statusCode = StatusCode.OK, reasonStatusCode = ReasonStatusCode.OK, metadata = []}) {
+    constructor({ message = '', statusCode = StatusCode.OK, reasonStatusCode = ReasonStatusCode.OK, metadata}) {
       this.error = false;
       this.code = statusCode;
       this.message = !message ? reasonStatusCode : message;
@@ -21,7 +21,7 @@ export class SuccessResponse {
 }
 
 export class CreatedSuccessResponse extends SuccessResponse {
-  constructor({ message = '', statusCode = StatusCode.CREATED, reasonStatusCode = ReasonStatusCode.CREATED, metadata = []}) {
-    super({ message, statusCode, reasonStatusCode, metadata });
+  constructor({ message = '', statusCode = StatusCode.CREATED, reasonStatusCode = ReasonStatusCode.CREATED, metadata}) {
+    super({ message, statusCode, reasonStatusCode, metadata});
   }
 }

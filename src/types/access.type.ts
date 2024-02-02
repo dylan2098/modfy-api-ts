@@ -26,3 +26,10 @@ export type MenuType = {
   path?: string;
   status?: number;
 }
+
+export type UserRoleType = {
+  userRoleId?: string;
+  userId?: string;
+  roleId?: string;
+  status?: number;
+}

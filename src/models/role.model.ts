@@ -2,7 +2,7 @@ import table from '../databases/table';
 import knex from '../databases/knex';
 import { RoleType } from '../types/access.type';
 import { convertData, attributes } from '../utils/convert.utils';
-import { ROLE_CORE } from '../core/access.core';
+import { ROLE_CORE } from '../core/access/role.core';
 import { v4 as uuidv4 } from 'uuid';
 const columnId = knex.raw('role_uuid as "roleId"');
 

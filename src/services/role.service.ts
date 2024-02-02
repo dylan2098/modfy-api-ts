@@ -1,4 +1,4 @@
-import { ROLE_STATUS } from '../core/access.core';
+import { ROLE_STATUS } from '../core/access/role.core';
 import roleModel from '../models/role.model';
 import { RoleType } from '../types/access.type';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';

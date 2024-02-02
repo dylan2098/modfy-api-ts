@@ -1,31 +1,25 @@
 import { Request, Response } from 'express';
-import roleService from '../services/role.service';
+import userRoleService from '../services/userRole.service';
 import { CreatedSuccessResponse, SuccessResponse } from '../utils/success.response';
 
-class RoleController {
+class MenuController {
   create = async (req: Request, res: Response) => {
     new CreatedSuccessResponse({
-      metadata: await roleService.create(req.body),
-    }).send(res);
-  };
-
-  list = async (req: Request, res: Response) => {
-    new SuccessResponse ({
-      metadata: await roleService.getAll(),
+      metadata: await userRoleService.create(req.body),
     }).send(res);
   };
 
   update = async (req: Request, res: Response) => {
     new SuccessResponse ({
-      metadata: await roleService.update(req.body),
+      metadata: await userRoleService.update(req.body),
     }).send(res);
   };
 
   delete = async (req: Request, res: Response) => {
     new SuccessResponse ({
-      metadata: await roleService.delete(req.body),
+      metadata: await userRoleService.delete(req.body),
     }).send(res);
   };
 }
 
-export default new RoleController();
+export default new MenuController();

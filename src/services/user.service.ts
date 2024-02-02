@@ -3,7 +3,7 @@ import userModel from "../models/user.model.js";
 import utils from "../utils/utils.js";
 import { hash } from "../helpers/hash.js";
 import { UserType } from "../types/access.type.js";
-import { USER_STATUS } from "../core/access.core.js";
+import { USER_STATUS } from "../core/access/user.core.js";
 import { emitRegisterSuccess } from "../events/user.event.js";
 import {
   BadRequestError,

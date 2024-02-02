@@ -5,13 +5,13 @@ import { CreatedSuccessResponse, SuccessResponse } from '../utils/success.respon
 class UserController {
   signUp = async (req: Request, res: Response) => {
     new CreatedSuccessResponse({
-      metadata: (await userService.signUp(req.body)) as any,
+      metadata: await userService.signUp(req.body),
     }).send(res);
   };
 
   authenticateEmail = async (req: Request, res: Response) => {
     new SuccessResponse({
-      metadata: (await userService.authenticateEmail(req.params)) as any,
+      metadata: await userService.authenticateEmail(req.params),
     }).send(res);
   }
 }

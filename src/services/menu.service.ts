@@ -1,7 +1,7 @@
 import { MenuType } from '../types/access.type';
 import menuModel from '../models/menu.model';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
-import { MENU_STATUS } from '../core/access.core';
+import { MENU_STATUS } from '../core/access/menu.core';
 
 class MenuService {
   async create(payload: MenuType) {
@@ -20,13 +20,13 @@ class MenuService {
         throw new BadRequestError('Menu exists');
       }
 
-      const newRole = (await menuModel.create(payload)) as MenuType[];
+      const menu = (await menuModel.create(payload)) as MenuType[];
 
-      if (!newRole) {
+      if (!menu) {
         throw new BadRequestError('Create role failed');
       }
 
-      return newRole;
+      return menu;
     } catch (error) {
       throw error;
     }
@@ -73,7 +73,7 @@ class MenuService {
   async delete(payload: MenuType) {
     try {
       if (!payload || !payload.menuId) {
-        throw new BadRequestError('Delete role failed');
+        throw new BadRequestError('Delete failed');
       }
 
       const { menuId } = payload;
@@ -81,7 +81,7 @@ class MenuService {
       const isExists = await menuModel.existsOne({ menuId });
 
       if (!isExists) {
-        throw new BadRequestError('Role not exists');
+        throw new BadRequestError('Not exists');
       }
 
       const resultDelete = await menuModel.update({ menuId, status: MENU_STATUS.BLOCK });

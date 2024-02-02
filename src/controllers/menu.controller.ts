@@ -5,25 +5,25 @@ import { CreatedSuccessResponse, SuccessResponse } from '../utils/success.respon
 class MenuController {
   create = async (req: Request, res: Response) => {
     new CreatedSuccessResponse({
-      metadata: (await menuService.create(req.body)) as any,
+      metadata: await menuService.create(req.body),
     }).send(res);
   };
 
   list = async (req: Request, res: Response) => {
     new SuccessResponse ({
-      metadata: (await menuService.getAll()) as any,
+      metadata: await menuService.getAll(),
     }).send(res);
   };
 
   update = async (req: Request, res: Response) => {
     new SuccessResponse ({
-      metadata: (await menuService.update(req.body)) as any,
+      metadata: await menuService.update(req.body),
     }).send(res);
   };
 
   delete = async (req: Request, res: Response) => {
     new SuccessResponse ({
-      metadata: (await menuService.delete(req.body)) as any,
+      metadata: await menuService.delete(req.body),
     }).send(res);
   };
 }
