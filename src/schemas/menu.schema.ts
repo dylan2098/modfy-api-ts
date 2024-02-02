@@ -1,19 +1,16 @@
 export default {
-  type: "object",
+  type: 'object',
   properties: {
     name: {
-      type: "string",
-    },
-    pid: {
-      type: "string",
+      type: 'string',
     },
     path: {
-      type: "string",
+      type: 'string',
     },
     status: {
-      type: "number",
-    }
+      type: 'number',
+    },
   },
-  required: ["name", "pid", "path"],
+  required: ['name', 'path'],
   additionalProperties: false,
 };

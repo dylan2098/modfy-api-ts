@@ -1,7 +1,7 @@
 import { ROLE_STATUS } from '../core/access.core';
 import roleModel from '../models/role.model';
 import { RoleType } from '../types/access.type';
-import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response.js';
+import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
 
 class RoleService {
   create = async (payload: RoleType) => {

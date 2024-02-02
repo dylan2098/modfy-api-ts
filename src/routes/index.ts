@@ -2,11 +2,12 @@ import { Router, Request, Response } from 'express';
 import { SuccessResponse } from '../utils/success.response';
 import userRoute from './access/user.route';
 import roleRoute from './access/role.route';
+import menuRoute from './access/menu.route';
 
 const router = Router();
 
 // setup list routes
-const listRoutes = [userRoute, roleRoute];
+const listRoutes = [userRoute, roleRoute, menuRoute];
 
 // setup path for routes
 for(let i = 0; i < listRoutes.length; i++) {
