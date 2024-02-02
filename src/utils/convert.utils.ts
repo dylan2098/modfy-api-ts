@@ -1,16 +1,7 @@
-/**
- * Converts the given object into a new object based on the provided list of properties.
- * @param obj - The object to be converted.
- * @param list - The list of properties to include in the converted object.
- * @param type - The type of conversion ('create' by default).
- * @returns The converted object.
- */
 export function convertData(payload: any, objectCore: Map<string, any>) {
   if(!payload) {
     return {};
   }
-
-  console.log(objectCore);
 
   const data = {};
 
@@ -28,16 +19,17 @@ export function convertData(payload: any, objectCore: Map<string, any>) {
 
 
 
-export function convertAttributeDisplay(list: any, needs: string[]) : string {
+export function attributes(objectCore: Map<string, any>, columnNeeds: string[]) : string[] {
+  let arr: string[] = [];
 
-  for(var i = 0; i < list.length; i++) {
-    const item = list[i];
+  for (let i = 0; i < columnNeeds.length; i++) {
+    const key = columnNeeds[i];
+
+    if (objectCore.has(key)) {
+      const attr = objectCore.get(key);
+      arr.push(`${attr.param} as "${key}"`);
+    }
   }
 
-  return ''
-
-  // const data = {};
-  // for(var i = 0; i < list.length; i++) {
-  //   const item = list[i];
-  // }
+  return arr;
 }

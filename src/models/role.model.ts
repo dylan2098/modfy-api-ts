@@ -1,7 +1,7 @@
 import table from '../databases/table';
 import knex from '../databases/knex';
 import { RoleType } from '../types/access.type';
-import { convertData, convertAttributeDisplay } from '../utils/convert.utils';
+import { convertData, attributes } from '../utils/convert.utils';
 import { v4 as uuidv4 } from 'uuid';
 import { ROLE_CORE } from '../core/access.core';
 
@@ -10,9 +10,8 @@ const columnId = knex.raw('role_uuid as "roleId"');
 class RoleModel {
   
   findAll(){
-    const column = convertAttributeDisplay(ROLE_CORE, ['role_uuid', 'role_name']);
-
-    return knex.select(knex.raw(['role_uuid as "roleId"', 'role_name as "name"', 'role_description as "description"'])).from(table.roles);
+    const column = attributes(ROLE_CORE, ['_id', 'name']);
+    return knex.select(knex.raw(column)).from(table.roles);
   }
 
 

@@ -43,7 +43,7 @@ class UserModel {
 
   update(payload: UserType) {
     payload.updatedAt = utils.defaultNow();
-    const dataUpdate = convertData(payload, USER_CORE, 'update');
+    const dataUpdate = convertData(payload, USER_CORE);
     return knex(table.users).where('user_uuid', payload.userNo).update(dataUpdate);
   }
 }
