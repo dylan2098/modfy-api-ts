@@ -1,13 +1,13 @@
 export default {
   type: 'object',
   properties: {
-    userId: {
+    user_uuid: {
       type: 'string',
     },
-    roleId: {
+    role_uuid: {
       type: 'string',
     }
   },
-  required: ['userId', 'roleId'],
+  required: ['user_uuid', 'role_uuid'],
   additionalProperties: false,
 };

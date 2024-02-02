@@ -1,14 +1,14 @@
 export default {
     type: 'object',
     properties: {
-      name: {
+      role_name: {
         type: 'string',
       },
-      description: {
+      role_description: {
         type: 'string'
       }
     },
-    required: ['name'],
+    required: ['role_name', 'role_description'],
     additionalProperties: false,
   };
   

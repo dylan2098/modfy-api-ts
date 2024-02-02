@@ -1,16 +1,13 @@
 export default {
   type: 'object',
   properties: {
-    name: {
+    menu_name: {
       type: 'string',
     },
-    path: {
+    menu_path: {
       type: 'string',
-    },
-    status: {
-      type: 'number',
-    },
+    }
   },
-  required: ['name', 'path'],
+  required: ['menu_name', 'menu_path'],
   additionalProperties: false,
 };

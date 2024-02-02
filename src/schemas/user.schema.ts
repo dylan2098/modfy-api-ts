@@ -1,31 +1,31 @@
 export default {
   type: 'object',
   properties: {
-    email: {
+    user_email: {
       type: 'string',
     },
-    password: {
+    user_password: {
       type: 'string',
     },
-    firstName: {
+    user_first_name: {
       type: 'string',
     },
-    lastName: {
+    user_last_name: {
       type: 'string',
     },
-    phone: {
+    user_phone: {
       type: 'string',
     },
-    gender: {
+    user_gender: {
       type: 'integer',
     },
-    birthday: {
+    user_birthday: {
       type: 'string',
     },
-    avatar: {
+    user_avatar: {
       type: 'string',
     },
   },
-  required: ['email', 'password', 'firstName', 'lastName', 'phone'],
+  required: ['user_email', 'user_password', 'user_first_name', 'user_last_name', 'user_phone'],
   additionalProperties: false,
 };
