@@ -1,33 +1,28 @@
 import table from '../databases/table';
 import knex from '../databases/knex';
 import { RoleType } from '../types/access.type';
-import { convertData, attributes } from '../utils/convert.utils';
-import { ROLE_CORE } from '../core/access/role.core';
-import { v4 as uuidv4 } from 'uuid';
-const columnId = knex.raw('role_uuid as "roleId"');
 
 class RoleModel {
   
   findAll(){
-    const column = attributes(ROLE_CORE, ['roleId', 'name', 'status']);
-    return knex.select(knex.raw(column)).from(table.roles);
+    return knex.select('role_uuid').from(table.roles);
   }
 
   async existsOne(payload: RoleType) {
-    const { roleId, name } = payload;
-    const sql = knex.select(columnId).from(table.roles).first();
+    const { role_uuid, role_name } = payload;
+    const sql = knex.select('role_uuid').from(table.roles).first();
 
-    if (name) {
-      sql.where('role_name', name);
+    if (role_name) {
+      sql.where('role_name', role_name);
     }
     
-    if (roleId) {
-      sql.where('role_uuid', roleId);
+    if (role_uuid) {
+      sql.where('role_uuid', role_uuid);
     }
     
     const result = await sql;
 
-    if (result && result.roleId) {
+    if (result && result.role_uuid) {
       return true;
     }
 
@@ -35,15 +30,11 @@ class RoleModel {
   }
 
   create(payload: RoleType) {
-    payload.roleId = uuidv4();
-    const dataCreate = convertData(payload, ROLE_CORE);
-    return knex(table.roles).returning(columnId).insert(dataCreate);
+    return knex(table.roles).returning('role_uuid').insert(payload);
   }
 
   update(payload: RoleType) {
-    const uuid = payload.roleId;
-    const dataUpdate = convertData(payload, ROLE_CORE);
-    return knex(table.roles).where('role_uuid', uuid).update(dataUpdate);
+    return knex(table.roles).where('role_uuid', payload.role_uuid).update(payload);
   }
 }
 

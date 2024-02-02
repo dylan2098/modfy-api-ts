@@ -2,30 +2,26 @@ import table from '../databases/table';
 import knex from '../databases/knex';
 import { UserType,  } from '../types/access.type';
 import utils from '../utils/utils';
-import { convertData } from '../utils/convert.utils';
-import _ from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
-import { USER_CORE } from '../core/access/user.core';
 
 class UserModel {
   async find(payload: UserType) {
-    let sql = knex.select().from(table.users).returning(knex.raw('user_uuid as "userNo"'));
+    let sql = knex.select().from(table.users).returning('user_uuid');
 
-    const { userNo, email, phone} = payload;
+    const { user_uuid, user_email, user_phone} = payload;
 
-    if (userNo) {
-      sql.where('user_uuid', userNo);
+    if (user_uuid) {
+      sql.where('user_uuid', user_uuid);
     }
 
-    if (email) {
-      sql.where('user_email', email);
+    if (user_email) {
+      sql.where('user_email', user_email);
     }
 
-    if(phone) {
-      if(email)  {
-        sql.orWhere('user_phone', phone);
+    if(user_phone) {
+      if(user_email)  {
+        sql.orWhere('user_phone', user_phone);
       } else {
-        sql.where('user_phone', phone);
+        sql.where('user_phone', user_phone);
       }
     }
 
@@ -33,18 +29,15 @@ class UserModel {
   }
 
   create(payload: UserType) {
-    payload.userNo = uuidv4();
-    payload.createdAt = utils.defaultNow();
-    payload.updatedAt = utils.defaultNow();
+    payload.user_created_at = utils.defaultNow();
+    payload.user_updated_at = utils.defaultNow();
     
-    const dataCreate = convertData(payload, USER_CORE);
-    return knex(table.users).returning(knex.raw('user_uuid as "userNo"')).insert(dataCreate);
+    return knex(table.users).returning('user_uuid').insert(payload);
   }
 
   update(payload: UserType) {
-    payload.updatedAt = utils.defaultNow();
-    const dataUpdate = convertData(payload, USER_CORE);
-    return knex(table.users).where('user_uuid', payload.userNo).update(dataUpdate);
+    payload.user_updated_at = utils.defaultNow();
+    return knex(table.users).where('user_uuid', payload.user_uuid).update(payload);
   }
 }
 

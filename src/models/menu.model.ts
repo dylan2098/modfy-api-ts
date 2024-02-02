@@ -1,36 +1,31 @@
 import table from '../databases/table';
 import knex from '../databases/knex';
 import { MenuType } from '../types/access.type';
-import { MENU_CORE } from '../core/access/menu.core';
-import { convertData, attributes } from '../utils/convert.utils';
-import { v4 as uuidv4 } from 'uuid';
 
-const columnId = knex.raw('menu_uuid as "menuId"');
 class MenuModel {
   async findAll () {
-    const column = attributes(MENU_CORE, ['menuId', 'name', 'path', 'status']);
-    return knex.select(knex.raw(column)).from(table.menus);
+    return knex.select('menu_uuid').from(table.menus);
   }
 
   async existsOne (payload: MenuType) {
-    const {menuId, name, path} = payload;
-    const sql = knex.select(columnId).from(table.menus).first();
+    const {menu_uuid, menu_name, menu_path} = payload;
+    const sql = knex.select('menu_uuid').from(table.menus).first();
 
-    if (menuId) {
-      sql.where({menu_uuid: menuId});
+    if (menu_uuid) {
+      sql.where({menu_uuid: menu_uuid});
     }
 
-    if (name) {
-      sql.where({menu_name: name});
+    if (menu_name) {
+      sql.where({menu_name: menu_name});
     }
 
-    if(path) {
-      sql.where({menu_path: path});
+    if(menu_path) {
+      sql.where({menu_path: menu_path});
     }
 
     const result = await sql;
 
-    if(result && result.menuId) {
+    if(result && result.menu_uuid) {
       return true;
     }
 
@@ -38,15 +33,11 @@ class MenuModel {
   }
 
   create(payload: MenuType) {
-    payload.menuId = uuidv4();
-    const dataCreate = convertData(payload, MENU_CORE);
-    return knex(table.menus).returning(columnId).insert(dataCreate);
+    return knex(table.menus).returning('menu_uuid').insert(payload);
   }
 
   update(payload: MenuType) {
-    const uuid = payload.menuId;
-    const dataUpdate = convertData(payload, MENU_CORE);
-    return knex(table.menus).where('menu_uuid', uuid).update(dataUpdate);
+    return knex(table.menus).where('menu_uuid', payload.menu_uuid).update(payload);
   }
 }
 

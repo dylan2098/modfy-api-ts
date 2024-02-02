@@ -1,7 +1,6 @@
 import knex from '../databases/knex';
 import table from '../databases/table';
 import { UserRoleType } from '../types/access.type';
-import { USER_ROLE_CORE } from '../core/access/userRole.core';
 import { convertData } from '../utils/convert.utils';
 
 const columnId = knex.raw(['role_uuid as "roleId"', 'user_uuid as "userId"']);
