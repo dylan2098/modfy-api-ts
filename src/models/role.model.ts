@@ -2,7 +2,6 @@ import table from '../databases/table';
 import knex from '../databases/knex';
 import { RoleType } from '../types/access.type';
 import { convertData, attributes } from '../utils/convert.utils';
-import { v4 as uuidv4 } from 'uuid';
 import { ROLE_CORE } from '../core/access.core';
 
 const columnId = knex.raw('role_uuid as "roleId"');
@@ -37,8 +36,6 @@ class RoleModel {
   }
 
   create(payload: RoleType) {
-    payload.roleId = uuidv4();
-
     const dataCreate = convertData(payload, ROLE_CORE);
     return knex(table.roles).returning(columnId).insert(dataCreate);
   }

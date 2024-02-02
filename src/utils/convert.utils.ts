@@ -1,10 +1,14 @@
+import { v4 as uuidv4 } from 'uuid';
+import _ from 'lodash';
+
 export function convertData(payload: any, objectCore: Map<string, any>) {
-  if(!payload) {
-    return {};
+  if(!payload) return {};
+
+  if(!_.has(payload, 'roleId')) {
+    payload.roleId = uuidv4();
   }
 
   const data = {};
-
   const payloadMap = new Map(Object.entries(payload));
 
   for(let key of payloadMap.keys()) {
