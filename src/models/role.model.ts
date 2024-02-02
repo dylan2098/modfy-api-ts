@@ -10,7 +10,7 @@ const columnId = knex.raw('role_uuid as "roleId"');
 class RoleModel {
   
   findAll(){
-    const column = attributes(ROLE_CORE, ['_id', 'name']);
+    const column = attributes(ROLE_CORE, ['roleId', 'name', 'status']);
     return knex.select(knex.raw(column)).from(table.roles);
   }
 
