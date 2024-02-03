@@ -6,10 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "migrate:latest": "knex migrate:latest",
-    "migrate:up": "knex migrate:up",
-    "migrate:down": "knex migrate:down",
-    "migrate:rollback": "knex migrate:rollback",
+    "watch": "tsc -w",
     "start": "node --watch dist/server.js"
   },
   "keywords": [],
