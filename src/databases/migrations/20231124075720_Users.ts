@@ -27,7 +27,7 @@ export async function up(knex: Knex): Promise<void> {
     })
 
     .createTable('Menus', (table) => {
-      table.uuid('menu_uuid').primary().unique()
+      table.uuid('menu_uuid').defaultTo(knex.fn.uuid()).primary().unique()
       table.string('menu_name');
       table.string('menu_path');
       table.smallint('menu_status').defaultTo(0);

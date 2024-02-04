@@ -4,7 +4,7 @@ import { MenuType } from '../types/access.type';
 
 class MenuModel {
   async findAll () {
-    return knex.select('menu_uuid').from(table.menus);
+    return knex.select('menu_uuid', 'menu_name', 'menu_path', 'menu_status').from(table.menus);
   }
 
   async existsOne (payload: MenuType) {
@@ -33,6 +33,7 @@ class MenuModel {
   }
 
   create(payload: MenuType) {
+    const a = payload;
     return knex(table.menus).returning('menu_uuid').insert(payload);
   }
 

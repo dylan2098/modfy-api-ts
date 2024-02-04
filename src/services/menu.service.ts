@@ -43,7 +43,7 @@ class MenuService {
   async update(payload: MenuType) {
     try {
       if (!payload || !payload.menu_uuid) {
-        throw new BadRequestError('Update role failed');
+        throw new BadRequestError('Update menu failed');
       }
 
       const { menu_uuid } = payload;
