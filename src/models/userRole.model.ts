@@ -2,12 +2,10 @@ import knex from '../databases/knex';
 import table from '../databases/table';
 import { UserRoleType } from '../types/access.type';
 
-const columnId = knex.raw(['role_uuid as "roleId"', 'user_uuid as "userId"']);
-
 class UserRoleModel {
   async existsOne(payload: UserRoleType) {
     const { role_uuid, user_uuid } = payload;
-    const sql = knex.select(columnId).from(table.user_roles).first();
+    const sql = knex.select('role_uuid', 'user_uuid').from(table.user_roles).first();
 
     if (role_uuid && user_uuid) {
       sql.where('role_uuid', role_uuid).andWhere('user_uuid', user_uuid);

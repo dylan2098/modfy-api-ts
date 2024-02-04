@@ -14,12 +14,12 @@ const randomStr = () => {
     return randomstring.generate(process.env.GEN_SALT);
 }
 
-const regexEmail = (email: string) => {
+const regexEmail = (email: string) : boolean => {
     const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return regex.test(email);
 }
 
-const regexPhone = (phone: string) => {
+const regexPhone = (phone: string) : boolean => {
     const regex = /^[+-]?\d+(?:\s*\d+)*$/;
     return regex.test(phone);
 }

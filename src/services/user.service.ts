@@ -26,7 +26,7 @@ class UserService {
         throw new BadRequestError("Email invalid.");
       }
 
-      if (!utils.regexPhone(user_email as string)) {
+      if (!utils.regexPhone(user_phone as string)) {
         throw new BadRequestError("Phone invalid");
       }
 

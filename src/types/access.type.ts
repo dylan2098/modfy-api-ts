@@ -32,3 +32,9 @@ export type UserRoleType = {
   role_uuid?: string;
   user_role_status?: number;
 }
+
+export type RoleMenuType = {
+  role_uuid?: string;
+  menu_uuid?: string;
+  menu_role_status?: number;
+}

@@ -5,7 +5,7 @@ import { RoleType } from '../types/access.type';
 class RoleModel {
   
   findAll(){
-    return knex.select('role_uuid').from(table.roles);
+    return knex.select('role_uuid', 'role_name', 'role_status').from(table.roles);
   }
 
   async existsOne(payload: RoleType) {
