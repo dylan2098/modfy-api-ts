@@ -4,11 +4,12 @@ import userRoute from './access/user.route';
 import roleRoute from './access/role.route';
 import menuRoute from './access/menu.route';
 import userRoleRoute from './access/userRole.route';
+import roleMenuRoute from './access/roleMenu.route';
 
 const router = Router();
 
 // setup list routes
-const listRoutes = [userRoute, roleRoute, menuRoute, userRoleRoute];
+const listRoutes = [userRoute, roleRoute, menuRoute, userRoleRoute, roleMenuRoute];
 
 // setup path for routes
 for(let i = 0; i < listRoutes.length; i++) {

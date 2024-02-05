@@ -37,14 +37,14 @@ export async function up(knex: Knex): Promise<void> {
       table.increments('user_role_id').primary().unique();
       table.uuid('user_uuid').references('user_uuid').inTable('Users');
       table.uuid('role_uuid').references('role_uuid').inTable('Roles');
-      table.smallint('user_role_status').defaultTo(0);
+      table.smallint('user_role_status').defaultTo(1);
     })
 
     .createTable('RoleMenu', (table) => {
       table.increments('role_menu_id').primary().unique();
       table.uuid('role_uuid').references('role_uuid').inTable('Roles');
       table.uuid('menu_uuid').references('menu_uuid').inTable('Menus');
-      table.smallint('menu_role_status').defaultTo(0);
+      table.smallint('menu_role_status').defaultTo(1);
     })
 
     .createTable('KeyTokens', (table) => {

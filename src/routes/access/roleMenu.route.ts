@@ -1,13 +1,13 @@
-import userRoleController from '../../controllers/userRole.controller';
+import roleMenuController from '../../controllers/roleMenu.controller';
 import asyncHandler from '../../helpers/asyncHandler';
 import validate from '../../middlewares/validate';
-import schema from '../../schemas/userRole.schema';
+import schema from '../../schemas/roleMenu.schema';
 
 import { Router } from 'express';
 const router = Router();
 
-router.post('/user-roles/create', validate(schema), asyncHandler(userRoleController.create));
-router.put('/user-roles/update', asyncHandler(userRoleController.update));
-router.delete('/user-roles/delete', asyncHandler(userRoleController.delete));
+router.post('/role-menu/create', validate(schema), asyncHandler(roleMenuController.create));
+router.put('/role-menu/update', asyncHandler(roleMenuController.update));
+router.delete('/role-menu/delete', asyncHandler(roleMenuController.delete));
 
 export default router;

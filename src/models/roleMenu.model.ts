@@ -13,7 +13,7 @@ class RoleMenuModel {
 
     const result = await sql;
 
-    if (result && result.roleId && result.userId) {
+    if (result && result.role_uuid && result.menu_uuid) {
       return true;
     }
 
