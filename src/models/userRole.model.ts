@@ -5,7 +5,7 @@ import { UserRoleType } from '../types/access.type';
 class UserRoleModel {
   async existsOne(payload: UserRoleType) {
     const { role_uuid, user_uuid } = payload;
-    const sql = knex.select('role_uuid', 'user_uuid').from(table.user_roles).first();
+    const sql = knex.select('role_uuid', 'user_uuid').from(table.user_role).first();
 
     if (role_uuid && user_uuid) {
       sql.where('role_uuid', role_uuid).andWhere('user_uuid', user_uuid);
@@ -13,7 +13,7 @@ class UserRoleModel {
 
     const result = await sql;
 
-    if (result && result.roleId && result.userId) {
+    if (result && result.role_uuid && result.user_uuid) {
       return true;
     }
 
@@ -21,11 +21,11 @@ class UserRoleModel {
   }
 
   create(payload: UserRoleType) {
-    return knex(table.user_roles).returning(['role_uuid', 'user_uuid']).insert(payload);
+    return knex(table.user_role).returning(['role_uuid', 'user_uuid']).insert(payload);
   }
 
   update(payload: UserRoleType) {
-    return knex(table.user_roles)
+    return knex(table.user_role)
       .where('role_uuid', payload.role_uuid)
       .andWhere('user_uuid', payload.user_uuid)
       .update(payload);

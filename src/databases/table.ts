@@ -3,7 +3,7 @@ export default {
   // access
   users: 'Users',
   roles: 'Roles',
-  user_roles: 'UserRoles',
+  user_role: 'UserRole',
   role_menus: 'RoleMenu',
   addresses: 'Addresses',
   address_book: 'AddressBook',

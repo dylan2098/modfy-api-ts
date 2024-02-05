@@ -37,7 +37,7 @@ export async function up(knex: Knex): Promise<void> {
       table.increments('user_role_id').primary().unique();
       table.uuid('user_uuid').references('user_uuid').inTable('Users');
       table.uuid('role_uuid').references('role_uuid').inTable('Roles');
-      table.smallint('user_role-status').defaultTo(0);
+      table.smallint('user_role_status').defaultTo(0);
     })
 
     .createTable('RoleMenu', (table) => {

@@ -11,13 +11,13 @@ class MenuController {
 
   update = async (req: Request, res: Response) => {
     new SuccessResponse ({
-      metadata: [],
+      metadata: await userRoleService.update(req.body),
     }).send(res);
   };
 
   delete = async (req: Request, res: Response) => {
     new SuccessResponse ({
-      metadata: [],
+      metadata: await userRoleService.delete(req.body),
     }).send(res);
   };
 }
