@@ -1,5 +1,5 @@
 import { MENU_ROLE_STATUS } from '../core/access/roleMenu';
-import roleMenuModel from '../models/roleMenu.model';
+import RoleMenuModel from '../models/roleMenu.model';
 import { RoleMenuType } from '../types/access.type';
 import { BadRequestError} from '../utils/error.response';
 
@@ -12,12 +12,12 @@ class RoleMenuService {
         throw new BadRequestError('Create failed');
       }
 
-      const isExists = await roleMenuModel.existsOne({ menu_uuid, role_uuid });
+      const isExists = await RoleMenuModel.existsOne({ menu_uuid, role_uuid });
       if (isExists) {
         throw new BadRequestError('Data exists');
       }
 
-      const userRole = (await roleMenuModel.create(payload)) as RoleMenuType[];
+      const userRole = (await RoleMenuModel.create(payload)) as RoleMenuType[];
 
       if (!userRole) {
         throw new BadRequestError('Create failed');
@@ -37,12 +37,12 @@ class RoleMenuService {
         throw new BadRequestError('Create failed');
       }
 
-      const isExists = await roleMenuModel.existsOne({ menu_uuid, role_uuid });
+      const isExists = await RoleMenuModel.existsOne({ menu_uuid, role_uuid });
       if (!isExists) {
         throw new BadRequestError('Data not exists');
       }
 
-      const roleMenu = await roleMenuModel.update(payload);
+      const roleMenu = await RoleMenuModel.update(payload);
 
       if (!roleMenu) {
         throw new BadRequestError('Update failed');
@@ -62,13 +62,13 @@ class RoleMenuService {
         throw new BadRequestError('Create failed');
       }
 
-      const isExists = await roleMenuModel.existsOne({ menu_uuid, role_uuid });
+      const isExists = await RoleMenuModel.existsOne({ menu_uuid, role_uuid });
       if (!isExists) {
         throw new BadRequestError('Data exists');
       }
 
       payload.menu_role_status = MENU_ROLE_STATUS.BLOCK;
-      const roleMenu = await roleMenuModel.update(payload);
+      const roleMenu = await RoleMenuModel.update(payload);
 
       if (!roleMenu) {
         throw new BadRequestError('Delete failed');

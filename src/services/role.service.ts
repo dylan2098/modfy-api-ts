@@ -1,5 +1,5 @@
 import { ROLE_STATUS } from '../core/access/role.core';
-import roleModel from '../models/role.model';
+import RoleModel from '../models/role.model';
 import { RoleType } from '../types/access.type';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
 
@@ -14,12 +14,12 @@ class RoleService {
 
       role_name = role_name.toLowerCase();
 
-      const isExists = await roleModel.existsOne({ role_name });
+      const isExists = await RoleModel.existsOne({ role_name });
       if (isExists) {
         throw new BadRequestError('Role exists');
       }
 
-      const newRole = (await roleModel.create(payload)) as RoleType[];
+      const newRole = (await RoleModel.create(payload)) as RoleType[];
 
       if (!newRole) {
         throw new BadRequestError('Create role failed');
@@ -39,7 +39,7 @@ class RoleService {
 
       const { role_uuid } = payload;
 
-      const isExists = await roleModel.existsOne({ role_uuid });
+      const isExists = await RoleModel.existsOne({ role_uuid });
 
       if (!isExists) {
         throw new BadRequestError('Role not exists');
@@ -49,7 +49,7 @@ class RoleService {
         payload.role_name = payload.role_name.toLowerCase();
       }
 
-      const resultUpdate = await roleModel.update(payload);
+      const resultUpdate = await RoleModel.update(payload);
 
       return resultUpdate;
     } catch (error) {
@@ -65,13 +65,13 @@ class RoleService {
 
       const { role_uuid } = payload;
 
-      const isExists = await roleModel.existsOne({ role_uuid });
+      const isExists = await RoleModel.existsOne({ role_uuid });
 
       if (!isExists) {
         throw new BadRequestError('Role not exists');
       }
 
-      const resultDelete = await roleModel.update({ role_uuid, role_status: ROLE_STATUS.BLOCK });
+      const resultDelete = await RoleModel.update({ role_uuid, role_status: ROLE_STATUS.BLOCK });
 
       return resultDelete;
     } catch (error) {
@@ -81,7 +81,7 @@ class RoleService {
 
   getAll = () => {
     try {
-      return roleModel.findAll();
+      return RoleModel.findAll();
     } catch (error) {
       throw error;
     }
@@ -89,7 +89,7 @@ class RoleService {
 
   getRoleCustomerUUID = async () => {
     try {
-        const roleCustomer = await roleModel.findOne({ role_name: 'customer' }); 
+        const roleCustomer = await RoleModel.findOne({ role_name: 'customer' }); 
         if(roleCustomer && roleCustomer.role_uuid) {
             return roleCustomer.role_uuid;
         }

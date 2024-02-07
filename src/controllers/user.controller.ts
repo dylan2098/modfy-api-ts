@@ -1,17 +1,23 @@
 import { Request, Response } from 'express';
-import userService from '../services/user.service';
+import UserService from '../services/user.service';
 import { CreatedSuccessResponse, SuccessResponse } from '../utils/success.response';
 
 class UserController {
   signUp = async (req: Request, res: Response) => {
     new CreatedSuccessResponse({
-      metadata: await userService.signUp(req.body),
+      metadata: await UserService.signUp(req.body),
     }).send(res);
   };
 
   authenticateEmail = async (req: Request, res: Response) => {
     new SuccessResponse({
-      metadata: await userService.authenticateEmail(req.params),
+      metadata: await UserService.authenticateEmail(req.params),
+    }).send(res);
+  }
+
+  login = async (req: Request, res: Response) => {
+    new SuccessResponse({
+      metadata: [],
     }).send(res);
   }
 }

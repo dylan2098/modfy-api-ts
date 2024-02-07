@@ -1,5 +1,5 @@
 import { USER_ROLE_STATUS } from '../core/access/userRole.core';
-import userRoleModel from '../models/userRole.model';
+import UserRoleModel from '../models/userRole.model';
 import { UserRoleType } from '../types/access.type';
 import { BadRequestError} from '../utils/error.response';
 
@@ -12,12 +12,12 @@ class UserRoleService {
         throw new BadRequestError('Create failed');
       }
 
-      const isExists = await userRoleModel.existsOne({ user_uuid, role_uuid });
+      const isExists = await UserRoleModel.existsOne({ user_uuid, role_uuid });
       if (isExists) {
         throw new BadRequestError('Data exists');
       }
 
-      const userRole = (await userRoleModel.create(payload)) as UserRoleType[];
+      const userRole = (await UserRoleModel.create(payload)) as UserRoleType[];
 
       if (!userRole) {
         throw new BadRequestError('Create failed');
@@ -37,12 +37,12 @@ class UserRoleService {
         throw new BadRequestError('Update failed');
       }
 
-      const isExists = await userRoleModel.existsOne({ user_uuid, role_uuid });
+      const isExists = await UserRoleModel.existsOne({ user_uuid, role_uuid });
       if (!isExists) {
         throw new BadRequestError('Data not exists');
       }
 
-      const userRole = await userRoleModel.update(payload);
+      const userRole = await UserRoleModel.update(payload);
 
       if (!userRole) {
         throw new BadRequestError('Update failed');
@@ -63,13 +63,13 @@ class UserRoleService {
         throw new BadRequestError('Delete failed');
       }
 
-      const isExists = await userRoleModel.existsOne({ user_uuid, role_uuid });
+      const isExists = await UserRoleModel.existsOne({ user_uuid, role_uuid });
       if (!isExists) {
         throw new BadRequestError('Data not exists');
       }
 
       payload.user_role_status = USER_ROLE_STATUS.BLOCK;
-      const userRole = await userRoleModel.update(payload);
+      const userRole = await UserRoleModel.update(payload);
 
       if (!userRole) {
         throw new BadRequestError('Delete failed');

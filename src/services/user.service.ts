@@ -1,20 +1,20 @@
-import crypto from "node:crypto";
-import userModel from "../models/user.model.js";
-import utils from "../utils/utils.js";
-import { hash } from "../helpers/hash.js";
-import { UserType } from "../types/access.type.js";
-import { USER_STATUS } from "../core/access/user.core.js";
-import { emitRegisterSuccess } from "../events/user.event.js";
-import roleService from "./role.service.js";
-import userRoleService from "./userRole.service.js";
+import crypto from 'node:crypto';
+import UserModel from '../models/user.model';
+import utils from '../utils/utils';
+import { hash } from '../helpers/hash';
+import { UserType } from '../types/access.type';
+import { USER_STATUS } from '../core/access/user.core';
+import { emitRegisterSuccess } from '../events/user.event';
+import RoleService from './role.service';
+import UserRoleService from './userRole.service';
 
 import {
   BadRequestError,
   ConflictRequestError,
   AuthFailureError,
   ForbiddenError,
-} from "../utils/error.response.js";
-import { USER_ROLE_STATUS } from "../core/access/userRole.core.js";
+} from '../utils/error.response';
+import { USER_ROLE_STATUS } from '../core/access/userRole.core';
 
 class UserService {
   /**
@@ -24,29 +24,35 @@ class UserService {
    */
   signUp = async (payload: UserType) => {
     try {
-      const { user_email, user_password, user_first_name, user_last_name, user_phone } = payload;
+      const {
+        user_email,
+        user_password,
+        user_first_name,
+        user_last_name,
+        user_phone,
+      } = payload;
 
       if (!utils.regexEmail(user_email as string)) {
-        throw new BadRequestError("Email invalid.");
+        throw new BadRequestError('Email invalid.');
       }
 
       if (!utils.regexPhone(user_phone as string)) {
-        throw new BadRequestError("Phone invalid");
+        throw new BadRequestError('Phone invalid');
       }
 
       // check user exists
-      const userExists = await userModel.find({ user_email, user_phone });
+      const userExists = await UserModel.find({ user_email, user_phone });
       if (userExists && userExists.length > 0) {
-        throw new BadRequestError("User already registered.");
+        throw new BadRequestError('User already registered.');
       }
 
       const passwordHash = await hash(user_password as string);
       payload.user_password = passwordHash;
 
-      const newUser = (await userModel.create(payload)) as UserType[];
+      const newUser = (await UserModel.create(payload)) as UserType[];
 
       if (!newUser) {
-        throw new BadRequestError("Create User Failed.");
+        throw new BadRequestError('Create User Failed.');
       }
 
       emitRegisterSuccess({
@@ -55,15 +61,6 @@ class UserService {
         user_last_name,
         user_uuid: newUser[0].user_uuid,
       });
-
-
-      /**
-       * //! TODO: 
-       * 1. Handle refresh token and accesstoken using private key and public key
-       * 2. Login after register
-       */
-      // const privateKey = crypto.randomBytes(64).toString('hex');
-      // const publicKey = crypto.randomBytes(64).toString('hex');
 
       return newUser;
     } catch (error) {
@@ -76,32 +73,31 @@ class UserService {
       const { code } = param;
 
       if (!code) {
-        throw new BadRequestError("Active User Failed.");
+        throw new BadRequestError('Active User Failed.');
       }
 
-      const user = await userModel.find({ user_uuid: code });
+      const user = await UserModel.find({ user_uuid: code });
       if (!user || user.length == 0) {
-        throw new BadRequestError("Active User Failed.");
+        throw new BadRequestError('Active User Failed.');
       }
 
-      const resultUpdate = await userModel.update({
+      const resultUpdate = await UserModel.update({
         user_uuid: code,
         user_status: USER_STATUS.ACTIVE,
       });
 
-      if(resultUpdate) {
-        const roleCustomerUUID = await roleService.getRoleCustomerUUID();
-        const optionActiveAcocunt = { 
-          user_uuid: code, 
-          role_uuid: roleCustomerUUID, 
-          user_role_status: USER_ROLE_STATUS.ACTIVE 
+      if (resultUpdate) {
+        const roleCustomerUUID = await RoleService.getRoleCustomerUUID();
+        const optionActiveAcocunt = {
+          user_uuid: code,
+          role_uuid: roleCustomerUUID,
+          user_role_status: USER_ROLE_STATUS.ACTIVE,
         };
 
-        await userRoleService.create(optionActiveAcocunt);
+        await UserRoleService.create(optionActiveAcocunt);
       }
 
       return resultUpdate;
-
     } catch (error) {
       throw error;
     }

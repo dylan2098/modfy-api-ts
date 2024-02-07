@@ -1,5 +1,5 @@
 import { MenuType } from '../types/access.type';
-import menuModel from '../models/menu.model';
+import MenuModel from '../models/menu.model';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
 import { MENU_STATUS } from '../core/access/menu.core';
 
@@ -15,12 +15,12 @@ class MenuService {
       menu_name = menu_name.toLowerCase();
       menu_path = menu_path.toLowerCase();
 
-      const isExists = await menuModel.existsOne({ menu_name, menu_path });
+      const isExists = await MenuModel.existsOne({ menu_name, menu_path });
       if (isExists) {
         throw new BadRequestError('Menu exists');
       }
 
-      const menu = (await menuModel.create(payload)) as MenuType[];
+      const menu = (await MenuModel.create(payload)) as MenuType[];
 
       if (!menu) {
         throw new BadRequestError('Create role failed');
@@ -34,7 +34,7 @@ class MenuService {
 
   async getAll() {
     try {
-      return menuModel.findAll();
+      return MenuModel.findAll();
     } catch (error) {
       throw error;
     }
@@ -48,7 +48,7 @@ class MenuService {
 
       const { menu_uuid } = payload;
 
-      const isExists = await menuModel.existsOne({ menu_uuid });
+      const isExists = await MenuModel.existsOne({ menu_uuid });
 
       if (!isExists) {
         throw new BadRequestError('Role not exists');
@@ -62,7 +62,7 @@ class MenuService {
         payload.menu_path = payload.menu_path.toLowerCase();
       }
 
-      const resultUpdate = await menuModel.update(payload);
+      const resultUpdate = await MenuModel.update(payload);
 
       return resultUpdate;
     } catch (error) {
@@ -78,13 +78,13 @@ class MenuService {
 
       const { menu_uuid } = payload;
 
-      const isExists = await menuModel.existsOne({ menu_uuid });
+      const isExists = await MenuModel.existsOne({ menu_uuid });
 
       if (!isExists) {
         throw new BadRequestError('Not exists');
       }
 
-      const resultDelete = await menuModel.update({ menu_uuid, menu_status: MENU_STATUS.BLOCK });
+      const resultDelete = await MenuModel.update({ menu_uuid, menu_status: MENU_STATUS.BLOCK });
 
       return resultDelete;
     } catch (error) {

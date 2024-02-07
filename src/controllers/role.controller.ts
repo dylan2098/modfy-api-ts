@@ -1,29 +1,29 @@
 import { Request, Response } from 'express';
-import roleService from '../services/role.service';
+import RoleService from '../services/role.service';
 import { CreatedSuccessResponse, SuccessResponse } from '../utils/success.response';
 
 class RoleController {
   create = async (req: Request, res: Response) => {
     new CreatedSuccessResponse({
-      metadata: await roleService.create(req.body),
+      metadata: await RoleService.create(req.body),
     }).send(res);
   };
 
   list = async (req: Request, res: Response) => {
     new SuccessResponse ({
-      metadata: await roleService.getAll(),
+      metadata: await RoleService.getAll(),
     }).send(res);
   };
 
   update = async (req: Request, res: Response) => {
     new SuccessResponse ({
-      metadata: await roleService.update(req.body),
+      metadata: await RoleService.update(req.body),
     }).send(res);
   };
 
   delete = async (req: Request, res: Response) => {
     new SuccessResponse ({
-      metadata: await roleService.delete(req.body),
+      metadata: await RoleService.delete(req.body),
     }).send(res);
   };
 }

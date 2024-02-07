@@ -6,7 +6,6 @@ import compression from 'compression';
 import cors from 'cors';
 import limiter from './middlewares/limiter';
 import router from './routes';
-import utils from './utils/utils.js';
 import { ResponseType } from './types/response.type';
 import _ from 'lodash';
 
