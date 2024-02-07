@@ -4,7 +4,12 @@ import {sendAuthenticateUserEmail} from '../helpers/mail';
 
 const eventEmitter = new EventEmitter();
 
-export const onRegisterSuccess = eventEmitter.on('registerSuccess', async (data: UserType) => {
+
+/**
+ * Emit event when register success
+ */
+const eventRegisterAccountSuccess = 'account:registerSuccess';
+eventEmitter.on(eventRegisterAccountSuccess, async (data: UserType) => {
   const { user_email, user_uuid} = data;
 
   if (user_email && user_uuid) {
@@ -12,4 +17,4 @@ export const onRegisterSuccess = eventEmitter.on('registerSuccess', async (data:
   }
 })
 
-export const emitRegisterSuccess = (data: UserType) => eventEmitter.emit('registerSuccess', data);
+export const emitRegisterSuccess = (data: UserType) => eventEmitter.emit(eventRegisterAccountSuccess, data);

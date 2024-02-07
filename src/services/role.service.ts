@@ -86,6 +86,19 @@ class RoleService {
       throw error;
     }
   };
+
+  getRoleCustomerUUID = async () => {
+    try {
+        const roleCustomer = await roleModel.findOne({ role_name: 'customer' }); 
+        if(roleCustomer && roleCustomer.role_uuid) {
+            return roleCustomer.role_uuid;
+        }
+        
+        throw new BadRequestError('Role not exists');
+    } catch (error) {
+        throw error;
+    }
+  }
 }
 
 export default new RoleService();

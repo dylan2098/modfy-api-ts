@@ -5,12 +5,16 @@ import { hash } from "../helpers/hash.js";
 import { UserType } from "../types/access.type.js";
 import { USER_STATUS } from "../core/access/user.core.js";
 import { emitRegisterSuccess } from "../events/user.event.js";
+import roleService from "./role.service.js";
+import userRoleService from "./userRole.service.js";
+
 import {
   BadRequestError,
   ConflictRequestError,
   AuthFailureError,
   ForbiddenError,
 } from "../utils/error.response.js";
+import { USER_ROLE_STATUS } from "../core/access/userRole.core.js";
 
 class UserService {
   /**
@@ -86,10 +90,14 @@ class UserService {
       });
 
       if(resultUpdate) {
-        /** //!TODO
-         * 1. Add role user
-         * 
-         */
+        const roleCustomerUUID = await roleService.getRoleCustomerUUID();
+        const optionActiveAcocunt = { 
+          user_uuid: code, 
+          role_uuid: roleCustomerUUID, 
+          user_role_status: USER_ROLE_STATUS.ACTIVE 
+        };
+
+        await userRoleService.create(optionActiveAcocunt);
       }
 
       return resultUpdate;

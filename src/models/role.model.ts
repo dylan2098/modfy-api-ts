@@ -36,6 +36,21 @@ class RoleModel {
   update(payload: RoleType) {
     return knex(table.roles).where('role_uuid', payload.role_uuid).update(payload);
   }
+
+  findOne(payload: RoleType) {
+    const { role_uuid, role_name } = payload;
+    const sql = knex.select('role_uuid').from(table.roles).first();
+
+    if (role_name) {
+      sql.where('role_name', role_name);
+    }
+    
+    if (role_uuid) {
+      sql.where('role_uuid', role_uuid);
+    }
+
+    return sql;
+  }
 }
 
 export default new RoleModel();
