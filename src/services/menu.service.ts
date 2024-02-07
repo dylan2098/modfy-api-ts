@@ -1,10 +1,10 @@
-import { MenuType } from '../types/access.type';
+import { Menu } from '../types/access.type';
 import MenuModel from '../models/menu.model';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
 import { MENU_STATUS } from '../core/access/menu.core';
 
 class MenuService {
-  async create(payload: MenuType) {
+  async create(payload: Menu) {
     try {
       let { menu_name, menu_path } = payload;
 
@@ -20,7 +20,7 @@ class MenuService {
         throw new BadRequestError('Menu exists');
       }
 
-      const menu = (await MenuModel.create(payload)) as MenuType[];
+      const menu = (await MenuModel.create(payload)) as Menu[];
 
       if (!menu) {
         throw new BadRequestError('Create role failed');
@@ -40,7 +40,7 @@ class MenuService {
     }
   }
 
-  async update(payload: MenuType) {
+  async update(payload: Menu) {
     try {
       if (!payload || !payload.menu_uuid) {
         throw new BadRequestError('Update menu failed');
@@ -70,7 +70,7 @@ class MenuService {
     }
   }
 
-  async delete(payload: MenuType) {
+  async delete(payload: Menu) {
     try {
       if (!payload || !payload.menu_uuid) {
         throw new BadRequestError('Delete failed');

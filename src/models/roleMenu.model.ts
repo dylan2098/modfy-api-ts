@@ -1,9 +1,9 @@
 import knex from '../databases/knex';
 import table from '../databases/table';
-import { RoleMenuType } from '../types/access.type';
+import { RoleMenu } from '../types/access.type';
 
 class RoleMenuModel {
-  async existsOne(payload: RoleMenuType) {
+  async existsOne(payload: RoleMenu) {
     const { role_uuid, menu_uuid } = payload;
     const sql = knex.select('role_uuid', 'menu_uuid').from(table.role_menus).first();
 
@@ -20,11 +20,11 @@ class RoleMenuModel {
     return false;
   }
 
-  create(payload: RoleMenuType) {
+  create(payload: RoleMenu) {
     return knex(table.role_menus).returning(['role_uuid', 'menu_uuid']).insert(payload);
   }
 
-  update(payload: RoleMenuType) {
+  update(payload: RoleMenu) {
     const { role_uuid, menu_uuid } = payload;
 
     return knex(table.role_menus)

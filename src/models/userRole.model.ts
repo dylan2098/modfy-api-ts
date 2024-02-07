@@ -1,9 +1,9 @@
 import knex from '../databases/knex';
 import table from '../databases/table';
-import { UserRoleType } from '../types/access.type';
+import { UserRole } from '../types/access.type';
 
 class UserRoleModel {
-  async existsOne(payload: UserRoleType) {
+  async existsOne(payload: UserRole) {
     const { role_uuid, user_uuid } = payload;
     const sql = knex.select('role_uuid', 'user_uuid').from(table.user_role).first();
 
@@ -20,11 +20,11 @@ class UserRoleModel {
     return false;
   }
 
-  create(payload: UserRoleType) {
+  create(payload: UserRole) {
     return knex(table.user_role).returning(['role_uuid', 'user_uuid']).insert(payload);
   }
 
-  update(payload: UserRoleType) {
+  update(payload: UserRole) {
     return knex(table.user_role)
       .where('role_uuid', payload.role_uuid)
       .andWhere('user_uuid', payload.user_uuid)

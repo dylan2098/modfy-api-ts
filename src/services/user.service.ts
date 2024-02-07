@@ -1,8 +1,9 @@
+import bcrypt from 'bcrypt';
 import crypto from 'node:crypto';
 import UserModel from '../models/user.model';
 import utils from '../utils/utils';
 import { hash } from '../helpers/hash';
-import { UserType } from '../types/access.type';
+import { User } from '../types/access.type';
 import { USER_STATUS } from '../core/access/user.core';
 import { emitRegisterSuccess } from '../events/user.event';
 import RoleService from './role.service';
@@ -17,12 +18,7 @@ import {
 import { USER_ROLE_STATUS } from '../core/access/userRole.core';
 
 class UserService {
-  /**
-   * Signup new user
-   * @param payload
-   * @returns new user
-   */
-  signUp = async (payload: UserType) => {
+  signUp = async (payload: User) => {
     try {
       const {
         user_email,
@@ -49,7 +45,7 @@ class UserService {
       const passwordHash = await hash(user_password as string);
       payload.user_password = passwordHash;
 
-      const newUser = (await UserModel.create(payload)) as UserType[];
+      const newUser = (await UserModel.create(payload)) as User[];
 
       if (!newUser) {
         throw new BadRequestError('Create User Failed.');
@@ -101,6 +97,33 @@ class UserService {
     } catch (error) {
       throw error;
     }
+  };
+
+  login = async (payload: User) => {
+    try {
+      const { user_email, user_password, user_phone } = payload;
+
+      const foundUser = await UserModel.find({ user_email, user_phone });
+      if (!foundUser || foundUser.length == 0) {
+        throw new BadRequestError('User is not registered or activated');
+      }
+
+      const match = await bcrypt.compare(user_password as string, foundUser[0].user_password as string);
+      if (!match) throw new AuthFailureError('Authentication error');
+
+      const privateKey = crypto.randomBytes(64).toString('hex');
+      const publicKey = crypto.randomBytes(64).toString('hex');
+
+      // const tokens = await createTokenPair(
+      //   { userId: foundShop._id, email },
+      //   publicKey,
+      //   privateKey
+      // );
+    } catch (error) {
+      throw error;
+    }
+
+    return [];
   };
 }
 

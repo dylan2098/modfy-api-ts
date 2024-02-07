@@ -1,10 +1,10 @@
 import { ROLE_STATUS } from '../core/access/role.core';
 import RoleModel from '../models/role.model';
-import { RoleType } from '../types/access.type';
+import { Role } from '../types/access.type';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
 
 class RoleService {
-  create = async (payload: RoleType) => {
+  create = async (payload: Role) => {
     try {
       let { role_name } = payload;
 
@@ -19,7 +19,7 @@ class RoleService {
         throw new BadRequestError('Role exists');
       }
 
-      const newRole = (await RoleModel.create(payload)) as RoleType[];
+      const newRole = (await RoleModel.create(payload)) as Role[];
 
       if (!newRole) {
         throw new BadRequestError('Create role failed');
@@ -31,7 +31,7 @@ class RoleService {
     }
   };
 
-  update = async (payload: RoleType) => {
+  update = async (payload: Role) => {
     try {
       if (!payload || !payload.role_uuid) {
         throw new BadRequestError('Update role failed');
@@ -57,7 +57,7 @@ class RoleService {
     }
   };
 
-  delete = async (payload: RoleType) => {
+  delete = async (payload: Role) => {
     try {
       if (!payload || !payload.role_uuid) {
         throw new BadRequestError('Delete role failed');

@@ -17,7 +17,7 @@ class UserController {
 
   login = async (req: Request, res: Response) => {
     new SuccessResponse({
-      metadata: [],
+      metadata: await UserService.login(req.body),
     }).send(res);
   }
 }

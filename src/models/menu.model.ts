@@ -1,13 +1,13 @@
 import table from '../databases/table';
 import knex from '../databases/knex';
-import { MenuType } from '../types/access.type';
+import { Menu } from '../types/access.type';
 
 class MenuModel {
   async findAll () {
     return knex.select('menu_uuid', 'menu_name', 'menu_path', 'menu_status').from(table.menus);
   }
 
-  async existsOne (payload: MenuType) {
+  async existsOne (payload: Menu) {
     const {menu_uuid, menu_name, menu_path} = payload;
     const sql = knex.select('menu_uuid').from(table.menus).first();
 
@@ -32,12 +32,12 @@ class MenuModel {
     return false;
   }
 
-  create(payload: MenuType) {
+  create(payload: Menu) {
     const a = payload;
     return knex(table.menus).returning('menu_uuid').insert(payload);
   }
 
-  update(payload: MenuType) {
+  update(payload: Menu) {
     return knex(table.menus).where('menu_uuid', payload.menu_uuid).update(payload);
   }
 }

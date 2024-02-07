@@ -1,10 +1,10 @@
 import { USER_ROLE_STATUS } from '../core/access/userRole.core';
 import UserRoleModel from '../models/userRole.model';
-import { UserRoleType } from '../types/access.type';
+import { UserRole } from '../types/access.type';
 import { BadRequestError} from '../utils/error.response';
 
 class UserRoleService {
-  create = async (payload: UserRoleType) => {
+  create = async (payload: UserRole) => {
     try {
       let { user_uuid, role_uuid } = payload;
 
@@ -17,7 +17,7 @@ class UserRoleService {
         throw new BadRequestError('Data exists');
       }
 
-      const userRole = (await UserRoleModel.create(payload)) as UserRoleType[];
+      const userRole = (await UserRoleModel.create(payload)) as UserRole[];
 
       if (!userRole) {
         throw new BadRequestError('Create failed');
@@ -29,7 +29,7 @@ class UserRoleService {
     }
   };
 
-  update = async (payload: UserRoleType) => {
+  update = async (payload: UserRole) => {
     try {
       let { user_uuid, role_uuid } = payload;
 
@@ -55,7 +55,7 @@ class UserRoleService {
     }
   };
 
-  delete = async (payload: UserRoleType) => {
+  delete = async (payload: UserRole) => {
     try {
       let { user_uuid, role_uuid } = payload;
 

@@ -1,10 +1,10 @@
 import { MENU_ROLE_STATUS } from '../core/access/roleMenu';
 import RoleMenuModel from '../models/roleMenu.model';
-import { RoleMenuType } from '../types/access.type';
+import { RoleMenu } from '../types/access.type';
 import { BadRequestError} from '../utils/error.response';
 
 class RoleMenuService {
-  create = async (payload: RoleMenuType) => {
+  create = async (payload: RoleMenu) => {
     try {
       let { menu_uuid, role_uuid } = payload;
 
@@ -17,7 +17,7 @@ class RoleMenuService {
         throw new BadRequestError('Data exists');
       }
 
-      const userRole = (await RoleMenuModel.create(payload)) as RoleMenuType[];
+      const userRole = (await RoleMenuModel.create(payload)) as RoleMenu[];
 
       if (!userRole) {
         throw new BadRequestError('Create failed');
@@ -29,7 +29,7 @@ class RoleMenuService {
     }
   };
 
-  update = async (payload: RoleMenuType) => {
+  update = async (payload: RoleMenu) => {
     try {
       let { menu_uuid, role_uuid } = payload;
 
@@ -54,7 +54,7 @@ class RoleMenuService {
     }
   };
 
-  delete = async (payload: RoleMenuType) => {
+  delete = async (payload: RoleMenu) => {
     try {
       let { menu_uuid, role_uuid } = payload;
 

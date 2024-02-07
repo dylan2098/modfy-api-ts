@@ -1,4 +1,4 @@
-export type UserType = {
+export type User = {
     user_uuid?: string;
     user_email?: string;
     user_password?: string;
@@ -13,27 +13,27 @@ export type UserType = {
     user_updated_at?: string;
 }
 
-export type RoleType = {
+export type Role = {
   role_uuid?: string;
   role_name?: string;
   role_description?: string;
   role_status?: number;
 }
 
-export type MenuType = {
+export type Menu = {
   menu_uuid?: string;
   menu_name?: string;
   menu_path?: string;
   menu_status?: number;
 }
 
-export type UserRoleType = {
+export type UserRole = {
   user_uuid?: string;
   role_uuid?: string;
   user_role_status?: number;
 }
 
-export type RoleMenuType = {
+export type RoleMenu = {
   role_uuid?: string;
   menu_uuid?: string;
   menu_role_status?: number;
