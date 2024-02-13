@@ -5,27 +5,45 @@ import utils from '../utils/utils';
 
 class UserModel {
   async find(payload: User) : Promise<User[]> {
-    let sql = knex.select().from(table.users).returning('user_uuid');
+    const columns = [
+      'Users.user_uuid',
+      'user_email',
+      'user_first_name',
+      'user_last_name',
+      'user_phone',
+      'user_password',
+      'user_gender',
+      'user_birthday',
+      'user_avatar',
+      'user_status',
+      'role_name',
+    ];
+
+    let queryBuilder = knex.select(columns)
+                      .from<User>(table.users)
+                      .innerJoin(table.user_role, 'Users.user_uuid', 'UserRole.user_uuid')
+                      .innerJoin(table.roles, 'UserRole.role_uuid', 'Roles.role_uuid')
+                      ;
 
     const { user_uuid, user_email, user_phone} = payload;
 
     if (user_uuid) {
-      sql.where('user_uuid', user_uuid);
+      queryBuilder.where('user_uuid', user_uuid);
     }
 
     if (user_email) {
-      sql.where('user_email', user_email);
+      queryBuilder.where('user_email', user_email);
     }
 
     if(user_phone) {
       if(user_email)  {
-        sql.orWhere('user_phone', user_phone);
+        queryBuilder.orWhere('user_phone', user_phone);
       } else {
-        sql.where('user_phone', user_phone);
+        queryBuilder.where('user_phone', user_phone);
       }
     }
 
-    return await sql;
+    return await queryBuilder;
   }
 
   create(payload: User) {

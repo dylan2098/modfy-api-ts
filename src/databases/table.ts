@@ -7,7 +7,7 @@ export default {
   role_menus: 'RoleMenu',
   addresses: 'Addresses',
   address_book: 'AddressBook',
-  key_token: 'KeyToken',
+  key_token: 'KeyTokens',
   menus: 'Menus',
 
   // product

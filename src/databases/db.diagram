@@ -92,7 +92,6 @@ Table KeyTokens {
   refresh_token string
   private_key string
   public_key string
-  refresh_token_used array_string
   date string
 }
 

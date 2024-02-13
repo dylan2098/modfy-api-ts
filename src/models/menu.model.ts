@@ -3,7 +3,7 @@ import knex from '../databases/knex';
 import { Menu } from '../types/access.type';
 
 class MenuModel {
-  async findAll () {
+  async findAll (): Promise<Menu[]> {
     return knex.select('menu_uuid', 'menu_name', 'menu_path', 'menu_status').from(table.menus);
   }
 
@@ -33,7 +33,6 @@ class MenuModel {
   }
 
   create(payload: Menu) {
-    const a = payload;
     return knex(table.menus).returning('menu_uuid').insert(payload);
   }
 

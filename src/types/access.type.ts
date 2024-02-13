@@ -11,6 +11,8 @@ export type User = {
     user_status?: number;
     user_created_at?: string;
     user_updated_at?: string;
+    access_token?: string;
+    refresh_token?: string;
 }
 
 export type Role = {
@@ -37,4 +39,12 @@ export type RoleMenu = {
   role_uuid?: string;
   menu_uuid?: string;
   menu_role_status?: number;
+}
+
+export type KeyToken = {
+  user_uuid?: string;
+  refresh_token?: string;
+  private_key?: string;
+  public_key?: string;
+  key_token_updated_at?: string;
 }

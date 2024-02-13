@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import crypto from 'node:crypto';
 import UserModel from '../models/user.model';
 import utils from '../utils/utils';
+import { createTokenPair } from '../utils/auth.util';
 import { hash } from '../helpers/hash';
 import { User } from '../types/access.type';
 import { USER_STATUS } from '../core/access/user.core';
@@ -16,6 +17,7 @@ import {
   ForbiddenError,
 } from '../utils/error.response';
 import { USER_ROLE_STATUS } from '../core/access/userRole.core';
+import keyTokenModel from '../models/keyToken.model';
 
 class UserService {
   signUp = async (payload: User) => {
@@ -108,22 +110,34 @@ class UserService {
         throw new BadRequestError('User is not registered or activated');
       }
 
-      const match = await bcrypt.compare(user_password as string, foundUser[0].user_password as string);
+      const match = await bcrypt.compare(
+        user_password as string,
+        foundUser[0].user_password as string
+      );
       if (!match) throw new AuthFailureError('Authentication error');
 
       const privateKey = crypto.randomBytes(64).toString('hex');
       const publicKey = crypto.randomBytes(64).toString('hex');
 
-      // const tokens = await createTokenPair(
-      //   { userId: foundShop._id, email },
-      //   publicKey,
-      //   privateKey
-      // );
+      const hashData = { user_uuid: foundUser[0].user_uuid };
+      const tokens = await createTokenPair(hashData, publicKey, privateKey);
+        
+      await keyTokenModel.create({
+        user_uuid: foundUser[0].user_uuid,
+        refresh_token: tokens.refresh_token,
+        private_key: privateKey,
+        public_key: publicKey
+      });
+
+      const result = foundUser[0];
+      result.access_token = tokens.access_token;
+      result.refresh_token = tokens.refresh_token; 
+      delete result.user_password;
+      
+      return [result];  
     } catch (error) {
       throw error;
     }
-
-    return [];
   };
 }
 

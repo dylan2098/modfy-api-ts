@@ -4,7 +4,7 @@ import { Role } from '../types/access.type';
 
 class RoleModel {
   
-  findAll(){
+  findAll() : Promise<Role[]>{
     return knex.select('role_uuid', 'role_name', 'role_status').from(table.roles);
   }
 
