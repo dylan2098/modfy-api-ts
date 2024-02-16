@@ -20,6 +20,12 @@ class UserController {
       metadata: await UserService.login(req.body),
     }).send(res);
   }
+
+  refreshToken = async (req: Request, res: Response) => {
+    new SuccessResponse({
+      metadata: await UserService.refreshToken(req.body),
+    }).send(res);
+  }
 }
 
 export default new UserController();

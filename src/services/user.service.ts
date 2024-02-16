@@ -139,6 +139,14 @@ class UserService {
       throw error;
     }
   };
+
+  refreshToken = async (payload: User) => {
+    try {
+      return payload;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new UserService();
