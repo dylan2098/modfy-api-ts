@@ -14,10 +14,9 @@ class KeyTokenService {
         return knex(table.key_token)
         .where('user_uuid', payload.user_uuid)
         .andWhere('ip_address', payload.ip_address)
-        .select('refresh_token').first();
+        .select(['refresh_token', 'private_key', 'public_key']).first();
     }
     
-
     update = async (payload: KeyToken) => {
         const dataUpdate = payload;
 
