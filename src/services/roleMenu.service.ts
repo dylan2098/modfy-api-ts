@@ -12,8 +12,8 @@ class RoleMenuService {
         throw new BadRequestError('Create failed');
       }
 
-      const isExists = await RoleMenuModel.existsOne({ menu_uuid, role_uuid });
-      if (isExists) {
+      const exists = await RoleMenuModel.exists({ menu_uuid, role_uuid });
+      if (exists) {
         throw new BadRequestError('Data exists');
       }
 
@@ -37,8 +37,8 @@ class RoleMenuService {
         throw new BadRequestError('Create failed');
       }
 
-      const isExists = await RoleMenuModel.existsOne({ menu_uuid, role_uuid });
-      if (!isExists) {
+      const exists = await RoleMenuModel.exists({ menu_uuid, role_uuid });
+      if (!exists) {
         throw new BadRequestError('Data not exists');
       }
 
@@ -62,8 +62,8 @@ class RoleMenuService {
         throw new BadRequestError('Create failed');
       }
 
-      const isExists = await RoleMenuModel.existsOne({ menu_uuid, role_uuid });
-      if (!isExists) {
+      const exists = await RoleMenuModel.exists({ menu_uuid, role_uuid });
+      if (!exists) {
         throw new BadRequestError('Data exists');
       }
 

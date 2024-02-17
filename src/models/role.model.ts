@@ -8,7 +8,7 @@ class RoleModel {
     return knex.select('role_uuid', 'role_name', 'role_status').from(table.roles);
   }
 
-  async existsOne(payload: Role) {
+  async exists(payload: Role) {
     const { role_uuid, role_name } = payload;
     const sql = knex.select('role_uuid').from(table.roles).first();
 

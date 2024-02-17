@@ -14,8 +14,8 @@ class RoleService {
 
       role_name = role_name.toLowerCase();
 
-      const isExists = await RoleModel.existsOne({ role_name });
-      if (isExists) {
+      const exists = await RoleModel.exists({ role_name });
+      if (exists) {
         throw new BadRequestError('Role exists');
       }
 
@@ -39,9 +39,9 @@ class RoleService {
 
       const { role_uuid } = payload;
 
-      const isExists = await RoleModel.existsOne({ role_uuid });
+      const exists = await RoleModel.exists({ role_uuid });
 
-      if (!isExists) {
+      if (!exists) {
         throw new BadRequestError('Role not exists');
       }
 
@@ -65,13 +65,16 @@ class RoleService {
 
       const { role_uuid } = payload;
 
-      const isExists = await RoleModel.existsOne({ role_uuid });
+      const exists = await RoleModel.exists({ role_uuid });
 
-      if (!isExists) {
+      if (!exists) {
         throw new BadRequestError('Role not exists');
       }
 
-      const resultDelete = await RoleModel.update({ role_uuid, role_status: ROLE_STATUS.BLOCK });
+      const resultDelete = await RoleModel.update({
+        role_uuid,
+        role_status: ROLE_STATUS.BLOCK,
+      });
 
       return resultDelete;
     } catch (error) {
@@ -87,18 +90,18 @@ class RoleService {
     }
   };
 
-  getRoleCustomerUUID = async () => {
+  getRole = async (type: string) => {
     try {
-        const roleCustomer = await RoleModel.findOne({ role_name: 'customer' }); 
-        if(roleCustomer && roleCustomer.role_uuid) {
-            return roleCustomer.role_uuid;
-        }
-        
-        throw new BadRequestError('Role not exists');
+      const roleCustomer = await RoleModel.findOne({ role_name: type });
+      if (roleCustomer && roleCustomer.role_uuid) {
+        return roleCustomer.role_uuid;
+      }
+
+      throw new BadRequestError('Role not exists');
     } catch (error) {
-        throw error;
+      throw error;
     }
-  }
+  };
 }
 
 export default new RoleService();

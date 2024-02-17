@@ -3,7 +3,7 @@ import table from '../databases/table';
 import { RoleMenu } from '../types/access.type';
 
 class RoleMenuModel {
-  async existsOne(payload: RoleMenu) {
+  async exists(payload: RoleMenu) {
     const { role_uuid, menu_uuid } = payload;
     const sql = knex.select('role_uuid', 'menu_uuid').from(table.role_menus).first();
 

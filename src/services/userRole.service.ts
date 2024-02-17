@@ -12,8 +12,8 @@ class UserRoleService {
         throw new BadRequestError('Create failed');
       }
 
-      const isExists = await UserRoleModel.existsOne({ user_uuid, role_uuid });
-      if (isExists) {
+      const exists = await UserRoleModel.exists({ user_uuid, role_uuid });
+      if (exists) {
         throw new BadRequestError('Data exists');
       }
 
@@ -37,8 +37,8 @@ class UserRoleService {
         throw new BadRequestError('Update failed');
       }
 
-      const isExists = await UserRoleModel.existsOne({ user_uuid, role_uuid });
-      if (!isExists) {
+      const exists = await UserRoleModel.exists({ user_uuid, role_uuid });
+      if (!exists) {
         throw new BadRequestError('Data not exists');
       }
 
@@ -63,8 +63,8 @@ class UserRoleService {
         throw new BadRequestError('Delete failed');
       }
 
-      const isExists = await UserRoleModel.existsOne({ user_uuid, role_uuid });
-      if (!isExists) {
+      const exists = await UserRoleModel.exists({ user_uuid, role_uuid });
+      if (!exists) {
         throw new BadRequestError('Data not exists');
       }
 

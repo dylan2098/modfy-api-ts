@@ -7,7 +7,7 @@ class MenuModel {
     return knex.select('menu_uuid', 'menu_name', 'menu_path', 'menu_status').from(table.menus);
   }
 
-  async existsOne (payload: Menu) {
+  async exists (payload: Menu) {
     const {menu_uuid, menu_name, menu_path} = payload;
     const sql = knex.select('menu_uuid').from(table.menus).first();
 

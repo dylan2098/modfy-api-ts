@@ -15,8 +15,8 @@ class MenuService {
       menu_name = menu_name.toLowerCase();
       menu_path = menu_path.toLowerCase();
 
-      const isExists = await MenuModel.existsOne({ menu_name, menu_path });
-      if (isExists) {
+      const exists = await MenuModel.exists({ menu_name, menu_path });
+      if (exists) {
         throw new BadRequestError('Menu exists');
       }
 
@@ -48,9 +48,9 @@ class MenuService {
 
       const { menu_uuid } = payload;
 
-      const isExists = await MenuModel.existsOne({ menu_uuid });
+      const exists = await MenuModel.exists({ menu_uuid });
 
-      if (!isExists) {
+      if (!exists) {
         throw new BadRequestError('Role not exists');
       }
 
@@ -78,9 +78,9 @@ class MenuService {
 
       const { menu_uuid } = payload;
 
-      const isExists = await MenuModel.existsOne({ menu_uuid });
+      const exists = await MenuModel.exists({ menu_uuid });
 
-      if (!isExists) {
+      if (!exists) {
         throw new BadRequestError('Not exists');
       }
 

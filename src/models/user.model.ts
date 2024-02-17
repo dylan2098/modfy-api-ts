@@ -57,6 +57,26 @@ class UserModel {
     payload.user_updated_at = utils.defaultNow();
     return knex(table.users).where('user_uuid', payload.user_uuid).update(payload);
   }
+
+  
+  async exists(payload: User) : Promise<boolean> {
+    const queryBuilder = knex.select('user_uuid').from(table.users)
+
+    if (payload.user_uuid) {
+      queryBuilder.where('user_uuid', payload.user_uuid);
+    }
+
+    if (payload.user_email) {
+      queryBuilder.where('user_email', payload.user_email);
+    }
+
+    if (payload.user_phone) {
+      queryBuilder.where('user_phone', payload.user_phone);
+    }
+
+    const result = await queryBuilder;
+    return result.length > 0;
+  }
 }
 
 export default new UserModel();

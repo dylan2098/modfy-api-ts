@@ -5,30 +5,20 @@ import utils from '../utils/utils';
 import { createTokenPair } from '../utils/auth.util';
 import { hash } from '../helpers/hash';
 import { User } from '../types/access.type';
+import { ROLE } from '../core/access/role.core';
 import { USER_STATUS } from '../core/access/user.core';
 import { emitRegisterSuccess } from '../events/user.event';
 import RoleService from './role.service';
 import UserRoleService from './userRole.service';
 
-import {
-  BadRequestError,
-  ConflictRequestError,
-  AuthFailureError,
-  ForbiddenError,
-} from '../utils/error.response';
+import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
 import { USER_ROLE_STATUS } from '../core/access/userRole.core';
 import keyTokenModel from '../models/keyToken.model';
 
 class UserService {
   signUp = async (payload: User) => {
     try {
-      const {
-        user_email,
-        user_password,
-        user_first_name,
-        user_last_name,
-        user_phone,
-      } = payload;
+      const { user_email, user_password, user_first_name, user_last_name, user_phone } = payload;
 
       if (!utils.regexEmail(user_email as string)) {
         throw new BadRequestError('Email invalid.');
@@ -39,16 +29,15 @@ class UserService {
       }
 
       // check user exists
-      const userExists = await UserModel.find({ user_email, user_phone });
-      if (userExists && userExists.length > 0) {
+      const exists = await UserModel.exists({ user_email, user_phone });
+      if (exists) {
         throw new BadRequestError('User already registered.');
       }
 
       const passwordHash = await hash(user_password as string);
       payload.user_password = passwordHash;
 
-      const newUser = (await UserModel.create(payload)) as User[];
-
+      const newUser = await UserModel.create(payload);
       if (!newUser) {
         throw new BadRequestError('Create User Failed.');
       }
@@ -74,8 +63,8 @@ class UserService {
         throw new BadRequestError('Active User Failed.');
       }
 
-      const user = await UserModel.find({ user_uuid: code });
-      if (!user || user.length == 0) {
+      const exists = await UserModel.exists({ user_uuid: code });
+      if (!exists) {
         throw new BadRequestError('Active User Failed.');
       }
 
@@ -85,14 +74,14 @@ class UserService {
       });
 
       if (resultUpdate) {
-        const roleCustomerUUID = await RoleService.getRoleCustomerUUID();
-        const optionActiveAcocunt = {
+        const roleCustomerUUID = await RoleService.getRole(ROLE.CUSTOMER);
+        const optionActiveAccount = {
           user_uuid: code,
           role_uuid: roleCustomerUUID,
           user_role_status: USER_ROLE_STATUS.ACTIVE,
         };
 
-        await UserRoleService.create(optionActiveAcocunt);
+        await UserRoleService.update(optionActiveAccount);
       }
 
       return resultUpdate;
@@ -110,10 +99,7 @@ class UserService {
         throw new BadRequestError('User is not registered or activated');
       }
 
-      const match = await bcrypt.compare(
-        user_password as string,
-        foundUser[0].user_password as string
-      );
+      const match = await bcrypt.compare(user_password as string, foundUser[0].user_password as string);
       if (!match) throw new AuthFailureError('Authentication error');
 
       const privateKey = crypto.randomBytes(64).toString('hex');
@@ -121,20 +107,20 @@ class UserService {
 
       const hashData = { user_uuid: foundUser[0].user_uuid };
       const tokens = await createTokenPair(hashData, publicKey, privateKey);
-        
+
       await keyTokenModel.create({
         user_uuid: foundUser[0].user_uuid,
         refresh_token: tokens.refresh_token,
         private_key: privateKey,
-        public_key: publicKey
+        public_key: publicKey,
       });
 
       const result = foundUser[0];
       result.access_token = tokens.access_token;
-      result.refresh_token = tokens.refresh_token; 
+      result.refresh_token = tokens.refresh_token;
       delete result.user_password;
-      
-      return [result];  
+
+      return [result];
     } catch (error) {
       throw error;
     }
@@ -146,7 +132,7 @@ class UserService {
     } catch (error) {
       throw error;
     }
-  }
+  };
 }
 
 export default new UserService();
