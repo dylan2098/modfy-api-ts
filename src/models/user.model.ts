@@ -46,7 +46,7 @@ class UserModel {
     return await queryBuilder;
   }
 
-  create(payload: User) {
+  create(payload: User) : Promise<User[]>{
     payload.user_created_at = utils.defaultNow();
     payload.user_updated_at = utils.defaultNow();
     

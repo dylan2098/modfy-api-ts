@@ -13,19 +13,19 @@ class UserController {
     new SuccessResponse({
       metadata: await UserService.authenticateEmail(req.params),
     }).send(res);
-  }
+  };
 
   login = async (req: Request, res: Response) => {
     new SuccessResponse({
       metadata: await UserService.login(req.body),
     }).send(res);
-  }
+  };
 
   refreshToken = async (req: Request, res: Response) => {
     new SuccessResponse({
       metadata: await UserService.refreshToken(req.body),
     }).send(res);
-  }
+  };
 }
 
 export default new UserController();
