@@ -52,6 +52,8 @@ export async function up(knex: Knex): Promise<void> {
       table.uuid('user_uuid').references('user_uuid').inTable('Users');
       table.string('refresh_token');
       table.string('ip_address').notNullable();
+      table.string('private_key');
+      table.string('public_key');
       table.datetime('updated_at', { precision: 6 }).defaultTo(knex.fn.now(6));
     })
 

@@ -57,31 +57,31 @@ class UserService {
 
   authenticateEmail = async (param) => {
     try {
-      const { code } = param;
+      const { user_uuid } = param;
 
-      if (!code) {
+      if (!user_uuid) {
         throw new BadRequestError('Active User Failed.');
       }
 
-      const exists = await UserModel.exists({ user_uuid: code });
+      const exists = await UserModel.exists({ user_uuid });
       if (!exists) {
         throw new BadRequestError('Active User Failed.');
       }
 
       const resultUpdate = await UserModel.update({
-        user_uuid: code,
+        user_uuid,
         user_status: USER_STATUS.ACTIVE,
       });
 
       if (resultUpdate) {
         const roleCustomerUUID = await RoleService.getRole(ROLE.CUSTOMER);
         const optionActiveAccount = {
-          user_uuid: code,
+          user_uuid,
           role_uuid: roleCustomerUUID,
           user_role_status: USER_ROLE_STATUS.ACTIVE,
         };
 
-        await UserRoleService.update(optionActiveAccount);
+        await UserRoleService.create(optionActiveAccount);
       }
 
       return resultUpdate;
