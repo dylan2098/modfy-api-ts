@@ -55,9 +55,9 @@ class UserService {
     }
   };
 
-  authenticateEmail = async (param) => {
+  authenticateEmail = async (payload: User) => {
     try {
-      const { user_id } = param;
+      const { user_id } = payload;
 
       if (!user_id) {
         throw new BadRequestError('Active User Failed.');
@@ -68,12 +68,12 @@ class UserService {
         throw new BadRequestError('Active User Failed.');
       }
 
-      const resultUpdate = await UserModel.update({
+      const result = await UserModel.update({
         user_id,
         user_status: USER_STATUS.ACTIVE,
       });
 
-      if (resultUpdate) {
+      if (result) {
         const roleCustomerUUID = await RoleService.getRole(ROLE.CUSTOMER);
         const optionActiveAccount = {
           user_id,
@@ -84,7 +84,8 @@ class UserService {
         await UserRoleService.create(optionActiveAccount);
       }
 
-      return resultUpdate;
+      return result;
+
     } catch (error) {
       throw error;
     }
@@ -130,7 +131,7 @@ class UserService {
     try {
       const {user_id} = payload.user;
 
-      if(payload.refresh_token  !== payload.refresh_token) {
+      if(payload.refresh_token !== payload.refresh_token) {
         throw new AuthFailureError('User not registered');
       }
 
