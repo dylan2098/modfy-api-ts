@@ -51,11 +51,8 @@ app.use((error: ResponseType, req: Request, res: Response, next: NextFunction) =
     code: code,
     message: error.message || 'Internal Server Error',
     metadata: [],
+    stack: error.stack || 'No stack trace available'
   };
-
-  // if (utils.environment() === 'development') {
-  //   body.stack = error.stack || 'No stack trace available';
-  // }
 
   return res.status(code).json(body);
 });

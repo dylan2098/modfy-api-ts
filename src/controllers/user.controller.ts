@@ -25,7 +25,9 @@ class UserController {
   refreshToken = async (req: CustomRequest, res: Response) => {
     new SuccessResponse({
       metadata: await UserService.refreshToken({
-        user: req.user,
+        userId: req.userId,
+        keyStore: req.keyStore,
+        refreshToken: req.refreshToken
       }),
     }).send(res);
   };

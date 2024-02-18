@@ -129,20 +129,27 @@ class UserService {
 
   refreshToken = async (payload: any) => {
     try {
-      const {user_id} = payload.user;
+      const {userId, refreshToken, keyStore} = payload;
 
-      if(payload.refresh_token !== payload.refresh_token) {
-        throw new AuthFailureError('User not registered');
+      if(refreshToken !== keyStore.refresh_token) {
+        throw new AuthFailureError("Account not registered!");
       }
 
-      const tokens = await createTokenPair({user_id}, payload.public_key, payload.private_key);
+    
 
-      keyTokenModel.update({user_id, refresh_token: tokens.refresh_token});
+      
+      
 
-      return {
-        user: payload.user,
-        tokens
-      }
+      // const tokens = await createTokenPair({user_id: userId}, payload.public_key, payload.private_key);
+
+      // keyTokenModel.update({user_id: userId, refresh_token: tokens.refresh_token});
+
+      // return {
+      //   user: payload.userId,
+      //   tokens
+      // }
+
+      return [];
     } catch (error) {
       throw error;
     }

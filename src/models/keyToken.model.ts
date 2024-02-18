@@ -12,9 +12,8 @@ class KeyTokenService {
 
     find = async (payload: KeyToken) => {
         return knex(table.key_token)
-        .where('user_id', payload.user_id)
-        .andWhere('ip_address', payload.ip_address)
-        .select(['refresh_token', 'private_key', 'public_key']).first();
+        .where('key_token_id', payload.key_token_id)
+        .select(['refresh_token','private_key', 'public_key']).first();
     }
     
     update = async (payload: KeyToken) => {

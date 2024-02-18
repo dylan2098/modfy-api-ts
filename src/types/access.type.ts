@@ -42,6 +42,7 @@ export type RoleMenu = {
 }
 
 export type KeyToken = {
+  key_token_id?: number;
   user_id?: string;
   refresh_token?: string;
   private_key?: string;
