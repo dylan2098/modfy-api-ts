@@ -4,16 +4,16 @@ import { UserRole } from '../types/access.type';
 
 class UserRoleModel {
   async exists(payload: UserRole) {
-    const { role_uuid, user_uuid } = payload;
-    const sql = knex.select('role_uuid', 'user_uuid').from(table.user_role).first();
+    const { role_id, user_id } = payload;
+    const sql = knex.select('role_id', 'user_id').from(table.user_role).first();
 
-    if (role_uuid && user_uuid) {
-      sql.where('role_uuid', role_uuid).andWhere('user_uuid', user_uuid);
+    if (role_id && user_id) {
+      sql.where('role_id', role_id).andWhere('user_id', user_id);
     }
 
     const result = await sql;
 
-    if (result && result.role_uuid && result.user_uuid) {
+    if (result && result.role_id && result.user_id) {
       return true;
     }
 
@@ -21,13 +21,13 @@ class UserRoleModel {
   }
 
   create(payload: UserRole) {
-    return knex(table.user_role).returning(['role_uuid', 'user_uuid']).insert(payload);
+    return knex(table.user_role).returning(['role_id', 'user_id']).insert(payload);
   }
 
   update(payload: UserRole) {
     return knex(table.user_role)
-      .where('role_uuid', payload.role_uuid)
-      .andWhere('user_uuid', payload.user_uuid)
+      .where('role_id', payload.role_id)
+      .andWhere('user_id', payload.user_id)
       .update(payload);
   }
 }

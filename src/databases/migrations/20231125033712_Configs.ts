@@ -17,7 +17,7 @@ export async function up(knex: Knex): Promise<void> {
     })
     .createTable('Services', (table) => {
         table.increments('service_id').primary().unique();
-        table.uuid('service_uuid').notNullable();;
+        table.uuid('service_id').notNullable();;
         table.string('service_name').notNullable();
         table.string('service_host').notNullable();
         table.string('service_username').notNullable();

@@ -5,7 +5,7 @@ export async function up(knex: Knex): Promise<void> {
     return knex.schema
     .createTable('Baskets', (table) => {
         table.increments('basket_id').primary().unique();
-        table.uuid('basket_uuid').notNullable();;
+        table.uuid('basket_id').notNullable();;
         table.integer('billing_id').references('billing_id').inTable('Billings');
         table.integer('basket_total_items').notNullable(); // total items in basket
         table.float('basket_total_gross_price').notNullable();

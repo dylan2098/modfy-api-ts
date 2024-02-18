@@ -6,13 +6,13 @@ import { BadRequestError} from '../utils/error.response';
 class RoleMenuService {
   create = async (payload: RoleMenu) => {
     try {
-      let { menu_uuid, role_uuid } = payload;
+      let { menu_id, role_id } = payload;
 
-      if (!menu_uuid) {
+      if (!menu_id) {
         throw new BadRequestError('Create failed');
       }
 
-      const exists = await RoleMenuModel.exists({ menu_uuid, role_uuid });
+      const exists = await RoleMenuModel.exists({ menu_id, role_id });
       if (exists) {
         throw new BadRequestError('Data exists');
       }
@@ -31,13 +31,13 @@ class RoleMenuService {
 
   update = async (payload: RoleMenu) => {
     try {
-      let { menu_uuid, role_uuid } = payload;
+      let { menu_id, role_id } = payload;
 
-      if (!menu_uuid) {
+      if (!menu_id) {
         throw new BadRequestError('Create failed');
       }
 
-      const exists = await RoleMenuModel.exists({ menu_uuid, role_uuid });
+      const exists = await RoleMenuModel.exists({ menu_id, role_id });
       if (!exists) {
         throw new BadRequestError('Data not exists');
       }
@@ -56,13 +56,13 @@ class RoleMenuService {
 
   delete = async (payload: RoleMenu) => {
     try {
-      let { menu_uuid, role_uuid } = payload;
+      let { menu_id, role_id } = payload;
 
-      if (!menu_uuid) {
+      if (!menu_id) {
         throw new BadRequestError('Create failed');
       }
 
-      const exists = await RoleMenuModel.exists({ menu_uuid, role_uuid });
+      const exists = await RoleMenuModel.exists({ menu_id, role_id });
       if (!exists) {
         throw new BadRequestError('Data exists');
       }

@@ -4,15 +4,15 @@ import { Menu } from '../types/access.type';
 
 class MenuModel {
   async findAll (): Promise<Menu[]> {
-    return knex.select('menu_uuid', 'menu_name', 'menu_path', 'menu_status').from(table.menus);
+    return knex.select('menu_id', 'menu_name', 'menu_path', 'menu_status').from(table.menus);
   }
 
   async exists (payload: Menu) {
-    const {menu_uuid, menu_name, menu_path} = payload;
-    const sql = knex.select('menu_uuid').from(table.menus).first();
+    const {menu_id, menu_name, menu_path} = payload;
+    const sql = knex.select('menu_id').from(table.menus).first();
 
-    if (menu_uuid) {
-      sql.where({menu_uuid: menu_uuid});
+    if (menu_id) {
+      sql.where({menu_id: menu_id});
     }
 
     if (menu_name) {
@@ -25,7 +25,7 @@ class MenuModel {
 
     const result = await sql;
 
-    if(result && result.menu_uuid) {
+    if(result && result.menu_id) {
       return true;
     }
 
@@ -33,11 +33,11 @@ class MenuModel {
   }
 
   create(payload: Menu) {
-    return knex(table.menus).returning('menu_uuid').insert(payload);
+    return knex(table.menus).returning('menu_id').insert(payload);
   }
 
   update(payload: Menu) {
-    return knex(table.menus).where('menu_uuid', payload.menu_uuid).update(payload);
+    return knex(table.menus).where('menu_id', payload.menu_id).update(payload);
   }
 }
 

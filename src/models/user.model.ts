@@ -6,7 +6,7 @@ import utils from '../utils/utils';
 class UserModel {
   async find(payload: User) : Promise<User[]> {
     const columns = [
-      'Users.user_uuid',
+      'Users.user_id',
       'user_email',
       'user_first_name',
       'user_last_name',
@@ -21,14 +21,14 @@ class UserModel {
 
     let queryBuilder = knex.select(columns)
                       .from<User>(table.users)
-                      .innerJoin(table.user_role, 'Users.user_uuid', 'UserRole.user_uuid')
-                      .innerJoin(table.roles, 'UserRole.role_uuid', 'Roles.role_uuid')
+                      .innerJoin(table.user_role, 'Users.user_id', 'UserRole.user_id')
+                      .innerJoin(table.roles, 'UserRole.role_id', 'Roles.role_id')
                       ;
 
-    const { user_uuid, user_email, user_phone} = payload;
+    const { user_id, user_email, user_phone} = payload;
 
-    if (user_uuid) {
-      queryBuilder.where('user_uuid', user_uuid);
+    if (user_id) {
+      queryBuilder.where('user_id', user_id);
     }
 
     if (user_email) {
@@ -50,20 +50,20 @@ class UserModel {
     payload.user_created_at = utils.defaultNow();
     payload.user_updated_at = utils.defaultNow();
     
-    return knex(table.users).returning('user_uuid').insert(payload);
+    return knex(table.users).returning('user_id').insert(payload);
   }
 
   update(payload: User) {
     payload.user_updated_at = utils.defaultNow();
-    return knex(table.users).where('user_uuid', payload.user_uuid).update(payload);
+    return knex(table.users).where('user_id', payload.user_id).update(payload);
   }
 
   
   async exists(payload: User) : Promise<boolean> {
-    const queryBuilder = knex.select('user_uuid').from(table.users)
+    const queryBuilder = knex.select('user_id').from(table.users)
 
-    if (payload.user_uuid) {
-      queryBuilder.where('user_uuid', payload.user_uuid);
+    if (payload.user_id) {
+      queryBuilder.where('user_id', payload.user_id);
     }
 
     if (payload.user_email) {

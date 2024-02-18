@@ -1,5 +1,5 @@
 export type User = {
-    user_uuid?: string;
+    user_id?: string;
     user_email?: string;
     user_password?: string;
     user_first_name?: string;
@@ -16,33 +16,33 @@ export type User = {
 }
 
 export type Role = {
-  role_uuid?: string;
+  role_id?: string;
   role_name?: string;
   role_description?: string;
   role_status?: number;
 }
 
 export type Menu = {
-  menu_uuid?: string;
+  menu_id?: string;
   menu_name?: string;
   menu_path?: string;
   menu_status?: number;
 }
 
 export type UserRole = {
-  user_uuid?: string;
-  role_uuid?: string;
+  user_id?: string;
+  role_id?: string;
   user_role_status?: number;
 }
 
 export type RoleMenu = {
-  role_uuid?: string;
-  menu_uuid?: string;
+  role_id?: string;
+  menu_id?: string;
   menu_role_status?: number;
 }
 
 export type KeyToken = {
-  user_uuid?: string;
+  user_id?: string;
   refresh_token?: string;
   private_key?: string;
   public_key?: string;

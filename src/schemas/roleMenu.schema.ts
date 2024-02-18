@@ -1,14 +1,14 @@
 export default {
     type: 'object',
     properties: {
-      role_uuid: {
+      role_id: {
         type: 'string',
       },
-      menu_uuid: {
+      menu_id: {
         type: 'string',
       }
     },
-    required: ['role_uuid', 'menu_uuid'],
+    required: ['role_id', 'menu_id'],
     additionalProperties: false,
   };
   

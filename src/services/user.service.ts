@@ -46,7 +46,7 @@ class UserService {
         user_email,
         user_first_name,
         user_last_name,
-        user_uuid: newUser[0].user_uuid,
+        user_id: newUser[0].user_id,
       });
 
       return newUser;
@@ -57,27 +57,27 @@ class UserService {
 
   authenticateEmail = async (param) => {
     try {
-      const { user_uuid } = param;
+      const { user_id } = param;
 
-      if (!user_uuid) {
+      if (!user_id) {
         throw new BadRequestError('Active User Failed.');
       }
 
-      const exists = await UserModel.exists({ user_uuid });
+      const exists = await UserModel.exists({ user_id });
       if (!exists) {
         throw new BadRequestError('Active User Failed.');
       }
 
       const resultUpdate = await UserModel.update({
-        user_uuid,
+        user_id,
         user_status: USER_STATUS.ACTIVE,
       });
 
       if (resultUpdate) {
         const roleCustomerUUID = await RoleService.getRole(ROLE.CUSTOMER);
         const optionActiveAccount = {
-          user_uuid,
-          role_uuid: roleCustomerUUID,
+          user_id,
+          role_id: roleCustomerUUID,
           user_role_status: USER_ROLE_STATUS.ACTIVE,
         };
 
@@ -105,11 +105,11 @@ class UserService {
       const privateKey = crypto.randomBytes(64).toString('hex');
       const publicKey = crypto.randomBytes(64).toString('hex');
 
-      const hashData = { user_uuid: foundUser[0].user_uuid };
+      const hashData = { user_id: foundUser[0].user_id };
       const tokens = await createTokenPair(hashData, publicKey, privateKey);
 
       await keyTokenModel.create({
-        user_uuid: foundUser[0].user_uuid,
+        user_id: foundUser[0].user_id,
         refresh_token: tokens.refresh_token,
         private_key: privateKey,
         public_key: publicKey,
@@ -126,9 +126,22 @@ class UserService {
     }
   };
 
-  refreshToken = async (payload: User) => {
+  refreshToken = async (payload: any) => {
     try {
-      return payload;
+      const {user_id} = payload.user;
+
+      if(payload.refresh_token  !== payload.refresh_token) {
+        throw new AuthFailureError('User not registered');
+      }
+
+      const tokens = await createTokenPair({user_id}, payload.public_key, payload.private_key);
+
+      keyTokenModel.update({user_id, refresh_token: tokens.refresh_token});
+
+      return {
+        user: payload.user,
+        tokens
+      }
     } catch (error) {
       throw error;
     }

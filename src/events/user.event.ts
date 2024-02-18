@@ -10,10 +10,10 @@ const eventEmitter = new EventEmitter();
  */
 const eventRegisterAccountSuccess = 'account:registerSuccess';
 eventEmitter.on(eventRegisterAccountSuccess, async (data: User) => {
-  const { user_email, user_uuid} = data;
+  const { user_email, user_id} = data;
 
-  if (user_email && user_uuid) {
-    sendAuthenticateUserEmail(user_email, user_uuid);
+  if (user_email && user_id) {
+    sendAuthenticateUserEmail(user_email, user_id);
   }
 })
 

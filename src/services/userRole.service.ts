@@ -6,13 +6,13 @@ import { BadRequestError} from '../utils/error.response';
 class UserRoleService {
   create = async (payload: UserRole) => {
     try {
-      let { user_uuid, role_uuid } = payload;
+      let { user_id, role_id } = payload;
 
-      if (!user_uuid || !role_uuid) {
+      if (!user_id || !role_id) {
         throw new BadRequestError('Create failed');
       }
 
-      const exists = await UserRoleModel.exists({ user_uuid, role_uuid });
+      const exists = await UserRoleModel.exists({ user_id, role_id });
       if (exists) {
         throw new BadRequestError('Data exists');
       }
@@ -31,13 +31,13 @@ class UserRoleService {
 
   update = async (payload: UserRole) => {
     try {
-      let { user_uuid, role_uuid } = payload;
+      let { user_id, role_id } = payload;
 
-      if (!user_uuid || !role_uuid) {
+      if (!user_id || !role_id) {
         throw new BadRequestError('Update failed');
       }
 
-      const exists = await UserRoleModel.exists({ user_uuid, role_uuid });
+      const exists = await UserRoleModel.exists({ user_id, role_id });
       if (!exists) {
         throw new BadRequestError('Data not exists');
       }
@@ -57,13 +57,13 @@ class UserRoleService {
 
   delete = async (payload: UserRole) => {
     try {
-      let { user_uuid, role_uuid } = payload;
+      let { user_id, role_id } = payload;
 
-      if (!user_uuid || !role_uuid) {
+      if (!user_id || !role_id) {
         throw new BadRequestError('Delete failed');
       }
 
-      const exists = await UserRoleModel.exists({ user_uuid, role_uuid });
+      const exists = await UserRoleModel.exists({ user_id, role_id });
       if (!exists) {
         throw new BadRequestError('Data not exists');
       }

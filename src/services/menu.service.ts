@@ -42,13 +42,13 @@ class MenuService {
 
   async update(payload: Menu) {
     try {
-      if (!payload || !payload.menu_uuid) {
+      if (!payload || !payload.menu_id) {
         throw new BadRequestError('Update menu failed');
       }
 
-      const { menu_uuid } = payload;
+      const { menu_id } = payload;
 
-      const exists = await MenuModel.exists({ menu_uuid });
+      const exists = await MenuModel.exists({ menu_id });
 
       if (!exists) {
         throw new BadRequestError('Role not exists');
@@ -72,19 +72,19 @@ class MenuService {
 
   async delete(payload: Menu) {
     try {
-      if (!payload || !payload.menu_uuid) {
+      if (!payload || !payload.menu_id) {
         throw new BadRequestError('Delete failed');
       }
 
-      const { menu_uuid } = payload;
+      const { menu_id } = payload;
 
-      const exists = await MenuModel.exists({ menu_uuid });
+      const exists = await MenuModel.exists({ menu_id });
 
       if (!exists) {
         throw new BadRequestError('Not exists');
       }
 
-      const resultDelete = await MenuModel.update({ menu_uuid, menu_status: MENU_STATUS.BLOCK });
+      const resultDelete = await MenuModel.update({ menu_id, menu_status: MENU_STATUS.BLOCK });
 
       return resultDelete;
     } catch (error) {

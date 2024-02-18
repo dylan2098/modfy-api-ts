@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken';
 import asyncHandler from '../helpers/asyncHandler';
 import { AuthFailureError, NotFoundError } from './error.response';
 import keyTokenService from '../services/keyToken.service';
+import { CustomRequest } from '../core/interfaces/request';
+import ip from 'ip';
 
 const HEADER = {
   AUTHORIZATION: 'authorization',
@@ -16,6 +18,10 @@ export const createTokenPair = async (payload: User, publicKey: string, privateK
     const accessToken = jwt.sign(payload, publicKey, {
       expiresIn: '2 days',
     });
+    
+    const refreshToken = await jwt.sign(payload, privateKey, {
+      expiresIn: "7 days",
+  });
 
     jwt.verify(accessToken, publicKey, (err, decode) => {
       if (err) {
@@ -25,7 +31,7 @@ export const createTokenPair = async (payload: User, publicKey: string, privateK
       }
     });
 
-    return { access_token: accessToken, refresh_token: privateKey };
+    return { access_token: accessToken, refresh_token: refreshToken };
   } catch (error) {
     throw error;
   }
@@ -36,22 +42,18 @@ export const verifyJWT = async (token: any, keySecret: any) => {
 };
 
 export const authentication = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const userUUID = req.headers[HEADER.CLIENT_ID] as string;
-  if (!userUUID) throw new AuthFailureError('Invalid Request');
+  const userId = req.headers[HEADER.CLIENT_ID] as string;
+  if (!userId) 
+    throw new AuthFailureError('Invalid Request');
 
-  const keyStore = await keyTokenService.find({ user_uuid: userUUID, ip_address: req.ip });
-  interface CustomRequest extends Request {
-    keyStore: any;
-    user: User;
-  }
-
+  const keyStore = await keyTokenService.find({ user_id: userId, ip_address: ip.address() });
   if (!keyStore) throw new NotFoundError('Token not found');
 
   if (req.headers[HEADER.AUTHORIZATION]) {
     try {
       const refreshToken = req.headers[HEADER.REFRESH_TOKEN] as string;
       const decodeUser: any = jwt.verify(refreshToken, keyStore.private_key);
-      if (userUUID !== decodeUser.user_uuid)
+      if (userId !== decodeUser.user_id)
         throw new AuthFailureError('Invalid Request');
 
       (req as CustomRequest).keyStore = keyStore;

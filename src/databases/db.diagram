@@ -50,7 +50,7 @@ Enum core.inventory_status {
 // User & Customer
 Table Users {
   user_id int [pk, increment] 
-  user_uuid string
+  user_id string
   user_email string
   user_password string
   user_first_name string
@@ -172,7 +172,7 @@ Table ProductAttributes{
 // Product
 Table Product {
   product_id int [pk, increment]
-  product_uuid string
+  product_id string
   category_id int
   product_sku string
   product_name string
@@ -238,7 +238,7 @@ Table BasketItems {
 // Order
 Table Orders {
   order_id int [pk, increment]
-  order_uuid uuid
+  order_id uuid
 	order_status core.order_status
   order_total_gross_price float
   order_total_net_price float
@@ -253,7 +253,7 @@ Table Orders {
 Table Billings {
   billing_id int
   order_id int
-  customer_uuid string
+  customer_id string
   customer_email string
 	customer_first_name string
   customer_last_name string
@@ -292,9 +292,9 @@ table PaymentTransactions {
 
 table Shippings {
   shipping_id int
-  shipping_uuid string
+  shipping_id string
   order_id int
-  order_uuid string
+  order_id string
   shipping_method string
   shipping_carrier string // hang van chuyen
   shipping_tracking_number string
