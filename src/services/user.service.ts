@@ -134,23 +134,25 @@ class UserService {
       if(refreshToken !== keyStore.refresh_token) {
         throw new AuthFailureError("Account not registered!");
       }
-      
 
-    
+      const foundUser = await UserModel.find({user_id: userId});
+      if(!foundUser || foundUser.length == 0) {
+        throw new AuthFailureError("Account not registered!");
+      }
 
-      
-      
+      // create new refresh token and update to database
+      const hashData = { user_id: foundUser[0].user_id };
+      const tokens = await createTokenPair(hashData, keyStore.public_key, keyStore.private_key);
 
-      // const tokens = await createTokenPair({user_id: userId}, payload.public_key, payload.private_key);
+      await keyTokenModel.update({user_id: userId, refresh_token: tokens.refresh_token, key_token_id: keyStore.key_token_id});
 
-      // keyTokenModel.update({user_id: userId, refresh_token: tokens.refresh_token});
+      const result = {
+        user_id: foundUser[0].user_id,
+        access_token: tokens.access_token,
+        refresh_token: tokens.refresh_token,
+      }
 
-      // return {
-      //   user: payload.userId,
-      //   tokens
-      // }
-
-      return [];
+      return result;
     } catch (error) {
       throw error;
     }

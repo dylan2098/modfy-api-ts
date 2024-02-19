@@ -28,7 +28,7 @@ class UserModel {
     const { user_id, user_email, user_phone} = payload;
 
     if (user_id) {
-      queryBuilder.where('user_id', user_id);
+      queryBuilder.where('Users.user_id', user_id);
     }
 
     if (user_email) {

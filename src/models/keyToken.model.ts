@@ -13,19 +13,14 @@ class KeyTokenService {
     find = async (payload: KeyToken) => {
         return knex(table.key_token)
         .where('key_token_id', payload.key_token_id)
-        .select(['refresh_token','private_key', 'public_key']).first();
+        .select(['refresh_token','private_key', 'public_key', 'key_token_id']).first();
     }
     
     update = async (payload: KeyToken) => {
-        const dataUpdate = payload;
-
-        delete dataUpdate.user_id;
-        delete dataUpdate.ip_address;
-
         return knex(table.key_token)
         .where('user_id', payload.user_id)
-        .andWhere('ip_address', payload.ip_address)
-        .update(dataUpdate);    
+        .andWhere('key_token_id', payload.key_token_id)
+        .update(payload);    
     }
 
     verifyToken = async (payload: KeyToken) => {
