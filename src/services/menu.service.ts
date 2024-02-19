@@ -1,4 +1,4 @@
-import { Menu } from '../types/access.type';
+import { Menu } from '../core/types/access.type';
 import MenuModel from '../models/menu.model';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
 import { MENU_STATUS } from '../core/access/menu.core';

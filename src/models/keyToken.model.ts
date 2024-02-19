@@ -1,6 +1,6 @@
 import table from '../databases/table';
 import knex from '../databases/knex';
-import { KeyToken } from '../types/access.type';
+import { KeyToken } from '../core/types/access.type';
 import ip from 'ip';
 import moment from 'moment';
 

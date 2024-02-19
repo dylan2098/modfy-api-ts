@@ -1,6 +1,6 @@
 import knex from '../databases/knex';
 import table from '../databases/table';
-import { UserRole } from '../types/access.type';
+import { UserRole } from '../core/types/access.type';
 
 class UserRoleModel {
   async exists(payload: UserRole) {

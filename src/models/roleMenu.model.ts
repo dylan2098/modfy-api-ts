@@ -1,6 +1,6 @@
 import knex from '../databases/knex';
 import table from '../databases/table';
-import { RoleMenu } from '../types/access.type';
+import { RoleMenu } from '../core/types/access.type';
 
 class RoleMenuModel {
   async exists(payload: RoleMenu) {

@@ -1,6 +1,6 @@
 import { USER_ROLE_STATUS } from '../core/access/userRole.core';
 import UserRoleModel from '../models/userRole.model';
-import { UserRole } from '../types/access.type';
+import { UserRole } from '../core/types/access.type';
 import { BadRequestError} from '../utils/error.response';
 
 class UserRoleService {

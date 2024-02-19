@@ -1,6 +1,6 @@
 import table from '../databases/table';
 import knex from '../databases/knex';
-import { User,  } from '../types/access.type';
+import { User,  } from '../core/types/access.type';
 import utils from '../utils/utils';
 
 class UserModel {

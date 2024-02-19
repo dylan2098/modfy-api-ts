@@ -4,7 +4,7 @@ import UserModel from '../models/user.model';
 import utils from '../utils/utils';
 import { createTokenPair } from '../utils/auth.util';
 import { hash } from '../helpers/hash';
-import { User } from '../types/access.type';
+import { User } from '../core/types/access.type';
 import { ROLE } from '../core/access/role.core';
 import { USER_STATUS } from '../core/access/user.core';
 import { emitRegisterSuccess } from '../events/user.event';
@@ -134,6 +134,7 @@ class UserService {
       if(refreshToken !== keyStore.refresh_token) {
         throw new AuthFailureError("Account not registered!");
       }
+      
 
     
 

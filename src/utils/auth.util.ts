@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { KeyToken, User } from '../types/access.type';
+import { KeyToken, User } from '../core/types/access.type';
 import jwt from 'jsonwebtoken';
 import asyncHandler from '../helpers/asyncHandler';
 import { AuthFailureError, NotFoundError } from './error.response';

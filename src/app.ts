@@ -6,7 +6,7 @@ import compression from 'compression';
 import cors from 'cors';
 import limiter from './middlewares/limiter';
 import router from './routes';
-import { ResponseType } from './types/response.type';
+import { ResponseType } from './core/types/response.type';
 import _ from 'lodash';
 
 const app = express();

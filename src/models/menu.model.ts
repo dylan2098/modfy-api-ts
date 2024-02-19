@@ -1,6 +1,6 @@
 import table from '../databases/table';
 import knex from '../databases/knex';
-import { Menu } from '../types/access.type';
+import { Menu } from '../core/types/access.type';
 
 class MenuModel {
   async findAll (): Promise<Menu[]> {

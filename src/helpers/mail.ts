@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import mailConfig from '../configs/mail.config';
-import { MailType } from '../types/mail.type';
+import { MailType } from '../core/types/mail.type';
 
 async function sendEmail(payload: MailType) {
   const transporter = nodemailer.createTransport(mailConfig);

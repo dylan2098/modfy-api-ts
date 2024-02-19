@@ -1,6 +1,6 @@
 import table from '../databases/table';
 import knex from '../databases/knex';
-import { Role } from '../types/access.type';
+import { Role } from '../core/types/access.type';
 
 class RoleModel {
   

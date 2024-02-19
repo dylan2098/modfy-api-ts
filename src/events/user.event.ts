@@ -1,5 +1,5 @@
 import EventEmitter from 'node:events';
-import { User } from '../types/access.type';
+import { User } from '../core/types/access.type';
 import {sendAuthenticateUserEmail} from '../helpers/mail';
 
 const eventEmitter = new EventEmitter();

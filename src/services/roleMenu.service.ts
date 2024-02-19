@@ -1,6 +1,6 @@
 import { MENU_ROLE_STATUS } from '../core/access/roleMenu';
 import RoleMenuModel from '../models/roleMenu.model';
-import { RoleMenu } from '../types/access.type';
+import { RoleMenu } from '../core/types/access.type';
 import { BadRequestError} from '../utils/error.response';
 
 class RoleMenuService {
