@@ -43,6 +43,12 @@ export const verifyJWT = async (token: any, keySecret: any) => {
   return jwt.verify(token, keySecret);
 };
 
+
+export const nonAuthentication = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  return next();
+});
+
+
 export const authentication = asyncHandler(async (req: CustomRequest, res: Response, next: NextFunction) => {
   const userId = req.headers[HEADER.CLIENT_ID] as string;
   if (!userId) {
