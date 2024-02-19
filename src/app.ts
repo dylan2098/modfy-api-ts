@@ -8,6 +8,7 @@ import limiter from './middlewares/limiter';
 import router from './routes';
 import { ResponseType } from './core/types/response.type';
 import _ from 'lodash';
+import utils from './utils/utils';
 
 const app = express();
 app.use(
@@ -50,10 +51,15 @@ app.use((error: ResponseType, req: Request, res: Response, next: NextFunction) =
     error: true,
     code: code,
     message: error.message || 'Internal Server Error',
-    metadata: [],
-    stack: error.stack || 'No stack trace available'
+    metadata: []
   };
 
+  if(utils.environment() === 'development') {
+    if (error.stack) {
+      body.stack = (error.stack as string).split('\n').map((line: string) => line.trim());
+    }
+  }
+  
   return res.status(code).json(body);
 });
 

@@ -3,5 +3,5 @@ export type ResponseType = {
   code: number;
   message: string;
   metadata: any;
-  stack?: string;
+  stack?: string | string[];
 };
