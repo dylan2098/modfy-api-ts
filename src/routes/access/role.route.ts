@@ -6,9 +6,9 @@ import schema from '../../schemas/role.schema';
 import { Router } from 'express';
 const router = Router();
 
-router.post('/roles/create', validate(schema), asyncHandler(RoleController.create));
-router.put('/roles/update', asyncHandler(RoleController.update));
-router.delete('/roles/delete', asyncHandler(RoleController.delete));
-router.get('/roles/list', asyncHandler(RoleController.list));
+router.post('/create', validate(schema), asyncHandler(RoleController.create));
+router.put('/update', asyncHandler(RoleController.update));
+router.delete('/delete', asyncHandler(RoleController.delete));
+router.get('/list', asyncHandler(RoleController.list));
 
 export default router;

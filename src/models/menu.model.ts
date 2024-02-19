@@ -7,25 +7,29 @@ class MenuModel {
     return knex.select('menu_id', 'menu_name', 'menu_path', 'menu_status').from(table.menus);
   }
 
-  async exists (payload: Menu) {
+  async findOne(payload: Menu) {
     const {menu_id, menu_name, menu_path} = payload;
-    const sql = knex.select('menu_id').from(table.menus).first();
+    const queryBuilder = knex.select('menu_id').from(table.menus);
 
     if (menu_id) {
-      sql.where({menu_id: menu_id});
+      queryBuilder.where('menu_id', menu_id);
     }
 
     if (menu_name) {
-      sql.where({menu_name: menu_name});
+      queryBuilder.where('menu_name', menu_name);
     }
 
     if(menu_path) {
-      sql.where({menu_path: menu_path});
+      queryBuilder.orWhere('menu_path', menu_path);
     }
 
-    const result = await sql;
+    return await queryBuilder;
+  }
 
-    if(result && result.menu_id) {
+
+  async exists (payload: Menu) {
+    const result = await this.findOne(payload);
+    if(result && result.length > 0) {
       return true;
     }
 

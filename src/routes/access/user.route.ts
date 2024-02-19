@@ -7,11 +7,11 @@ import { Router } from 'express';
 import { authentication } from '../../utils/auth.util';
 const router = Router();
 
-router.post('/users/signup', validate(schema), asyncHandler(UserController.signUp));
-router.get('/users/active/:user_id', asyncHandler(UserController.authenticateEmail));
-router.post('/users/login', asyncHandler(UserController.login));
+router.post('/signup', validate(schema), asyncHandler(UserController.signUp));
+router.get('/active/:user_id', asyncHandler(UserController.authenticateEmail));
+router.post('/login', asyncHandler(UserController.login));
 
 router.use(authentication);
-router.post('/users/refresh-token', asyncHandler(UserController.refreshToken));
+router.post('/refresh-token', asyncHandler(UserController.refreshToken));
 
 export default router;

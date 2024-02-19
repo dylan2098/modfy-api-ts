@@ -6,8 +6,8 @@ import schema from '../../schemas/userRole.schema';
 import { Router } from 'express';
 const router = Router();
 
-router.post('/user-role/create', validate(schema), asyncHandler(UserRoleController.create));
-router.put('/user-role/update', asyncHandler(UserRoleController.update));
-router.delete('/user-role/delete', asyncHandler(UserRoleController.delete));
+router.post('/create', validate(schema), asyncHandler(UserRoleController.create));
+router.put('/update', asyncHandler(UserRoleController.update));
+router.delete('/delete', asyncHandler(UserRoleController.delete));
 
 export default router;

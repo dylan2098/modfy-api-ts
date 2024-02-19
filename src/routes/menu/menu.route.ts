@@ -6,9 +6,9 @@ import schema from '../../schemas/menu.schema';
 import { Router } from 'express';
 const router = Router();
 
-router.post('/menus/create', validate(schema), asyncHandler(MenuController.create));
-router.put('/menus/update', asyncHandler(MenuController.update));
-router.delete('/menus/delete', asyncHandler(MenuController.delete));
-router.get('/menus/list', asyncHandler(MenuController.list));
+router.post('/create', validate(schema), asyncHandler(MenuController.create));
+router.put('/update', asyncHandler(MenuController.update));
+router.delete('/delete', asyncHandler(MenuController.delete));
+router.get('/list', asyncHandler(MenuController.list));
 
 export default router;
