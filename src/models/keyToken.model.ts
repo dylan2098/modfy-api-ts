@@ -2,7 +2,7 @@ import table from '../databases/table';
 import knex from '../databases/knex';
 import { KeyToken } from '../core/types/access.type';
 import ip from 'ip';
-import moment from 'moment';
+import utils from '../utils/utils';
 
 class KeyTokenService {
     create = async (payload: KeyToken) => {
@@ -17,6 +17,7 @@ class KeyTokenService {
     }
     
     update = async (payload: KeyToken) => {
+        payload.updated_at = utils.defaultNow();
         return knex(table.key_token)
         .where('user_id', payload.user_id)
         .andWhere('key_token_id', payload.key_token_id)

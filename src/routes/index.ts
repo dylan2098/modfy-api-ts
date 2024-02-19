@@ -8,13 +8,11 @@ import roleMenuRoute from './access/roleMenu.route';
 
 const router = Router();
 
-// setup list routes
-const listRoutes = [userRoute, roleRoute, menuRoute, userRoleRoute, roleMenuRoute];
-
-// setup path for routes
-for(let i = 0; i < listRoutes.length; i++) {
-  router.use('/v1/api', listRoutes[i]);
-}
+router.use('/v1/api', roleRoute);
+router.use('/v1/api', menuRoute);
+router.use('/v1/api', userRoleRoute);
+router.use('/v1/api', roleMenuRoute);
+router.use('/v1/api', userRoute);
 
 // default route
 router.get('/', (req: Request, res: Response) => {

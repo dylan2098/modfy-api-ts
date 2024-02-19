@@ -48,5 +48,5 @@ export type KeyToken = {
   private_key?: string;
   public_key?: string;
   ip_address?: string;
-  key_token_updated_at?: string;
+  updated_at?: string;
 }

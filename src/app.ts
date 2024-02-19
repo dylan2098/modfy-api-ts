@@ -54,7 +54,7 @@ app.use((error: ResponseType, req: Request, res: Response, next: NextFunction) =
     metadata: []
   };
 
-  if(utils.environment() === 'development') {
+  if(utils.environment() === 'development' && process.env.DEBUG?.toLowerCase() === 'true') {
     if (error.stack) {
       body.stack = (error.stack as string).split('\n').map((line: string) => line.trim());
     }
