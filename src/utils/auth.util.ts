@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import { KeyToken, User } from '../core/types/access.type';
+import { User } from '../core/types/access.type';
 import jwt from 'jsonwebtoken';
 import asyncHandler from '../helpers/asyncHandler';
-import { AuthFailureError, NotFoundError } from './error.response';
+import { AuthFailureError, BadRequestError, NotFoundError } from './error.response';
 import keyTokenService from '../services/keyToken.service';
 import { CustomRequest } from '../core/interfaces/request';
 import ip from 'ip';
 import Hashids from 'hashids/cjs';
+import UserModel from '../models/user.model';
 
 const HEADER = {
   AUTHORIZATION: 'authorization',
@@ -64,15 +65,21 @@ const getAccessToken = (token: string) => {
   return accessToken;
 };
 
+
+/**
+ * Authorize token and check user
+ */
 export const authentication = asyncHandler(async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.headers[HEADER.CLIENT_ID] as string;
-    if (!userId) {
+    const tidx = req.headers[HEADER.TIDX] as string;
+
+    if (!userId || !tidx) {
       throw new AuthFailureError('Invalid Request');
     }
 
     const hashids = new Hashids(process.env.HASHIDS_SALT, parseInt(process.env.HASHIDS_LENGTH as string));
-    const tokenIndex = parseInt(hashids.decode(req.headers[HEADER.TIDX] as string).toString());
+    const tokenIndex = parseInt(hashids.decode(tidx).toString());
 
     const keyStore = await keyTokenService.find({ user_id: userId, ip_address: ip.address(), key_token_id: tokenIndex });
     if (!keyStore) {
@@ -86,8 +93,14 @@ export const authentication = asyncHandler(async (req: CustomRequest, res: Respo
       throw new AuthFailureError('Invalid Request');
     }
 
+    const findUser = await UserModel.find({ user_id: decodeUser.user_id });
+    if(!findUser || findUser.length === 0) {
+      throw new AuthFailureError('Invalid Request');
+    }
+
     req.keyStore = keyStore;
-    req.userId = decodeUser.user_id;
+    req.userId = findUser[0].user_id;
+    req.roleName = findUser[0].role_name;
     req.refreshToken = req.headers[HEADER.REFRESH_TOKEN] as string;
 
     return next();
@@ -95,3 +108,12 @@ export const authentication = asyncHandler(async (req: CustomRequest, res: Respo
     throw error;
   }
 });
+
+export const permissions = (roles: string[]) => {
+  return asyncHandler(async (req: CustomRequest, res: Response, next: NextFunction) => {
+    if(roles.indexOf(req.roleName as string) === -1) {
+      throw new BadRequestError('Permission denied');
+    }
+    return next();
+  });
+}
