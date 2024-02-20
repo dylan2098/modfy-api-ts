@@ -6,7 +6,6 @@ import { authentication } from '../utils/auth.util';
 
 const router = Router();
 
-router.use(authentication);
 router.use('/v1/api/menus', menuRoute);
 router.use('/v1/api/access', accessRoute);
 

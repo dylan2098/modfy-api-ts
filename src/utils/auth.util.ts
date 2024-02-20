@@ -43,41 +43,55 @@ export const verifyJWT = async (token: any, keySecret: any) => {
   return jwt.verify(token, keySecret);
 };
 
-
-export const nonAuthentication = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  return next();
-});
-
-
-export const authentication = asyncHandler(async (req: CustomRequest, res: Response, next: NextFunction) => {
-  const userId = req.headers[HEADER.CLIENT_ID] as string;
-  if (!userId) {
+const getAccessToken = (token: string) => {
+  if (!token) {
     throw new AuthFailureError('Invalid Request');
   }
 
-  const hashids = new Hashids(process.env.HASHIDS_SALT, parseInt(process.env.HASHIDS_LENGTH as string));
-  const tokenIndex = parseInt(hashids.decode(req.headers[HEADER.TIDX] as string).toString());
+  const arrayAuth = token.split(' ');
 
-  const keyStore = await keyTokenService.find({ user_id: userId, ip_address: ip.address(), key_token_id: tokenIndex });
-  if (!keyStore) {
-    throw new NotFoundError('Token not found');
+  if (arrayAuth.length !== 2) {
+    throw new AuthFailureError('Invalid Request');
   }
 
-  if (req.headers[HEADER.AUTHORIZATION]) {
-    try {
-      const refreshToken = req.headers[HEADER.REFRESH_TOKEN] as string;
-      const decodeUser: any = jwt.verify(refreshToken, keyStore.private_key);
-      if (userId !== decodeUser.user_id) {
-        throw new AuthFailureError('Invalid Request');
-      }
+  const bearer = arrayAuth[0];
+  const accessToken = arrayAuth[1];
 
-      req.keyStore = keyStore;
-      req.userId = decodeUser.user_id;
-      req.refreshToken = refreshToken;
+  if (bearer.toLowerCase() !== 'bearer') {
+    throw new AuthFailureError('Invalid Request');
+  }
 
-      return next();
-    } catch (error) {
-      throw error;
+  return accessToken;
+};
+
+export const authentication = asyncHandler(async (req: CustomRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.headers[HEADER.CLIENT_ID] as string;
+    if (!userId) {
+      throw new AuthFailureError('Invalid Request');
     }
+
+    const hashids = new Hashids(process.env.HASHIDS_SALT, parseInt(process.env.HASHIDS_LENGTH as string));
+    const tokenIndex = parseInt(hashids.decode(req.headers[HEADER.TIDX] as string).toString());
+
+    const keyStore = await keyTokenService.find({ user_id: userId, ip_address: ip.address(), key_token_id: tokenIndex });
+    if (!keyStore) {
+      throw new NotFoundError('Token not found');
+    }
+
+    const accessToken = getAccessToken(req.headers[HEADER.AUTHORIZATION] as string);
+    
+    const decodeUser: any = jwt.verify(accessToken, keyStore.public_key);
+    if (userId !== decodeUser.user_id) {
+      throw new AuthFailureError('Invalid Request');
+    }
+
+    req.keyStore = keyStore;
+    req.userId = decodeUser.user_id;
+    req.refreshToken = req.headers[HEADER.REFRESH_TOKEN] as string;
+
+    return next();
+  } catch (error) {
+    throw error;
   }
 });
