@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { User } from '../core/types/access.type';
 import jwt from 'jsonwebtoken';
 import asyncHandler from '../helpers/asyncHandler';
-import { AuthFailureError, BadRequestError, NotFoundError } from './error.response';
+import { AuthFailureError, ForbiddenError , NotFoundError } from './error.response';
 import keyTokenService from '../services/keyToken.service';
 import { CustomRequest } from '../core/interfaces/request';
 import ip from 'ip';
@@ -112,7 +112,7 @@ export const authentication = asyncHandler(async (req: CustomRequest, res: Respo
 export const permissions = (roles: string[]) => {
   return asyncHandler(async (req: CustomRequest, res: Response, next: NextFunction) => {
     if(roles.indexOf(req.roleName as string) === -1) {
-      throw new BadRequestError('Permission denied');
+      throw new ForbiddenError('Permission denied');
     }
     return next();
   });

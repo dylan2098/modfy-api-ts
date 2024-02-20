@@ -2,11 +2,11 @@ import StatusCode from '../core/statusCode';
 import ReasonStatusCode from '../core/reasonPhrase';
 
 export class Errors extends Error {
-  status: number;
+  code: number;
 
   constructor(message = '', statusCode = StatusCode.BAD_REQUEST) {
     super(message);
-    this.status = statusCode;
+    this.code = statusCode;
   }
 }
 
