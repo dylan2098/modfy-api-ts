@@ -31,6 +31,12 @@ class UserController {
       }),
     }).send(res);
   };
+
+  deleteTokenExpired = async (req: CustomRequest, res: Response) => {
+    new SuccessResponse({
+      metadata: await UserService.deleteTokenExpired(),
+    }).send(res);
+  }
 }
 
 export default new UserController();

@@ -157,6 +157,14 @@ class UserService {
       throw error;
     }
   };
+
+  deleteTokenExpired = () => {
+    try {
+      return keyTokenModel.deleteTokenExpired();
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new UserService();

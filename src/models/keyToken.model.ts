@@ -3,6 +3,7 @@ import knex from '../databases/knex';
 import { KeyToken } from '../core/types/access.type';
 import ip from 'ip';
 import utils from '../utils/utils';
+import moment from 'moment';
 
 class KeyTokenService {
     create = async (payload: KeyToken) => {
@@ -30,6 +31,10 @@ class KeyTokenService {
             return false;
         }
         return true;
+    }
+
+    deleteTokenExpired = async () => {
+        return knex(table.key_token).delete().where('updated_at', '<', moment(Date.now()).subtract(5, 'd'));
     }
 }
 
