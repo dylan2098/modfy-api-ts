@@ -13,7 +13,7 @@ const HEADER = {
   AUTHORIZATION: 'authorization',
   REFRESH_TOKEN: 'x-token-id',
   CLIENT_ID: 'x-client-id',
-  TIDX: 'x-tidx',
+  ACCESS_ID: 'x-access-id',
 };
 
 export const createTokenPair = async (payload: User, publicKey: string, privateKey: string) => {
@@ -72,14 +72,14 @@ const getAccessToken = (token: string) => {
 export const authentication = asyncHandler(async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.headers[HEADER.CLIENT_ID] as string;
-    const tidx = req.headers[HEADER.TIDX] as string;
+    const accessId = req.headers[HEADER.ACCESS_ID] as string;
 
-    if (!userId || !tidx) {
+    if (!userId || !accessId) {
       throw new AuthFailureError('Invalid Request');
     }
 
     const hashids = new Hashids(process.env.HASHIDS_SALT, parseInt(process.env.HASHIDS_LENGTH as string));
-    const tokenIndex = parseInt(hashids.decode(tidx).toString());
+    const tokenIndex = parseInt(hashids.decode(accessId).toString());
 
     const keyStore = await keyTokenService.find({ user_id: userId, ip_address: ip.address(), key_token_id: tokenIndex });
     if (!keyStore) {

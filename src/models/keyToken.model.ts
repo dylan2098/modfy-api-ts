@@ -6,9 +6,9 @@ import utils from '../utils/utils';
 import moment from 'moment';
 
 class KeyTokenService {
-    create = async (payload: KeyToken) => {
+    create = async (payload: KeyToken) : Promise<KeyToken[]> => {
         payload.ip_address = ip.address();
-        return await knex(table.key_token).insert(payload);
+        return await knex(table.key_token).insert(payload).returning('key_token_id');
     }
 
     find = async (payload: KeyToken) => {

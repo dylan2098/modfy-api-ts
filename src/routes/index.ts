@@ -2,7 +2,8 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { SuccessResponse } from '../utils/success.response';
 import accessRoute from './access';
 import menuRoute from './menu';
-import { authentication } from '../utils/auth.util';
+import { authentication, permissions } from '../utils/auth.util';
+import { ROLE } from '../core/access/role.core';
 
 const router = Router();
 
@@ -22,7 +23,7 @@ router.use((req: Request, res: Response, next: NextFunction) => {
   return authentication(req, res, next);
 })
 
-router.use('/v1/api/menus', menuRoute);
+router.use('/v1/api/menus', permissions([ROLE.ADMIN]), menuRoute);
 router.use('/v1/api/access', accessRoute);
 
 // default route

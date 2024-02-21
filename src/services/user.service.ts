@@ -14,6 +14,7 @@ import UserRoleService from './userRole.service';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
 import { USER_ROLE_STATUS } from '../core/access/userRole.core';
 import keyTokenModel from '../models/keyToken.model';
+import Hashids from 'hashids/cjs';
 
 class UserService {
   signUp = async (payload: User) => {
@@ -101,7 +102,9 @@ class UserService {
       }
 
       const match = await bcrypt.compare(user_password as string, foundUser[0].user_password as string);
-      if (!match) throw new AuthFailureError('Authentication error');
+      if (!match) {
+        throw new AuthFailureError('Authentication error')
+      };
 
       const privateKey = crypto.randomBytes(64).toString('hex');
       const publicKey = crypto.randomBytes(64).toString('hex');
@@ -109,16 +112,24 @@ class UserService {
       const hashData = { user_id: foundUser[0].user_id };
       const tokens = await createTokenPair(hashData, publicKey, privateKey);
 
-      await keyTokenModel.create({
+      const responseCreateToken = await keyTokenModel.create({
         user_id: foundUser[0].user_id,
         refresh_token: tokens.refresh_token,
         private_key: privateKey,
         public_key: publicKey,
       });
 
+      if(!responseCreateToken || !responseCreateToken.length) {
+        throw new ConflictRequestError('Create token failed');
+      }
+
+      const hashids = new Hashids(process.env.HASHIDS_SALT, parseInt(process.env.HASHIDS_LENGTH as string));
+      const tokenIndex = hashids.encode(responseCreateToken[0].key_token_id as number);
+
       const result = foundUser[0];
       result.access_token = tokens.access_token;
       result.refresh_token = tokens.refresh_token;
+      result.access_id = tokenIndex;
       delete result.user_password;
 
       return [result];

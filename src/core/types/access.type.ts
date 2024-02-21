@@ -13,6 +13,7 @@ export type User = {
     user_updated_at?: string;
     access_token?: string;
     refresh_token?: string;
+    access_id?: string; // token index
     role_name?: string;
 }
 

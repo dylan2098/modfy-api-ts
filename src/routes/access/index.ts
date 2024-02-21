@@ -9,8 +9,8 @@ import { ROLE } from '../../core/access/role.core';
 const router = Router();
 
 router.use('/roles', permissions([ROLE.ADMIN]), roleRoute);
-router.use('/user-role', userRoleRoute);
-router.use('/role-menu', roleMenuRoute);
+router.use('/user-role', permissions([ROLE.ADMIN]), userRoleRoute);
+router.use('/role-menu', permissions([ROLE.ADMIN]), roleMenuRoute);
 router.use('/', userRoute);
 
 export default router;
