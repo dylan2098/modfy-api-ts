@@ -3,18 +3,16 @@ import crypto from 'node:crypto';
 import UserModel from '../models/user.model';
 import utils from '../utils/utils';
 import { createTokenPair } from '../utils/auth.util';
-import { hash } from '../helpers/hash';
+import { encodeId, hash } from '../helpers/hash';
 import { User } from '../core/types/access.type';
 import { ROLE } from '../core/access/role.core';
 import { USER_STATUS } from '../core/access/user.core';
 import { emitRegisterSuccess } from '../events/user.event';
 import RoleService from './role.service';
 import UserRoleService from './userRole.service';
-
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
 import { USER_ROLE_STATUS } from '../core/access/userRole.core';
 import keyTokenModel from '../models/keyToken.model';
-import Hashids from 'hashids/cjs';
 
 class UserService {
   signUp = async (payload: User) => {
@@ -123,13 +121,10 @@ class UserService {
         throw new ConflictRequestError('Create token failed');
       }
 
-      const hashids = new Hashids(process.env.HASHIDS_SALT, parseInt(process.env.HASHIDS_LENGTH as string));
-      const tokenIndex = hashids.encode(responseCreateToken[0].key_token_id as number);
-
       const result = foundUser[0];
       result.access_token = tokens.access_token;
       result.refresh_token = tokens.refresh_token;
-      result.access_id = tokenIndex;
+      result.access_id = encodeId(responseCreateToken[0].key_token_id as number);
       delete result.user_password;
 
       return [result];

@@ -6,8 +6,8 @@ import { AuthFailureError, ForbiddenError , NotFoundError } from './error.respon
 import keyTokenService from '../services/keyToken.service';
 import { CustomRequest } from '../core/interfaces/request';
 import ip from 'ip';
-import Hashids from 'hashids/cjs';
 import UserModel from '../models/user.model';
+import { decodeId } from '../helpers/hash';
 
 const HEADER = {
   AUTHORIZATION: 'authorization',
@@ -78,10 +78,8 @@ export const authentication = asyncHandler(async (req: CustomRequest, res: Respo
       throw new AuthFailureError('Invalid Request');
     }
 
-    const hashids = new Hashids(process.env.HASHIDS_SALT, parseInt(process.env.HASHIDS_LENGTH as string));
-    const tokenIndex = parseInt(hashids.decode(accessId).toString());
-
-    const keyStore = await keyTokenService.find({ user_id: userId, ip_address: ip.address(), key_token_id: tokenIndex });
+    const tokenIdx = decodeId(accessId);
+    const keyStore = await keyTokenService.find({ user_id: userId, ip_address: ip.address(), key_token_id: tokenIdx });
     if (!keyStore) {
       throw new NotFoundError('Token not found');
     }
