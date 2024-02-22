@@ -7,7 +7,7 @@ import { encodeId, hash } from '../helpers/hash';
 import { User } from '../core/types/access.type';
 import { ROLE } from '../core/access/role.core';
 import { USER_STATUS } from '../core/access/user.core';
-import { emitRegisterSuccess } from '../events/user.event';
+import { emitRegisterSuccess, emitChangePassword } from '../events/user.event';
 import RoleService from './role.service';
 import UserRoleService from './userRole.service';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
@@ -197,9 +197,9 @@ class UserService {
   changePassword = async (payload: any) => {
     try {
       const {userId, body: { user_password, new_password }} = payload;
-      const currentPassword = await UserModel.getCurrentPassword({ user_id: userId });
+      const currentInfo = await UserModel.getEmailAndPassword({ user_id: userId });
 
-      const match = await bcrypt.compare(user_password as string, currentPassword.user_password as string);
+      const match = await bcrypt.compare(user_password as string, currentInfo.user_password as string);
 
       if(!match) {
         throw new AuthFailureError('Current password is incorrect');
@@ -208,7 +208,13 @@ class UserService {
       const passwordHash = await hash(new_password as string);
       const dataUpdate = { user_id: userId, user_password: passwordHash };
 
-      return await UserModel.update(dataUpdate);
+      const result =  await UserModel.update(dataUpdate);
+
+      if(result) {
+        emitChangePassword({ user_email: currentInfo.user_email});
+      }
+
+      return result;
     } catch (error) {
       throw error;
     }

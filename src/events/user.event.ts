@@ -1,6 +1,6 @@
 import EventEmitter from 'node:events';
 import { User } from '../core/types/access.type';
-import {sendAuthenticateUserEmail} from '../helpers/mail';
+import {sendAuthenticateUserEmail, sendChangePasswordEmail} from '../helpers/mail';
 
 const eventEmitter = new EventEmitter();
 
@@ -18,3 +18,19 @@ eventEmitter.on(eventRegisterAccountSuccess, async (data: User) => {
 })
 
 export const emitRegisterSuccess = (data: User) => eventEmitter.emit(eventRegisterAccountSuccess, data);
+
+
+/**
+ * Emit event when user change password
+ */
+const eventChangePassword = 'user:changePassword';
+eventEmitter.on(eventChangePassword, async (data: User) => {
+  const { user_email } = data;
+
+  if (user_email) {
+    // send email
+    sendChangePasswordEmail(user_email);
+  }
+})
+
+export const emitChangePassword = (data: User) => eventEmitter.emit(eventChangePassword, data);

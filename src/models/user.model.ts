@@ -58,8 +58,8 @@ class UserModel {
     return knex(table.users).where('user_id', payload.user_id).update(payload);
   }
 
-  getCurrentPassword(payload: User) : Promise<User>{
-    return knex.select('user_password').from(table.users).where('user_id', payload.user_id).first();
+  getEmailAndPassword(payload: User) : Promise<User>{
+    return knex.select('user_password', 'user_email').from(table.users).where('user_id', payload.user_id).first();
   }
   
   async exists(payload: User) : Promise<boolean> {
