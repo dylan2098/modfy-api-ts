@@ -74,7 +74,7 @@ class UserModel {
       queryBuilder.where('user_phone', payload.user_phone);
     }
 
-    const result = await queryBuilder;
+    const result: any = await queryBuilder;
     return result.length > 0;
   }
 }

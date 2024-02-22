@@ -171,6 +171,27 @@ class UserService {
       throw error;
     }
   }
+
+  updateProfile = async (payload: any) => {
+    try {
+      const {userId, body: { user_phone }} = payload;
+
+      if(user_phone) {
+        if (!utils.regexPhone(user_phone as string)) {
+          throw new BadRequestError('Phone invalid');
+        }
+  
+        const exists = await UserModel.exists({ user_phone});
+        if (exists) {
+          throw new BadRequestError('Phone exists.');
+        }
+      }
+
+      return await UserModel.update({ user_id: userId, ...payload.body });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new UserService();

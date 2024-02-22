@@ -37,6 +37,15 @@ class UserController {
       metadata: await UserService.deleteTokenExpired(),
     }).send(res);
   }
+
+  updateProfile = async (req: CustomRequest, res: Response) => {
+    new SuccessResponse({
+      metadata: await UserService.updateProfile({
+        userId: req.userId,
+        body: req.body
+      })
+    }).send(res);
+  }
 }
 
 export default new UserController();
