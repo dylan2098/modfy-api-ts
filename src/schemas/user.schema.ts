@@ -55,3 +55,17 @@ export const updateUserSchema ={
   },
   additionalProperties: false,
 };
+
+export const changePasswordSchema ={
+  type: 'object',
+  properties: {
+    user_password: {
+      type: 'string',
+    },
+    new_password: {
+      type: 'string',
+    },
+  },
+  required: ['user_password', 'new_password'],
+  additionalProperties: false,
+};

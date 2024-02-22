@@ -192,6 +192,27 @@ class UserService {
       throw error;
     }
   }
+
+
+  changePassword = async (payload: any) => {
+    try {
+      const {userId, body: { user_password, new_password }} = payload;
+      const currentPassword = await UserModel.getCurrentPassword({ user_id: userId });
+
+      const match = await bcrypt.compare(user_password as string, currentPassword.user_password as string);
+
+      if(!match) {
+        throw new AuthFailureError('Current password is incorrect');
+      }
+
+      const passwordHash = await hash(new_password as string);
+      const dataUpdate = { user_id: userId, user_password: passwordHash };
+
+      return await UserModel.update(dataUpdate);
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new UserService();
