@@ -55,8 +55,8 @@ app.use((error: ResponseType, req: Request, res: Response, next: NextFunction) =
   };
 
   if(utils.environment() === 'development' && process.env.DEBUG?.toLowerCase() === 'true') {
-    if (error.stack) {
-      body.stack = (error.stack as string).split('\n').map((line: string) => line.trim());
+    if (error.stack && (typeof error.stack === 'string')) {
+      body.stack = (error.stack).split('\n').map((line: string) => line.trim());
     }
   }
   

@@ -13,17 +13,18 @@ import UserRoleService from './userRole.service';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
 import { USER_ROLE_STATUS } from '../core/access/userRole.core';
 import keyTokenModel from '../models/keyToken.model';
+import randomstring from 'randomstring';
 
 class UserService {
   signUp = async (payload: User) => {
     try {
       const { user_email, user_password, user_first_name, user_last_name, user_phone } = payload;
 
-      if (!utils.regexEmail(user_email as string)) {
+      if (!user_email || !utils.regexEmail(user_email)) {
         throw new BadRequestError('Email invalid.');
       }
 
-      if (!utils.regexPhone(user_phone as string)) {
+      if (!user_phone || !utils.regexPhone(user_phone)) {
         throw new BadRequestError('Phone invalid');
       }
 
@@ -33,7 +34,11 @@ class UserService {
         throw new BadRequestError('User already registered.');
       }
 
-      const passwordHash = await hash(user_password as string);
+      if(!user_password) {
+        throw new BadRequestError('Password is required');
+      }
+
+      const passwordHash = await hash(user_password);
       payload.user_password = passwordHash;
 
       const newUser = await UserModel.create(payload);
@@ -94,12 +99,16 @@ class UserService {
     try {
       const { user_email, user_password, user_phone } = payload;
 
+      if(!user_email || !user_phone || !user_password) {
+        throw new BadRequestError('Email or Phone and Password is required');
+      }
+
       const foundUser = await UserModel.find({ user_email, user_phone });
-      if (!foundUser || foundUser.length == 0) {
+      if (!foundUser || foundUser.length == 0 || !foundUser[0].user_password) {
         throw new BadRequestError('User is not registered or activated');
       }
 
-      const match = await bcrypt.compare(user_password as string, foundUser[0].user_password as string);
+      const match = await bcrypt.compare(user_password, foundUser[0].user_password);
       if (!match) {
         throw new AuthFailureError('Authentication error')
       };
@@ -177,7 +186,7 @@ class UserService {
       const {userId, body: { user_phone }} = payload;
 
       if(user_phone) {
-        if (!utils.regexPhone(user_phone as string)) {
+        if (!utils.regexPhone(user_phone)) {
           throw new BadRequestError('Phone invalid');
         }
   
@@ -197,15 +206,22 @@ class UserService {
   changePassword = async (payload: any) => {
     try {
       const {userId, body: { user_password, new_password }} = payload;
-      const currentInfo = await UserModel.getEmailAndPassword({ user_id: userId });
 
-      const match = await bcrypt.compare(user_password as string, currentInfo.user_password as string);
+      if(!user_password || !new_password) {
+        throw new BadRequestError('Password and new password is required');
+      }
 
+      const currentInfo = await UserModel.getEmailAndPasswordById(userId);
+      if(!currentInfo || !currentInfo.user_password) {
+        throw new ForbiddenError('User not found');
+      }
+
+      const match = await bcrypt.compare(user_password, currentInfo.user_password);
       if(!match) {
         throw new AuthFailureError('Current password is incorrect');
       }
 
-      const passwordHash = await hash(new_password as string);
+      const passwordHash = await hash(new_password);
       const dataUpdate = { user_id: userId, user_password: passwordHash };
 
       const result =  await UserModel.update(dataUpdate);
@@ -223,6 +239,33 @@ class UserService {
   getProfile = async (userId: string) => {
     try {
       return await UserModel.find({ user_id: userId });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  resetPassword = async (payload: User) => {
+    try {
+      const {user_email} = payload;
+
+      if (!user_email || !utils.regexEmail(user_email)) {
+        throw new BadRequestError('Data invalid.');
+      }
+
+      const foundUser = await UserModel.find({user_email});
+      if(!foundUser || foundUser.length == 0) {
+        throw new BadRequestError('User not found.');
+      }
+
+      const newPassword = randomstring.generate(process.env.GEN_SALT);
+      const passwordHash = await hash(newPassword);
+
+      const result = await UserModel.update({user_id: foundUser[0].user_id, user_password: passwordHash});
+
+
+
+      return result;
+      
     } catch (error) {
       throw error;
     }

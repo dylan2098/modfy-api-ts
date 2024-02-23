@@ -1,6 +1,6 @@
 import EventEmitter from 'node:events';
 import { User } from '../core/types/access.type';
-import {sendAuthenticateUserEmail, sendChangePasswordEmail} from '../helpers/mail';
+import {sendAuthenticateUserEmail, sendChangePasswordEmail, sendResetPasswordEmail} from '../helpers/mail';
 
 const eventEmitter = new EventEmitter();
 
@@ -34,3 +34,20 @@ eventEmitter.on(eventChangePassword, async (data: User) => {
 })
 
 export const emitChangePassword = (data: User) => eventEmitter.emit(eventChangePassword, data);
+
+
+
+/**
+ * Emit event when user reset password
+ */
+const eventResetPassword = 'user:resetPassword';
+eventEmitter.on(eventResetPassword, async (data: User) => {
+  const { user_email, user_password } = data;
+
+  if (user_email && user_password) {
+    // send email
+    sendResetPasswordEmail(user_email, user_password);
+  }
+})
+
+export const emitResetPassword = (data: User) => eventEmitter.emit(eventResetPassword, data);

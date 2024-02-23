@@ -13,11 +13,23 @@ export function compare(password: string, userPassword: string) {
 }
 
 export function encodeId(id: number) {
-  const hashids = new Hashids(process.env.HASHIDS_SALT, parseInt(process.env.HASHIDS_LENGTH as string));
+  const hashIdLength = process.env.HASHIDS_LENGTH;
+
+  if (!hashIdLength) {
+    return '';
+  }
+
+  const hashids = new Hashids(process.env.HASHIDS_SALT, parseInt(hashIdLength));
   return hashids.encode(id);
 }
 
 export function decodeId(id: string) {
-  const hashids = new Hashids(process.env.HASHIDS_SALT, parseInt(process.env.HASHIDS_LENGTH as string));
+  const hashIdLength = process.env.HASHIDS_LENGTH;
+
+  if (!hashIdLength) {
+    return '';
+  }
+
+  const hashids = new Hashids(process.env.HASHIDS_SALT, parseInt(hashIdLength));
   return parseInt(hashids.decode(id).toString());
 }

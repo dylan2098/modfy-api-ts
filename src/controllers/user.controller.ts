@@ -57,8 +57,19 @@ class UserController {
   }
 
   getProfile = async (req: CustomRequest, res: Response) => {
+
+    if(!req.userId) {
+      throw new Error('User not found');
+    }
+    
     new SuccessResponse({
-      metadata: await UserService.getProfile(req.userId as string)
+      metadata: await UserService.getProfile(req.userId)
+    }).send(res);
+  }
+
+  resetPassword = async (req: CustomRequest, res: Response) => {
+    new SuccessResponse({
+      metadata: await UserService.resetPassword(req.body)
     }).send(res);
   }
 }

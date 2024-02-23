@@ -73,18 +73,24 @@ export const authentication = asyncHandler(async (req: CustomRequest, res: Respo
   try {
     const userId = req.headers[HEADER.CLIENT_ID] as string;
     const accessId = req.headers[HEADER.ACCESS_ID] as string;
+    const bearerToken = req.headers[HEADER.AUTHORIZATION] as string;
+    const refreshToken = req.headers[HEADER.REFRESH_TOKEN] as string;
 
-    if (!userId || !accessId) {
+    if (!userId || !accessId || !bearerToken || !refreshToken) {
       throw new AuthFailureError('Invalid Request');
     }
 
     const tokenIdx = decodeId(accessId);
+    if(!tokenIdx) {
+      throw new AuthFailureError('Invalid Request');
+    }
+
     const keyStore = await keyTokenService.find({ user_id: userId, ip_address: ip.address(), key_token_id: tokenIdx });
     if (!keyStore) {
       throw new NotFoundError('Token not found');
     }
 
-    const accessToken = getAccessToken(req.headers[HEADER.AUTHORIZATION] as string);
+    const accessToken = getAccessToken(bearerToken);
     
     const decodeUser: any = jwt.verify(accessToken, keyStore.public_key);
     if (userId !== decodeUser.user_id) {
@@ -99,7 +105,7 @@ export const authentication = asyncHandler(async (req: CustomRequest, res: Respo
     req.keyStore = keyStore;
     req.userId = findUser[0].user_id;
     req.roleName = findUser[0].role_name;
-    req.refreshToken = req.headers[HEADER.REFRESH_TOKEN] as string;
+    req.refreshToken = refreshToken;
 
     return next();
   } catch (error) {
@@ -109,7 +115,7 @@ export const authentication = asyncHandler(async (req: CustomRequest, res: Respo
 
 export const permissions = (roles: string[]) => {
   return asyncHandler(async (req: CustomRequest, res: Response, next: NextFunction) => {
-    if(roles.indexOf(req.roleName as string) === -1) {
+    if(!req.roleName || roles.indexOf(req.roleName) === -1) {
       throw new ForbiddenError('Permission denied');
     }
     return next();
