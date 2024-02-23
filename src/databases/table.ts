@@ -6,7 +6,7 @@ export default {
   user_role: 'UserRole',
   role_menus: 'RoleMenu',
   addresses: 'Addresses',
-  address_book: 'AddressBook',
+  address_book: 'AddressBooks',
   key_token: 'KeyTokens',
   menus: 'Menus',
 

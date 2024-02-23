@@ -66,3 +66,10 @@ export type Address = {
   address_note?: string;
   address_status?: number;
 }
+
+export type AddressBooks = {
+  address_book_id?: string;
+  user_id?: string;
+  address_id?: string;
+  address_selected?: boolean;
+}

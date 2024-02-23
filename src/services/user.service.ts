@@ -238,7 +238,7 @@ class UserService {
 
   getProfile = async (userId: string) => {
     try {
-      return await UserModel.find({ user_id: userId });
+      return await UserModel.findDetail({ user_id: userId });
     } catch (error) {
       throw error;
     }

@@ -1,17 +1,17 @@
 import table from '../databases/table';
 import knex from '../databases/knex';
-import { Address } from '../core/types/access.type';
+import { Address, AddressBooks } from '../core/types/access.type';
 
 class AddressModel {
-  create(payload: Address): Promise<Address[]> {
+  createAddress(payload: Address): Promise<Address[]> {
     return knex(table.addresses).returning('address_id').insert(payload);
   }
 
-  update(payload: Address) {
+  updateAddress(payload: Address) {
     return knex(table.addresses).where('address_id', payload.address_id).update(payload);
   }
 
-  delete(payload: Address) {
+  deleteAddress(payload: Address) {
     return knex(table.addresses).where('address_id', payload.address_id).del();
   }
 
@@ -25,6 +25,25 @@ class AddressModel {
     if (result && result.length > 0) {
       return true;
     }
+    return false;
+  }
+
+  createAddressBook(payload: AddressBooks) {
+    return knex(table.address_book).returning('address_book_id').insert(payload);
+  }
+
+  async existsAddressBook(payload: AddressBooks) {
+    const { user_id, address_id } = payload;
+    const result = await knex
+      .select('address_book_id')
+      .from(table.address_book)
+      .where('user_id', user_id)
+      .andWhere('address_id', address_id);
+
+    if(result && result.length > 0) {
+      return true;
+    }
+
     return false;
   }
 }

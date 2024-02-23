@@ -46,6 +46,85 @@ class UserModel {
     return await queryBuilder;
   }
 
+  async findDetail(payload: User) : Promise<User[]> {
+    const columns = [
+      'Users.user_id',
+      'user_email',
+      'user_first_name',
+      'user_last_name',
+      'user_phone',
+      'user_password',
+      'user_gender',
+      'user_birthday',
+      'user_avatar',
+      'user_status',
+      'role_name',
+      'Addresses.address_id',
+      'address_street',
+      'address_city',
+      'address_country',
+      'address_zipcode',
+      'address_phone',
+      'customer_first_name',
+      'customer_last_name',
+      'address_selected'
+    ];
+
+    let queryBuilder = knex.select(columns)
+                      .from<User>(table.users)
+                      .where('Users.user_id', payload.user_id)
+                      .innerJoin(table.user_role, 'Users.user_id', 'UserRole.user_id')
+                      .innerJoin(table.roles, 'UserRole.role_id', 'Roles.role_id')
+                      .innerJoin(table.address_book, 'Users.user_id', 'AddressBooks.user_id')
+                      .innerJoin(table.addresses, 'AddressBooks.address_id', 'Addresses.address_id')
+                      ;
+
+    const { user_id, user_email, user_phone} = payload;
+
+    if (user_id) {
+      queryBuilder.where('Users.user_id', user_id);
+    }
+
+    if (user_email) {
+      queryBuilder.where('user_email', user_email);
+    }
+
+    if(user_phone) {
+      if(user_email)  {
+        queryBuilder.orWhere('user_phone', user_phone);
+      } else {
+        queryBuilder.where('user_phone', user_phone);
+      }
+    }
+
+    const data = await queryBuilder;
+    const transformedData = {
+      ...data[0],
+      address: data.map(item => ({ 
+        address_street: item.address_street,
+        address_city: item.address_city,
+        address_country: item.address_country,
+        address_zipcode: item.address_zipcode,
+        address_phone: item.address_phone,
+        customer_first_name: item.customer_first_name,
+        customer_last_name: item.customer_last_name,
+        address_selected: item.address_selected
+      }))
+    };
+
+    delete transformedData.address_street;
+    delete transformedData.address_city;
+    delete transformedData.address_country;
+    delete transformedData.address_zipcode;
+    delete transformedData.address_phone;
+    delete transformedData.customer_first_name;
+    delete transformedData.customer_last_name;
+    delete transformedData.address_selected;
+
+
+    return transformedData;
+  }
+
   create(payload: User) : Promise<User[]>{
     payload.user_created_at = utils.defaultNow();
     payload.user_updated_at = utils.defaultNow();

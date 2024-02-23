@@ -2,16 +2,12 @@ import { Address } from '../core/types/access.type';
 import AddressModel from '../models/address.model';
 import {
   BadRequestError,
-  ConflictRequestError,
-  AuthFailureError,
-  ForbiddenError,
 } from '../utils/error.response';
-import { ADDRESS_STATUS } from '../core/access/address.core';
 
 class AddressService {
   create(payload: Address) {
     try {
-      return AddressModel.create(payload);
+      return AddressModel.createAddress(payload);
     } catch (error) {
       throw error;
     }
@@ -25,7 +21,7 @@ class AddressService {
         throw new BadRequestError('Address not exists');
       }
 
-      return AddressModel.update(payload);
+      return AddressModel.updateAddress(payload);
     } catch (error) {
       throw error;
     }
@@ -39,7 +35,20 @@ class AddressService {
         throw new BadRequestError('Address not exists');
       }
 
-      return AddressModel.delete(payload);
+      return AddressModel.deleteAddress(payload);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createAddressBook(payload: Address) {
+    try {
+      const exists = await AddressModel.existsAddressBook(payload);
+      if(exists) {
+        throw new BadRequestError('Address already exists in the address book');
+      }
+
+      return await AddressModel.createAddressBook(payload);
     } catch (error) {
       throw error;
     }

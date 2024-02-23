@@ -75,8 +75,7 @@ export async function up(knex: Knex): Promise<void> {
       table.uuid('address_book_id').primary().unique().defaultTo(knex.fn.uuid());
       table.uuid('user_id').references('user_id').inTable('Users');
       table.uuid('address_id').references('address_id').inTable('Addresses');
-      table.boolean('address_selected').defaultTo(false);
-      table.smallint('address_book_status').defaultTo(1);
+      table.boolean('address_selected').defaultTo(true);
     })
 }
 
