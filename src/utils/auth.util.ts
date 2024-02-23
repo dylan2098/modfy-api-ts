@@ -16,6 +16,14 @@ const HEADER = {
   ACCESS_ID: 'x-access-id',
 };
 
+/**
+ * 
+ * Create token pair with public and private key
+ * @param payload 
+ * @param publicKey 
+ * @param privateKey 
+ * @returns 
+ */
 export const createTokenPair = async (payload: User, publicKey: string, privateKey: string) => {
   try {
     const accessToken = jwt.sign(payload, publicKey, {
@@ -40,10 +48,22 @@ export const createTokenPair = async (payload: User, publicKey: string, privateK
   }
 };
 
+
+/**
+ * Verify JWT token with key secret
+ * @param token 
+ * @param keySecret 
+ * @returns 
+ */
 export const verifyJWT = async (token: any, keySecret: any) => {
   return jwt.verify(token, keySecret);
 };
 
+
+
+/**
+ * Handle get access token from header
+ */
 const getAccessToken = (token: string) => {
   if (!token) {
     throw new AuthFailureError('Invalid Request');
@@ -113,6 +133,11 @@ export const authentication = asyncHandler(async (req: CustomRequest, res: Respo
   }
 });
 
+
+/**
+ * handle permission
+ * @param roles : list role can be access
+ */
 export const permissions = (roles: string[]) => {
   return asyncHandler(async (req: CustomRequest, res: Response, next: NextFunction) => {
     if(!req.roleName || roles.indexOf(req.roleName) === -1) {

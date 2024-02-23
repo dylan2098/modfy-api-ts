@@ -4,8 +4,17 @@ import accessRoute from './access';
 import menuRoute from './menu';
 import { authentication, permissions } from '../utils/auth.util';
 import { ROLE } from '../core/access/role.core';
+import addressRoute from './address/address.route';
 
 const router = Router();
+
+// default route
+router.get('/', (req: Request, res: Response) => {
+  new SuccessResponse({
+    message: 'Welcome to Modfy API',
+    metadata: []
+  }).send(res);
+});
 
 router.use((req: Request, res: Response, next: NextFunction) => {
   const excludeAuthorize = [
@@ -25,14 +34,7 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 })
 
 router.use('/v1/api/menus', permissions([ROLE.ADMIN]), menuRoute);
+router.use('/v1/api/address', permissions([ROLE.ADMIN, ROLE.CUSTOMER]), addressRoute);
 router.use('/v1/api/access', accessRoute);
-
-// default route
-router.get('/', (req: Request, res: Response) => {
-  new SuccessResponse({
-    message: 'Welcome to Modfy API',
-    metadata: []
-  }).send(res);
-});
 
 export default router;

@@ -59,10 +59,15 @@ export async function up(knex: Knex): Promise<void> {
 
     .createTable('Addresses', (table) => {
       table.uuid('address_id').primary().unique().defaultTo(knex.fn.uuid());
+      table.string('customer_first_name');
+      table.string('customer_last_name');
+      table.string('address_phone');
       table.string('address_street');
       table.string('address_zipcode');
       table.string('address_city', 40);
       table.string('address_country', 40);
+      table.string('address_state', 40);
+      table.string('address_note', 255);
       table.smallint('address_status').defaultTo(0);
     })
 
@@ -71,7 +76,7 @@ export async function up(knex: Knex): Promise<void> {
       table.uuid('user_id').references('user_id').inTable('Users');
       table.uuid('address_id').references('address_id').inTable('Addresses');
       table.boolean('address_selected').defaultTo(false);
-      table.smallint('address_book_status').defaultTo(0);
+      table.smallint('address_book_status').defaultTo(1);
     })
 }
 

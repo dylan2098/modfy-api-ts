@@ -52,3 +52,17 @@ export type KeyToken = {
   ip_address?: string;
   updated_at?: string;
 }
+
+export type Address = {
+  address_id?: string;
+  customer_first_name?: string;
+  customer_last_name?: string;
+  address_phone?: string;
+  address_street?: string;
+  address_zipcode?: string;
+  address_city?: string;
+  address_country?: string;
+  address_state?: string;
+  address_note?: string;
+  address_status?: number;
+}

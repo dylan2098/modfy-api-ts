@@ -3,12 +3,12 @@ import knex from '../databases/knex';
 import { Menu } from '../core/types/access.type';
 
 class MenuModel {
-  async findAll (): Promise<Menu[]> {
+  async findAll(): Promise<Menu[]> {
     return knex.select('menu_id', 'menu_name', 'menu_path', 'menu_status').from(table.menus);
   }
 
   async findOne(payload: Menu) {
-    const {menu_id, menu_name, menu_path} = payload;
+    const { menu_id, menu_name, menu_path } = payload;
     const queryBuilder = knex.select('menu_id').from(table.menus);
 
     if (menu_id) {
@@ -19,24 +19,23 @@ class MenuModel {
       queryBuilder.where('menu_name', menu_name);
     }
 
-    if(menu_path) {
+    if (menu_path) {
       queryBuilder.orWhere('menu_path', menu_path);
     }
 
     return await queryBuilder;
   }
 
-
-  async exists (payload: Menu) {
+  async exists(payload: Menu) {
     const result = await this.findOne(payload);
-    if(result && result.length > 0) {
+    if (result && result.length > 0) {
       return true;
     }
 
     return false;
   }
 
-  create(payload: Menu) : Promise<Menu[]>{
+  create(payload: Menu): Promise<Menu[]> {
     return knex(table.menus).returning('menu_id').insert(payload);
   }
 
