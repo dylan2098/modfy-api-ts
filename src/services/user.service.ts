@@ -7,7 +7,7 @@ import { encodeId, hash } from '../helpers/hash';
 import { User } from '../core/types/access.type';
 import { ROLE } from '../core/access/role.core';
 import { USER_STATUS } from '../core/access/user.core';
-import { emitRegisterSuccess, emitChangePassword } from '../events/user.event';
+import { emitRegisterSuccess, emitChangePassword, emitResetPassword } from '../events/user.event';
 import RoleService from './role.service';
 import UserRoleService from './userRole.service';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
@@ -99,7 +99,7 @@ class UserService {
     try {
       const { user_email, user_password, user_phone } = payload;
 
-      if(!user_email || !user_phone || !user_password) {
+      if(!user_email || !user_password) {
         throw new BadRequestError('Email or Phone and Password is required');
       }
 
@@ -262,10 +262,11 @@ class UserService {
 
       const result = await UserModel.update({user_id: foundUser[0].user_id, user_password: passwordHash});
 
-
+      if(result) {
+        emitResetPassword({ user_email, user_password: newPassword });
+      }
 
       return result;
-      
     } catch (error) {
       throw error;
     }

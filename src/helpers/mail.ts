@@ -42,7 +42,7 @@ export function sendChangePasswordEmail(email: string) {
     to: email,
     subject: `Change password success`,
     text: ``,
-    html: `Your password has been changed successfully. If you did not make this change, please contact us immediately.`,
+    html: `Your password has been changed successfully.`,
   };
 
   return sendEmail(payload);
@@ -57,7 +57,7 @@ export function sendResetPasswordEmail(email: string, password: string) {
     to: email,
     subject: `Reset password success`,
     text: ``,
-    html: `Your password has been reset and password is: ${password}. If you did not make this change, please contact us immediately.`,
+    html: `Your password has been reset and password is: ${password}.`,
   };
 
   return sendEmail(payload);

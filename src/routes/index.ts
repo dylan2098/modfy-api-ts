@@ -12,7 +12,8 @@ router.use((req: Request, res: Response, next: NextFunction) => {
     '/access/login', 
     '/access/signup', 
     '/access/active', 
-    '/access/delete-token-expired'
+    '/access/delete-token-expired',
+    '/access/reset-password'
   ];
 
   const isExcludedPath = excludeAuthorize.some(excludedPath => req.path.includes(excludedPath));
