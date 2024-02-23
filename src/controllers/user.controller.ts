@@ -55,6 +55,12 @@ class UserController {
       })
     }).send(res);
   }
+
+  getProfile = async (req: CustomRequest, res: Response) => {
+    new SuccessResponse({
+      metadata: await UserService.getProfile(req.userId as string)
+    }).send(res);
+  }
 }
 
 export default new UserController();

@@ -16,6 +16,8 @@ router.put('/update-profile', validate(updateUserSchema), permissions([ROLE.ADMI
 
 router.patch('/change-password', validate(changePasswordSchema), permissions([ROLE.ADMIN, ROLE.CUSTOMER]), asyncHandler(UserController.changePassword));
 
+router.get('/profile', permissions([ROLE.ADMIN, ROLE.CUSTOMER]), asyncHandler(UserController.getProfile));
+
 
 
 /**

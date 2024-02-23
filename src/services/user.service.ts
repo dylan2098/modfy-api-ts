@@ -219,6 +219,14 @@ class UserService {
       throw error;
     }
   }
+
+  getProfile = async (userId: string) => {
+    try {
+      return await UserModel.find({ user_id: userId });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new UserService();
