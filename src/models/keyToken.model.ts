@@ -34,7 +34,8 @@ class KeyTokenService {
     }
 
     deleteTokenExpired = async () => {
-        return knex(table.key_token).delete().where('updated_at', '<', moment(Date.now()).subtract(5, 'd'));
+        const numDays = process.env.DELETE_TOKEN_EXPIRE;
+        return knex(table.key_token).delete().where('updated_at', '<', moment(Date.now()).subtract(numDays, 'd'));
     }
 }
 
