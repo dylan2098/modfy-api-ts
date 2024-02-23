@@ -17,7 +17,7 @@ class RoleMenuService {
         throw new BadRequestError('Data exists');
       }
 
-      const userRole = (await RoleMenuModel.create(payload)) as RoleMenu[];
+      const userRole = await RoleMenuModel.create(payload);
 
       if (!userRole) {
         throw new BadRequestError('Create failed');

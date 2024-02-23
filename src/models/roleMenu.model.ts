@@ -20,7 +20,7 @@ class RoleMenuModel {
     return false;
   }
 
-  create(payload: RoleMenu) {
+  create(payload: RoleMenu) : Promise<RoleMenu[]> {
     return knex(table.role_menus).returning(['role_id', 'menu_id']).insert(payload);
   }
 

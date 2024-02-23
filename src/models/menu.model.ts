@@ -36,7 +36,7 @@ class MenuModel {
     return false;
   }
 
-  create(payload: Menu) {
+  create(payload: Menu) : Promise<Menu[]>{
     return knex(table.menus).returning('menu_id').insert(payload);
   }
 

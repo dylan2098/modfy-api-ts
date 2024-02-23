@@ -126,14 +126,14 @@ class UserService {
         public_key: publicKey,
       });
 
-      if(!responseCreateToken || !responseCreateToken.length) {
+      if(!responseCreateToken || !responseCreateToken.length || !responseCreateToken[0].key_token_id) {
         throw new ConflictRequestError('Create token failed');
       }
 
       const result = foundUser[0];
       result.access_token = tokens.access_token;
       result.refresh_token = tokens.refresh_token;
-      result.access_id = encodeId(responseCreateToken[0].key_token_id as number);
+      result.access_id = encodeId(responseCreateToken[0].key_token_id);
       delete result.user_password;
 
       return [result];

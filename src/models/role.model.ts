@@ -29,7 +29,7 @@ class RoleModel {
     return false;
   }
 
-  create(payload: Role) {
+  create(payload: Role) : Promise<Role[]> {
     return knex(table.roles).returning('role_id').insert(payload);
   }
 

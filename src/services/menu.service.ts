@@ -20,7 +20,7 @@ class MenuService {
         throw new BadRequestError('Menu exists');
       }
 
-      const menu = (await MenuModel.create(payload)) as Menu[];
+      const menu = await MenuModel.create(payload);
 
       if (!menu) {
         throw new BadRequestError('Create role failed');

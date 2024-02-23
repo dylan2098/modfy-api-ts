@@ -19,7 +19,7 @@ class RoleService {
         throw new BadRequestError('Role exists');
       }
 
-      const newRole = (await RoleModel.create(payload)) as Role[];
+      const newRole = await RoleModel.create(payload);
 
       if (!newRole) {
         throw new BadRequestError('Create role failed');

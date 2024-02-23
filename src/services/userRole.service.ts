@@ -17,7 +17,7 @@ class UserRoleService {
         throw new BadRequestError('Data exists');
       }
 
-      const userRole = (await UserRoleModel.create(payload)) as UserRole[];
+      const userRole = await UserRoleModel.create(payload);
 
       if (!userRole) {
         throw new BadRequestError('Create failed');
