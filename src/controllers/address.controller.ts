@@ -3,7 +3,7 @@ import AddressService from '../services/address.service';
 import { CreatedSuccessResponse, SuccessResponse } from '../utils/success.response';
 import { CustomRequest } from '../core/interfaces/request';
 
-class MenuController {
+class AddressController {
   create = async (req: Request, res: Response) => {
     new CreatedSuccessResponse({
       metadata: await AddressService.create(req.body),
@@ -33,4 +33,4 @@ class MenuController {
   }
 }
 
-export default new MenuController();
+export default new AddressController();

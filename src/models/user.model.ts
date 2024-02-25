@@ -121,7 +121,6 @@ class UserModel {
     delete transformedData.customer_last_name;
     delete transformedData.address_selected;
 
-
     return transformedData;
   }
 
