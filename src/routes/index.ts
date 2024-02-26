@@ -5,6 +5,7 @@ import menuRoute from './menu';
 import { authentication, permissions } from '../utils/auth.util';
 import { ROLE } from '../core/access/role.core';
 import addressRoute from './address/address.route';
+import productRoute from './product';
 
 const router = Router();
 
@@ -36,5 +37,6 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 router.use('/v1/api/menus', permissions([ROLE.ADMIN]), menuRoute);
 router.use('/v1/api/address', permissions([ROLE.ADMIN, ROLE.CUSTOMER]), addressRoute);
 router.use('/v1/api/access', accessRoute);
+router.use('/v1/api/products', productRoute);
 
 export default router;
