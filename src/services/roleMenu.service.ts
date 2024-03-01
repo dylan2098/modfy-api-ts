@@ -1,4 +1,4 @@
-import { MENU_ROLE_STATUS } from '../core/access/roleMenu.core';
+import { STATUS } from '../core/status.core';
 import RoleMenuModel from '../models/roleMenu.model';
 import { RoleMenu } from '../core/types/access.type';
 import { BadRequestError} from '../utils/error.response';
@@ -67,7 +67,7 @@ class RoleMenuService {
         throw new BadRequestError('Data exists');
       }
 
-      payload.menu_role_status = MENU_ROLE_STATUS.BLOCK;
+      payload.menu_role_status = STATUS.INACTIVE;
       const roleMenu = await RoleMenuModel.update(payload);
 
       if (!roleMenu) {

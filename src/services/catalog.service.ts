@@ -1,4 +1,4 @@
-import { TAX_STATUS } from '../core/product/tax.core';
+import { STATUS } from '../core/status.core';
 import { Tax } from '../core/types/product.type';
 import TaxModel from '../models/tax.model';
 import { BadRequestError } from '../utils/error.response';
@@ -70,7 +70,7 @@ class CatalogService {
         throw new BadRequestError('Tax not exists');
       }
 
-      return TaxModel.update({ tax_id, tax_status: TAX_STATUS.BLOCK });
+      return TaxModel.update({ tax_id, tax_status: STATUS.INACTIVE });
     } catch (error) {
       throw error;
     }

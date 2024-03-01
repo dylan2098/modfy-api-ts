@@ -6,12 +6,11 @@ import { createTokenPair } from '../utils/auth.util';
 import { encodeId, hash } from '../helpers/hash';
 import { User } from '../core/types/access.type';
 import { ROLE } from '../core/access/role.core';
-import { USER_STATUS } from '../core/access/user.core';
+import { STATUS } from '../core/status.core';
 import { emitRegisterSuccess, emitChangePassword, emitResetPassword } from '../events/user.event';
 import RoleService from './role.service';
 import UserRoleService from './userRole.service';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
-import { USER_ROLE_STATUS } from '../core/access/userRole.core';
 import keyTokenModel from '../models/keyToken.model';
 import randomstring from 'randomstring';
 
@@ -74,7 +73,7 @@ class UserService {
 
       const result = await UserModel.update({
         user_id,
-        user_status: USER_STATUS.ACTIVE,
+        user_status: STATUS.ACTIVE,
       });
 
       if (result) {
@@ -82,7 +81,7 @@ class UserService {
         const optionActiveAccount = {
           user_id,
           role_id: roleCustomerUUID,
-          user_role_status: USER_ROLE_STATUS.ACTIVE,
+          user_role_status: STATUS.INACTIVE,
         };
 
         await UserRoleService.create(optionActiveAccount);

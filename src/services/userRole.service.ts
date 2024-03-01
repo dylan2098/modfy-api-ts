@@ -1,4 +1,4 @@
-import { USER_ROLE_STATUS } from '../core/access/userRole.core';
+import { STATUS } from '../core/status.core';
 import UserRoleModel from '../models/userRole.model';
 import { UserRole } from '../core/types/access.type';
 import { BadRequestError} from '../utils/error.response';
@@ -68,7 +68,7 @@ class UserRoleService {
         throw new BadRequestError('Data not exists');
       }
 
-      payload.user_role_status = USER_ROLE_STATUS.BLOCK;
+      payload.user_role_status = STATUS.INACTIVE;
       const userRole = await UserRoleModel.update(payload);
 
       if (!userRole) {

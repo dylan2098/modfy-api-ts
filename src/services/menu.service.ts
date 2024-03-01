@@ -1,7 +1,7 @@
 import { Menu } from '../core/types/access.type';
 import MenuModel from '../models/menu.model';
 import { BadRequestError, ConflictRequestError, AuthFailureError, ForbiddenError } from '../utils/error.response';
-import { MENU_STATUS } from '../core/access/menu.core';
+import { STATUS } from '../core/status.core';
 
 class MenuService {
   async create(payload: Menu) {
@@ -84,7 +84,7 @@ class MenuService {
         throw new BadRequestError('Not exists');
       }
 
-      const resultDelete = await MenuModel.update({ menu_id, menu_status: MENU_STATUS.BLOCK });
+      const resultDelete = await MenuModel.update({ menu_id, menu_status: STATUS.INACTIVE });
 
       return resultDelete;
     } catch (error) {
