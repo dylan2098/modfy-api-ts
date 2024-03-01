@@ -6,7 +6,7 @@ import { authentication, permissions } from '../utils/auth.util';
 import { ROLE } from '../core/access/role.core';
 import addressRoute from './address/address.route';
 import productRoute from './product';
-import taxRoute from './tax/tax.route';
+import taxRoute from './tax';
 
 const router = Router();
 
