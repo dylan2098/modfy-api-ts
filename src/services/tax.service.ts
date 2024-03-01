@@ -12,8 +12,6 @@ class TaxService {
         throw new BadRequestError('Invalid data');
       }
 
-      tax_name = tax_name.toLowerCase();
-
       const exists = await TaxModel.exists({ tax_name });
       if (exists) {
         throw new BadRequestError('Tax exists');
@@ -50,10 +48,6 @@ class TaxService {
 
       if (!exists) {
         throw new BadRequestError('Tax not exists');
-      }
-
-      if (payload.tax_name) {
-        payload.tax_name = payload.tax_name.toLowerCase();
       }
 
       return TaxModel.update(payload);

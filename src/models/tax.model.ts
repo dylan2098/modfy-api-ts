@@ -31,11 +31,26 @@ class TaxModel {
         return queryBuilder;
     }
 
-    async exists(payload: Tax) {
+    async exists(payload: Tax) : Promise<boolean> {
         const { tax_id, tax_name } = payload;
-        const taxes = await this.findOne({ tax_id, tax_name });
 
-        if (taxes && taxes.tax_id) {
+        const queryBuilder = knex.select('tax_id').from(table.taxes).first();
+
+        if(tax_name) {
+            queryBuilder.where('tax_name', tax_name);
+        }
+
+        if(tax_id) {
+            if(tax_name) {
+                queryBuilder.orWhere('tax_id', tax_id);
+            } else {
+                queryBuilder.where('tax_id', tax_id);
+            }
+        }
+
+        const tax = await queryBuilder;
+
+        if (tax && tax.tax_id) {
             return true;
         }
 
