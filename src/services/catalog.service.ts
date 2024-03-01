@@ -1,28 +1,28 @@
 import { STATUS } from '../core/status.core';
-import { Tax } from '../core/types/product.type';
-import TaxModel from '../models/tax.model';
+import { Catalog } from '../core/types/product.type';
+import CatalogModel from '../models/catalog.model';
 import { BadRequestError } from '../utils/error.response';
 
 class CatalogService {
-  async create(payload: Tax) {
+  async create(payload: Catalog) {
     try {
-      let { tax_name, tax_value } = payload;
+      let { catalog_name } = payload;
 
-      if (!tax_name || !tax_value) {
+      if (!catalog_name) {
         throw new BadRequestError('Invalid data');
       }
 
-      const exists = await TaxModel.exists({ tax_name });
+      const exists = await CatalogModel.exists({ catalog_name });
       if (exists) {
         throw new BadRequestError('Tax exists');
       }
 
-      const tax = await TaxModel.create(payload);
-      if (!tax) {
-        throw new BadRequestError('Create tax failed');
+      const catalog = await CatalogModel.create(payload);
+      if (!catalog) {
+        throw new BadRequestError('Create catalog failed');
       }
 
-      return tax;
+      return catalog;
     } catch (error) {
       throw error;
     }
@@ -30,47 +30,47 @@ class CatalogService {
 
   async getAll() {
     try {
-      return TaxModel.findAll();
+      return CatalogModel.findAll();
     } catch (error) {
       throw error;
     }
   }
 
-  async update(payload: Tax) {
+  async update(payload: Catalog) {
     try {
-      if (!payload || !payload.tax_id) {
+      if (!payload || !payload.catalog_id) {
         throw new BadRequestError('Update tax failed');
       }
 
-      const { tax_id } = payload;
+      const { catalog_id } = payload;
 
-      const exists = await TaxModel.exists({ tax_id });
+      const exists = await CatalogModel.exists({ catalog_id });
 
       if (!exists) {
         throw new BadRequestError('Tax not exists');
       }
 
-      return TaxModel.update(payload);
+      return CatalogModel.update(payload);
     } catch (error) {
       throw error;
     }
   }
 
-  async delete(payload: Tax) {
+  async delete(payload: Catalog) {
     try {
-      if (!payload || !payload.tax_id) {
+      if (!payload || !payload.catalog_id) {
         throw new BadRequestError('Delete tax failed');
       }
 
-      const { tax_id } = payload;
+      const { catalog_id } = payload;
 
-      const exists = await TaxModel.exists({ tax_id });
+      const exists = await CatalogModel.exists({ catalog_id });
 
       if (!exists) {
         throw new BadRequestError('Tax not exists');
       }
 
-      return TaxModel.update({ tax_id, tax_status: STATUS.INACTIVE });
+      return CatalogModel.update({ catalog_id, catalog_status: STATUS.INACTIVE });
     } catch (error) {
       throw error;
     }
