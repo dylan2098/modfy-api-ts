@@ -48,9 +48,9 @@ class CatalogModel {
             }
         }
 
-        const tax = await queryBuilder;
+        const data = await queryBuilder;
 
-        if (tax && tax.catalog_id) {
+        if (data && data.catalog_id) {
             return true;
         }
 

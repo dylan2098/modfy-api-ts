@@ -7,6 +7,7 @@ import { ROLE } from '../core/access/role.core';
 import addressRoute from './address/address.route';
 import productRoute from './product';
 import catalogRoute from './catalog';
+import categoryRoute from './category';
 import taxRoute from './tax';
 
 const router = Router();
@@ -41,6 +42,7 @@ router.use('/v1/api/address', permissions([ROLE.ADMIN, ROLE.CUSTOMER]), addressR
 router.use('/v1/api/access', accessRoute);
 router.use('/v1/api/tax', permissions([ROLE.ADMIN]), taxRoute);
 router.use('/v1/api/catalog', permissions([ROLE.ADMIN]), catalogRoute);
+router.use('/v1/api/category', permissions([ROLE.ADMIN]), categoryRoute);
 router.use('/v1/api/products', productRoute);
 
 export default router;

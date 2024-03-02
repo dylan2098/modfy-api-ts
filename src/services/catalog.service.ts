@@ -14,7 +14,7 @@ class CatalogService {
 
       const exists = await CatalogModel.exists({ catalog_name });
       if (exists) {
-        throw new BadRequestError('Tax exists');
+        throw new BadRequestError('Catalog exists');
       }
 
       const catalog = await CatalogModel.create(payload);
