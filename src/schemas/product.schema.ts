@@ -46,7 +46,7 @@ const properties = {
   }
 }
 
-const dataRequired = ['product_sku', 'product_name', 'product_id', 'attribute_type'];
+const dataRequired = ['product_sku', 'product_name'];
 
 export const ProductSchema = {
   type: 'object',

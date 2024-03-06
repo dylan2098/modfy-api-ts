@@ -27,22 +27,29 @@ export async function up(knex: Knex): Promise<void> {
 
   .createTable('Inventories', (table) => {
     table.uuid('inventory_id').primary().unique().defaultTo(knex.fn.uuid());
-    table.integer('inventory_stock').defaultTo(0);
-    table.integer('inventory_mode').defaultTo(0); // normal, pre-order, back-order
-    table.datetime('inventory_expected_date');
-    table.smallint('inventory_status').defaultTo(0); // available, out of stock
+    table.string('inventory_name', 100).notNullable();
+    table.smallint('inventory_status').defaultTo(0);
   })
 
   .createTable('Products', (table) => {
     table.uuid('product_id').primary().unique().defaultTo(knex.fn.uuid());
     table.uuid('category_id').references('category_id').inTable('Categories');
-    table.uuid('inventory_id').references('inventory_id').inTable('Inventories');
     table.string('product_sku', 50).notNullable();
     table.string('product_name').notNullable();
     table.boolean('product_allow_use_promotion').defaultTo(true);
     table.smallint('product_status').defaultTo(0);
     table.datetime('product_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6));
     table.index(['product_id','category_id', 'product_sku', 'product_name'], 'product_index');
+  })
+
+  .createTable('InventoryProduct', (table) => {
+    table.uuid('inventory_product_id').primary().unique().defaultTo(knex.fn.uuid());
+    table.uuid('inventory_id').references('inventory_id').inTable('Inventories');
+    table.uuid('product_id').references('product_id').inTable('Products');
+    table.integer('inventory_stock').defaultTo(0);
+    table.integer('inventory_mode').defaultTo(0); // normal, pre-order, back-order
+    table.datetime('inventory_expected_date');
+    table.smallint('product_inventory_status').defaultTo(0); // available, out of stock
   })
 
   .createTable('ProductAttributes', (table) => {
@@ -87,12 +94,12 @@ export async function up(knex: Knex): Promise<void> {
 export async function down(knex: Knex): Promise<void> {
   return knex.schema
     .dropTable('ProductAttributes')
-    .dropTable('Inventories')
     .dropTable('Prices')
     .dropTable('Sets')
     .dropTable('Variants')
     .dropTable('Taxes')
     .dropTable('Products')
-    .dropTable('Catalogs')
     .dropTable('Categories')
+    .dropTable('Inventories')
+    .dropTable('Catalogs')
 }

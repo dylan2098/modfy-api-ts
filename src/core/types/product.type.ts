@@ -40,3 +40,9 @@ export type Product = {
   attribute_short_description?: string;
   attribute_long_description?: string;
 }
+
+export type Inventory = {
+  inventory_id?: string;
+  inventory_name?: string;
+  inventory_status?: number;
+}
