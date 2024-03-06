@@ -23,4 +23,20 @@ export type Category = {
 
 export type Product = {
   product_id?: string;
+  category_id?: string;
+  inventory_id?: string;
+  product_sku?: string;
+  product_name?: string;
+  product_status?: number;
+  sets_id?: string[];
+  variants?: string[];
+  attribute_brand?: string;
+  attribute_color?: string;
+  attribute_size?: string;
+  attribute_model?: string;
+  attribute_type?: string;
+  attribute_image?: string;
+  attribute_images?: string;
+  attribute_short_description?: string;
+  attribute_long_description?: string;
 }

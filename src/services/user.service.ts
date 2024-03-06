@@ -5,7 +5,7 @@ import utils from '../utils/utils';
 import { createTokenPair } from '../utils/auth.util';
 import { encodeId, hash } from '../helpers/hash';
 import { User } from '../core/types/access.type';
-import { ROLE } from '../core/access/role.core';
+import { ROLE } from '../core/role.core';
 import { STATUS } from '../core/status.core';
 import { emitRegisterSuccess, emitChangePassword, emitResetPassword } from '../events/user.event';
 import RoleService from './role.service';

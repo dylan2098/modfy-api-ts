@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { ROLE } from '../../core/access/role.core';
+import { ROLE } from '../../core/role.core';
 import { permissions } from '../../utils/auth.util';
 import ProductController from '../../controllers/product.controller';
 import { ProductSchema } from '../../schemas/product.schema';

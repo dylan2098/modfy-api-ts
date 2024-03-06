@@ -5,7 +5,7 @@ import {createUserSchema, updateUserSchema, changePasswordSchema} from '../../sc
 
 import { Router } from 'express';
 import { permissions } from '../../utils/auth.util';
-import { ROLE } from '../../core/access/role.core';
+import { ROLE } from '../../core/role.core';
 
 const router = Router();
 

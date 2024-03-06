@@ -3,7 +3,7 @@ import { SuccessResponse } from '../utils/success.response';
 import accessRoute from './access';
 import menuRoute from './menu';
 import { authentication, permissions } from '../utils/auth.util';
-import { ROLE } from '../core/access/role.core';
+import { ROLE } from '../core/role.core';
 import addressRoute from './address/address.route';
 import productRoute from './product';
 import catalogRoute from './catalog';

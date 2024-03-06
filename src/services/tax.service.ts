@@ -45,7 +45,6 @@ class TaxService {
       const { tax_id } = payload;
 
       const exists = await TaxModel.exists({ tax_id });
-
       if (!exists) {
         throw new BadRequestError('Tax not exists');
       }

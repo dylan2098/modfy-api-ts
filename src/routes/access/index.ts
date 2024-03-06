@@ -4,7 +4,7 @@ import roleRoute from './role.route';
 import userRoleRoute from './userRole.route';
 import roleMenuRoute from './roleMenu.route';
 import { permissions } from '../../utils/auth.util';
-import { ROLE } from '../../core/access/role.core';
+import { ROLE } from '../../core/role.core';
 
 const router = Router();
 
