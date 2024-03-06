@@ -1,4 +1,4 @@
-export const createSchema = {
+export const schemaCreate = {
   type: 'object',
   properties: {
     catalog_id: {
@@ -12,7 +12,7 @@ export const createSchema = {
   additionalProperties: false,
 };
 
-export const updateSchema = {
+export const schemaUpdate = {
   type: 'object',
   properties: {
     category_id: {
