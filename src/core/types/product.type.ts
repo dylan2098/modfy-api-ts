@@ -19,3 +19,8 @@ export type Category = {
   category_status?: number;
   category_updated_at?: string;
 };
+
+
+export type Product = {
+  product_id?: string;
+}
