@@ -42,6 +42,16 @@ class ProductService {
     }
   }
 
+  async getProduct(payload: Product) {
+    try {
+      return ProductModel.findOne(payload)
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+
   async update(payload: Product) {
     try {
       if(!payload || !payload.product_id) {

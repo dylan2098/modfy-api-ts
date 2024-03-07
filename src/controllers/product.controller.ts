@@ -15,6 +15,12 @@ class ProductController {
     }).send(res);
   };
 
+  getProduct = async (req: Request, res: Response) => {
+    new SuccessResponse ({
+      metadata: await ProductService.getProduct({product_id: req.params.id}),
+    }).send(res);
+  };
+
   update = async (req: Request, res: Response) => {
     new SuccessResponse ({
       metadata: await ProductService.update(req.body),
