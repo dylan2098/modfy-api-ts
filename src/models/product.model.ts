@@ -3,9 +3,15 @@ import knex from '../databases/knex';
 import { Product } from '../core/types/product.type';
 
 class ProductModel {
-  async findAll(): Promise<Product[]> {
-    const columns = ['product_id', 'product_name', 'product_sku', 'product_status'];
-    return knex.select(columns).from(table.products);
+  findAll(): Promise<Product[]> {
+
+    return knex.select('*')
+          .from(table.products)
+          .innerJoin('Categories', 'Products.category_id', 'Categories.category_id')
+          .innerJoin('ProductAttributes', 'Products.product_id', 'ProductAttributes.product_id')
+          .innerJoin('InventoryProduct', 'Products.product_id', 'InventoryProduct.product_id')
+          .innerJoin('Prices', 'Products.product_id', 'Prices.product_id')
+          ;
   }
 
   async findOne(payload: Product) {
@@ -48,7 +54,7 @@ class ProductModel {
     return knex(table.products).returning('product_id').insert({
       product_name: payload.product_name,
       product_sku: payload.product_sku,
-      product_status: payload.product_status,
+      category_id: payload.category_id,
     });
   }
 
