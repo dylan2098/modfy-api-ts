@@ -43,10 +43,31 @@ const properties = {
   },
   attribute_long_description: {
     type: 'string',
-  }
+  },
+  inventory_stock: {
+    type: 'number',
+  },
+  inventory_mode: {
+    type: 'number',
+  },
+  product_inventory_status : {
+    type: 'number',
+  },
+  gross_price : {
+    type: 'number',
+  },
+  net_price : {
+    type: 'number',
+  },
+  sale_price : {
+    type: 'number',
+  },
+  tax_id : {
+    type: 'string',
+  },
 }
 
-const dataRequired = ['product_sku', 'product_name'];
+const dataRequired = ['product_sku', 'product_name', 'inventory_id', 'category_id'];
 
 export const ProductSchema = {
   type: 'object',

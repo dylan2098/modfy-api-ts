@@ -15,12 +15,20 @@ class ProductService {
         throw new BadRequestError('Product exists');
       }
 
-      const product = await ProductModel.create(payload);
-      if(!product) {
+      const addProduct = await ProductModel.createProduct(payload);
+      if(!addProduct || addProduct.length === 0) {
         throw new BadRequestError('Create product failed');
       }
 
-      return product;
+      payload.product_id = addProduct[0].product_id;
+
+      const addAttribute = ProductModel.createProductAttribute(payload);
+      const addInventoryProduct = ProductModel.createInventoryProduct(payload);
+      const addPrice = ProductModel.createPriceProduct(payload);
+
+      await Promise.all([addAttribute, addInventoryProduct, addPrice].map(p => p.catch(e => e)));
+
+      return addProduct;
     } catch (error) {
       throw error;
     }

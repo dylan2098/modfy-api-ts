@@ -15,6 +15,7 @@ export default {
   catalogs: 'Catalogs',
   categories: 'Categories',
   inventories: 'Inventories',
+  inventory_product: 'InventoryProduct',
   product_attributes: 'ProductAttributes',
   sets: 'Sets',
   variants: 'Variants',

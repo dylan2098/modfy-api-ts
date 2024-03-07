@@ -47,7 +47,7 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('inventory_id').references('inventory_id').inTable('Inventories');
     table.uuid('product_id').references('product_id').inTable('Products');
     table.integer('inventory_stock').defaultTo(0);
-    table.integer('inventory_mode').defaultTo(0); // normal, pre-order, back-order
+    table.integer('inventory_mode').defaultTo(0); // normal, pre-order
     table.datetime('inventory_expected_date');
     table.smallint('product_inventory_status').defaultTo(0); // available, out of stock
   })
@@ -71,8 +71,8 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('product_id').references('product_id').inTable('Products');
     table.float('gross_price');
     table.float('net_price');
+    table.float('sale_price');
     table.uuid('tax_id');
-    table.smallint('tax_status').defaultTo(0);
     table.foreign('tax_id').references('tax_id').inTable('Taxes');
   })
 

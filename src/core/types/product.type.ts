@@ -20,13 +20,15 @@ export type Category = {
   category_updated_at?: string;
 };
 
-
 export type Product = {
   product_id?: string;
   category_id?: string;
   inventory_id?: string;
+  price_id?: string;
+  tax_id?: string;
   product_sku?: string;
   product_name?: string;
+  product_allow_use_promotion?: number;
   product_status?: number;
   sets_id?: string[];
   variants?: string[];
@@ -39,6 +41,13 @@ export type Product = {
   attribute_images?: string;
   attribute_short_description?: string;
   attribute_long_description?: string;
+  inventory_stock?: number;
+  inventory_mode?: number;
+  inventory_expected_date?: Date;
+  product_inventory_status?: number;
+  gross_price?: number;
+  net_price?: number;
+  sale_price?: number;
 }
 
 export type Inventory = {

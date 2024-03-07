@@ -4,3 +4,8 @@ export enum PRODUCT_TYPE {
   VARIANT = 'variant',
   SET = 'set'
 }
+
+export enum INVENTORY_MODE {
+  NORMAL = 1,
+  PREORDER = 2
+}
