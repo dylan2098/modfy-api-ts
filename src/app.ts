@@ -11,6 +11,10 @@ import _ from 'lodash';
 import utils from './utils/utils';
 
 const app = express();
+app.set('views', 'src/views');
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+
 app.use(
   cors({
     credentials: true,
@@ -28,13 +32,10 @@ app.use(compression());
 app.use(express.json());
 app.use(limiter);
 
-// utf8
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
 
+
+// utf8
+app.use(express.urlencoded({ extended: true }));
 app.use('/', router);
 
 app.use((req, res, next) => {
@@ -45,21 +46,21 @@ app.use((req, res, next) => {
 
 // manage errors
 app.use((error: ResponseType, req: Request, res: Response, next: NextFunction) => {
-  const code = _.isInteger(error.code) && error.code || 500;
+  const code = (_.isInteger(error.code) && error.code) || 500;
 
   const body: ResponseType = {
     error: true,
     code: code,
     message: error.message || 'Internal Server Error',
-    metadata: []
+    metadata: [],
   };
 
-  if(utils.environment() === 'development' && process.env.DEBUG?.toLowerCase() === 'true') {
-    if (error.stack && (typeof error.stack === 'string')) {
-      body.stack = (error.stack).split('\n').map((line: string) => line.trim());
+  if (utils.environment() === 'development' && process.env.DEBUG?.toLowerCase() === 'true') {
+    if (error.stack && typeof error.stack === 'string') {
+      body.stack = error.stack.split('\n').map((line: string) => line.trim());
     }
   }
-  
+
   return res.status(code).json(body);
 });
 

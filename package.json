@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "prebuild": "ts-node scripts/copy-assets",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "watch": "tsc -w",
@@ -24,7 +25,9 @@
     "@types/node": "^20.11.19",
     "@types/nodemailer": "^6.4.14",
     "@types/randomstring": "^1.1.11",
+    "@types/shelljs": "^0.8.15",
     "@types/uuid": "^9.0.8",
+    "shelljs": "^0.8.5",
     "ts-node": "^10.9.2",
     "tslib": "^2.6.2",
     "typescript": "^5.3.3"
@@ -36,6 +39,7 @@
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
+    "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-rate-limit": "^7.1.5",
     "hashids": "^2.3.0",

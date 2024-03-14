@@ -15,10 +15,7 @@ const router = Router();
 
 // default route
 router.get('/', (req: Request, res: Response) => {
-  new SuccessResponse({
-    message: 'Welcome to Modfy API',
-    metadata: []
-  }).send(res);
+  return res.render('pages/phone')
 });
 
 router.use((req: Request, res: Response, next: NextFunction) => {
