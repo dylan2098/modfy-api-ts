@@ -15,7 +15,10 @@ const router = Router();
 
 // default route
 router.get('/', (req: Request, res: Response) => {
-  return res.render('pages/phone')
+  new SuccessResponse({
+    metadata: [],
+    message: 'Welcome to the API'
+  }).send(res);
 });
 
 router.use((req: Request, res: Response, next: NextFunction) => {
