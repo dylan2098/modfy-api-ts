@@ -10,6 +10,6 @@ export default rateLimit({
   message: {
     error: true,
     code: 429,
-    msg: 'Too many requests',
+    message: 'Too many requests',
   },
 });

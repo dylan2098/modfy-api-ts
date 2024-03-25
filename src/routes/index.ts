@@ -27,7 +27,9 @@ router.use((req: Request, res: Response, next: NextFunction) => {
     '/access/signup', 
     '/access/active', 
     '/access/delete-token-expired',
-    '/access/reset-password'
+    '/access/reset-password',
+    '/category/list',
+    '/catalog/list'
   ];
 
   const isExcludedPath = excludeAuthorize.some(excludedPath => req.path.includes(excludedPath));
@@ -38,13 +40,13 @@ router.use((req: Request, res: Response, next: NextFunction) => {
   return authentication(req, res, next);
 })
 
+router.use('/v1/api/catalog', catalogRoute);
+router.use('/v1/api/access', accessRoute);
+router.use('/v1/api/category', categoryRoute);
+router.use('/v1/api/product', productRoute);
 router.use('/v1/api/menus', permissions([ROLE.ADMIN]), menuRoute);
 router.use('/v1/api/address', permissions([ROLE.ADMIN, ROLE.CUSTOMER]), addressRoute);
-router.use('/v1/api/access', accessRoute);
 router.use('/v1/api/tax', permissions([ROLE.ADMIN]), taxRoute);
-router.use('/v1/api/catalog', permissions([ROLE.ADMIN]), catalogRoute);
-router.use('/v1/api/category', permissions([ROLE.ADMIN]), categoryRoute);
-router.use('/v1/api/product', productRoute);
 router.use('/v1/api/inventory', permissions([ROLE.ADMIN]), inventoryRoute);
 
 export default router;
