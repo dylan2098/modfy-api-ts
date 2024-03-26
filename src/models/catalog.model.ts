@@ -1,6 +1,7 @@
 import table from '../databases/table';
 import knex from '../databases/knex';
 import { Catalog } from '../core/types/product.type';
+import _ from 'lodash';
 
 class CatalogModel {
     create(payload: Catalog): Promise<Catalog[]> {
@@ -12,8 +13,31 @@ class CatalogModel {
     }
 
     findAll(): Promise<Catalog[]> {
-        const columns = ['catalog_id', 'catalog_name', 'catalog_status'];
-        return knex.select(columns).from(table.catalogs);
+        const columns = ['Catalogs.catalog_id', 'Catalogs.catalog_name', 'Catalogs.catalog_status', 'Categories.category_id', 'Categories.category_name', 'Categories.category_status'];
+        return knex.select(columns)
+            .from('Catalogs')
+            .innerJoin('Categories', 'Catalogs.catalog_id', 'Categories.catalog_id')
+            .orderBy('Catalogs.catalog_id')
+            .then(rows => {
+                rows = _.chain(rows)
+                    .groupBy('catalog_id')
+                    .map((value, key) => {
+                        return {
+                            catalog_id: key,
+                            catalog_name: value[0].catalog_name,
+                            catalog_status: value[0].catalog_status,
+                            categories: value.map((item: any) => {
+                                return {
+                                    category_id: item.category_id,
+                                    category_name: item.category_name,
+                                    category_status: item.category_status
+                                };
+                            }),
+                        };
+                    })
+                    .value();           
+                return rows;
+            });
     }
 
     findOne(payload: Catalog) {
