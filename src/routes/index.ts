@@ -29,7 +29,8 @@ router.use((req: Request, res: Response, next: NextFunction) => {
     '/access/delete-token-expired',
     '/access/reset-password',
     '/category/list',
-    '/catalog/list'
+    '/catalog/list',
+    '/product/get-products-by-category'
   ];
 
   const isExcludedPath = excludeAuthorize.some(excludedPath => req.path.includes(excludedPath));

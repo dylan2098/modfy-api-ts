@@ -20,5 +20,6 @@ router.put('/update', permissions([ROLE.ADMIN]), asyncHandler(ProductController.
 router.delete('/delete', permissions([ROLE.ADMIN]), asyncHandler(ProductController.delete));
 router.get('/list', asyncHandler(ProductController.list));
 router.get('/:id', asyncHandler(ProductController.getProduct));
+router.get('/get-products-by-category/:category_id', asyncHandler(ProductController.getProductByCategory));
 
 export default router;

@@ -32,6 +32,12 @@ class ProductController {
       metadata: await ProductService.delete(req.body),
     }).send(res);
   };
+
+  getProductByCategory = async (req: Request, res: Response) => {
+    new SuccessResponse ({
+      metadata: await ProductService.getProductByCategory({category_id: req.params.category_id}),
+    }).send(res);
+  }
 }
 
 export default new ProductController();

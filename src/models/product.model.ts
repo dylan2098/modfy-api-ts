@@ -1,38 +1,40 @@
 import table from '../databases/table';
 import knex from '../databases/knex';
-import { Product } from '../core/types/product.type';
+import { Category, Product } from '../core/types/product.type';
 
 class ProductModel {
+
+  columns = [
+    'Products.category_id',
+    'Products.product_id',
+    'InventoryProduct.inventory_id',
+    'Products.product_name',
+    'Products.product_sku',
+    'Categories.category_name',
+    'ProductAttributes.attribute_brand',
+    'ProductAttributes.attribute_color',
+    'ProductAttributes.attribute_size',
+    'ProductAttributes.attribute_model',
+    'ProductAttributes.attribute_type',
+    'ProductAttributes.attribute_image',
+    'ProductAttributes.attribute_images',
+    'ProductAttributes.attribute_short_description',
+    'ProductAttributes.attribute_long_description',
+    'InventoryProduct.inventory_stock',
+    'InventoryProduct.inventory_mode',
+    'InventoryProduct.inventory_expected_date',
+    'InventoryProduct.product_inventory_status',
+    'Prices.gross_price',
+    'Prices.net_price',
+    'Prices.sale_price',
+    'Taxes.tax_name',
+    'Taxes.tax_value',
+  ];
+
   findAll(): Promise<Product[]> {
-    const columns = [
-      'Products.category_id',
-      'Products.product_id',
-      'InventoryProduct.inventory_id',
-      'Products.product_name',
-      'Products.product_sku',
-      'Categories.category_name',
-      'ProductAttributes.attribute_brand',
-      'ProductAttributes.attribute_color',
-      'ProductAttributes.attribute_size',
-      'ProductAttributes.attribute_model',
-      'ProductAttributes.attribute_type',
-      'ProductAttributes.attribute_image',
-      'ProductAttributes.attribute_images',
-      'ProductAttributes.attribute_short_description',
-      'ProductAttributes.attribute_long_description',
-      'InventoryProduct.inventory_stock',
-      'InventoryProduct.inventory_mode',
-      'InventoryProduct.inventory_expected_date',
-      'InventoryProduct.product_inventory_status',
-      'Prices.gross_price',
-      'Prices.net_price',
-      'Prices.sale_price',
-      'Taxes.tax_name',
-      'Taxes.tax_value',
-    ];
 
     return knex
-      .select(columns)
+      .select(this.columns)
       .from(table.products)
       .innerJoin('Categories', 'Products.category_id', 'Categories.category_id')
       .innerJoin('ProductAttributes', 'Products.product_id', 'ProductAttributes.product_id')
@@ -42,35 +44,8 @@ class ProductModel {
   }
 
   async findOne(payload: Product) {
-    const columns = [
-      'Products.category_id',
-      'Products.product_id',
-      'InventoryProduct.inventory_id',
-      'Products.product_name',
-      'Products.product_sku',
-      'Categories.category_name',
-      'ProductAttributes.attribute_brand',
-      'ProductAttributes.attribute_color',
-      'ProductAttributes.attribute_size',
-      'ProductAttributes.attribute_model',
-      'ProductAttributes.attribute_type',
-      'ProductAttributes.attribute_image',
-      'ProductAttributes.attribute_images',
-      'ProductAttributes.attribute_short_description',
-      'ProductAttributes.attribute_long_description',
-      'InventoryProduct.inventory_stock',
-      'InventoryProduct.inventory_mode',
-      'InventoryProduct.inventory_expected_date',
-      'InventoryProduct.product_inventory_status',
-      'Prices.gross_price',
-      'Prices.net_price',
-      'Prices.sale_price',
-      'Taxes.tax_name',
-      'Taxes.tax_value',
-    ];
-
     const { product_id, product_sku } = payload;
-    const queryBuilder = knex.select(columns).from(table.products).first();
+    const queryBuilder = knex.select(this.columns).from(table.products).first();
 
     if (product_sku) {
       queryBuilder.where('product_sku', product_sku);
@@ -78,6 +53,24 @@ class ProductModel {
 
     if (product_id) {
       queryBuilder.where('Products.product_id', product_id);
+    }
+
+    queryBuilder
+      .innerJoin('Categories', 'Products.category_id', 'Categories.category_id')
+      .innerJoin('ProductAttributes', 'Products.product_id', 'ProductAttributes.product_id')
+      .innerJoin('InventoryProduct', 'Products.product_id', 'InventoryProduct.product_id')
+      .innerJoin('Prices', 'Products.product_id', 'Prices.product_id')
+      .innerJoin('Taxes', 'Prices.tax_id', 'Taxes.tax_id');
+
+    return queryBuilder;
+  }
+
+  async findProductByCategory(payload: Category) {
+    const { category_id } = payload;
+    const queryBuilder = knex.select(this.columns).from(table.products);
+
+    if (category_id) {
+      queryBuilder.where('Products.category_id', category_id);
     }
 
     queryBuilder

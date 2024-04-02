@@ -1,5 +1,5 @@
 import { STATUS } from '../core/status.core';
-import { Product } from '../core/types/product.type';
+import { Product, Category } from '../core/types/product.type';
 import ProductModel from '../models/product.model';
 import { BadRequestError } from '../utils/error.response';
 
@@ -45,6 +45,15 @@ class ProductService {
   async getProduct(payload: Product) {
     try {
       return ProductModel.findOne(payload)
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  async getProductByCategory(payload: Category) {
+    try {
+      return ProductModel.findProductByCategory(payload)
     } catch (error) {
       throw error;
     }
