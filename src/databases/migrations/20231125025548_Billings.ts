@@ -4,9 +4,8 @@ import type { Knex } from 'knex';
 export async function up(knex: Knex): Promise<void> {
     return knex.schema
     .createTable('Billings', (table) => {
-        table.increments('billing_id').primary().unique();
-        table.uuid('billing_id').notNullable();;
-        table.integer('order_id');
+        table.uuid('billing_id').primary().unique().defaultTo(knex.fn.uuid());
+        table.uuid('order_id');
         table.string('customer_id', 100);
         table.string('customer_email', 255).notNullable();
         table.string('customer_first_name', 50).notNullable();
