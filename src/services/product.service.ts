@@ -34,7 +34,7 @@ class ProductService {
     }
   }
 
-  async getAll() {
+  getAll() {
     try {
       return ProductModel.findAll();
     } catch (error) {
@@ -44,16 +44,34 @@ class ProductService {
 
   async getProduct(payload: Product) {
     try {
-      return ProductModel.findOne(payload)
+      const product = await ProductModel.findOne(payload);
+      
+      const hasImages = product.attribute_images && product.attribute_images.length > 0;
+      if(hasImages) {
+
+        const attrImgs = JSON.parse(product.attribute_images)
+        
+        let images: any = [];
+        for(let i = 0; i < attrImgs.length; i++) {
+          images.push({
+            src: attrImgs[i],
+            alt: product.product_name,
+          });
+        }
+        
+        product.attribute_images = images;        
+      }
+
+      return product;
     } catch (error) {
       throw error;
     }
   }
 
 
-  async getProductByCategory(payload: Category) {
+  getProductByCategory(payload: Category) {
     try {
-      return ProductModel.findProductByCategory(payload)
+      return ProductModel.findProductByCategory(payload);
     } catch (error) {
       throw error;
     }

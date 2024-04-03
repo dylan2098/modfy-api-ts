@@ -30,7 +30,8 @@ router.use((req: Request, res: Response, next: NextFunction) => {
     '/access/reset-password',
     '/category/list',
     '/catalog/list',
-    '/product/get-products-by-category'
+    '/product/get-products-by-category',
+    '/product/'
   ];
 
   const isExcludedPath = excludeAuthorize.some(excludedPath => req.path.includes(excludedPath));
