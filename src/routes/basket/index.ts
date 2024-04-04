@@ -6,6 +6,6 @@ import schema from '../../schemas/catalog.schema';
 
 const router = Router();
 
-router.post('/add-cart', );
+router.post('/add-basket', );
 
 export default router;

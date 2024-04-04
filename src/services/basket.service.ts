@@ -1,25 +1,25 @@
-import { Cart } from '../core/types/cart.type';
-import AddressModel from '../models/address.model';
+import { Basket } from '../core/types/basket.type';
+import BasketModel from '../models/basket.model';
 import {
   BadRequestError,
 } from '../utils/error.response';
 
-class CartService {
-  create(payload: Cart) {
+class BasketService {
+  create(payload: Basket) {
     
   }
 
-  async update(payload: Cart) {
+  async update(payload: Basket) {
     
   }
 
-  async delete(payload: Cart) {
+  async delete(payload: Basket) {
     
   }
 
-  async createAddressBook(payload: Cart) {
+  async createAddressBook(payload: Basket) {
 
   }
 }
 
-export default new CartService();
+export default new BasketService();
