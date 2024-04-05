@@ -26,4 +26,14 @@ export default {
   services: 'Services',
   group_config: 'GroupConfig',
   config: 'Config',
+
+  // basket
+  baskets: 'Baskets',
+  basket_items: 'BasketItems',
+  billings: 'Billings',
+  orders: 'Orders',
+  order_items: 'OrderItems',
+  payment_methods: 'PaymentMethods',
+  payment_transactions: 'PaymentTransactions',
+  shippings: 'Shippings'
 };
