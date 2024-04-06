@@ -33,8 +33,8 @@ class BasketController {
 
   addBillingToBasket = async (req: Request, res: Response) => {
     new SuccessResponse({
-      metadata: await BasketService.addBillingToBasket(req.body),
-    }).send(res
+      metadata: await BasketService.addBillingToBasket(req.body)
+    }).send(res);
   }
 }
 

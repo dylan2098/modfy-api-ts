@@ -7,6 +7,6 @@ export type Basket = {
     basket_id?: string;
     billing_id?: string;
     basket?: BasketItem[];
-    basket_value?: string;
+    basket_items?: string;
     basket_updated_at?: Date;
 }
