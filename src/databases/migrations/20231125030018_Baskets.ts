@@ -6,8 +6,10 @@ export async function up(knex: Knex): Promise<void> {
     .createTable('Baskets', (table) => {
         table.uuid('basket_id').primary().unique().defaultTo(knex.fn.uuid());
         table.uuid('billing_id');
-        table.text('basket_value');
-        table.datetime('basket_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6))
+        table.uuid('shipping_id');
+        table.uuid('payment_method_id');
+        table.text('basket_items');
+        table.datetime('basket_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6));
     })
 }
 
