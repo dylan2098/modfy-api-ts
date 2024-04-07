@@ -23,7 +23,7 @@ class BasketModel {
 
   async findOne(payload: Basket) {
     const { basket_id } = payload;
-    const collect = ['basket_id', 'basket_items', 'billing_id', 'basket_updated_at'];
+    const collect = ['basket_id', 'basket_items', 'billing_id', 'shipping_id', 'payment_method_id', 'basket_updated_at'];
 
     let resp: Basket[] = await knex.select(collect).from(table.baskets).where('basket_id', basket_id);
 

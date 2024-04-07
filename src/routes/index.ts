@@ -12,6 +12,7 @@ import taxRoute from './tax';
 import inventoryRoute from './inventory';
 import basketRoute from './basket';
 import billingRoute from './billing';
+import shippingRoute from './shipping';
 
 const router = Router();
 
@@ -35,7 +36,8 @@ router.use((req: Request, res: Response, next: NextFunction) => {
     '/product/get-products-by-category',
     '/product/',
     '/basket/',
-    '/billing/'
+    '/billing/',
+    '/shipping/'
   ];
 
   const isExcludedPath = excludeAuthorize.some(excludedPath => req.path.includes(excludedPath));
@@ -56,5 +58,6 @@ router.use('/v1/api/tax', permissions([ROLE.ADMIN]), taxRoute);
 router.use('/v1/api/inventory', permissions([ROLE.ADMIN]), inventoryRoute);
 router.use('/v1/api/basket', basketRoute);
 router.use ('/v1/api/billing', billingRoute);
+router.use ('/v1/api/shipping', shippingRoute);
 
 export default router;

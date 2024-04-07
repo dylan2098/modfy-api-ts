@@ -1,5 +1,6 @@
 
 export type Shipping = {
+  basket_id?: string;
   shipping_id?: string;
   shipping_method?: string;
   shipping_carrier?: string;
