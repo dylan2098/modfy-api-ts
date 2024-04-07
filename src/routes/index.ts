@@ -11,6 +11,7 @@ import categoryRoute from './category';
 import taxRoute from './tax';
 import inventoryRoute from './inventory';
 import basketRoute from './basket';
+import billingRoute from './billing';
 
 const router = Router();
 
@@ -33,7 +34,8 @@ router.use((req: Request, res: Response, next: NextFunction) => {
     '/catalog/list',
     '/product/get-products-by-category',
     '/product/',
-    '/basket/'
+    '/basket/',
+    '/billing/'
   ];
 
   const isExcludedPath = excludeAuthorize.some(excludedPath => req.path.includes(excludedPath));
@@ -52,6 +54,7 @@ router.use('/v1/api/menus', permissions([ROLE.ADMIN]), menuRoute);
 router.use('/v1/api/address', permissions([ROLE.ADMIN, ROLE.CUSTOMER]), addressRoute);
 router.use('/v1/api/tax', permissions([ROLE.ADMIN]), taxRoute);
 router.use('/v1/api/inventory', permissions([ROLE.ADMIN]), inventoryRoute);
-router.use('/v1/api/basket', basketRoute)
+router.use('/v1/api/basket', basketRoute);
+router.use ('/v1/api/billing', billingRoute);
 
 export default router;

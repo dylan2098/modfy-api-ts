@@ -56,18 +56,6 @@ class BasketService {
       throw error;
     }
   }
-
-  addBillingToBasket(payload: Basket) {
-    try {
-      if(!payload || !payload.basket_id || !payload.billing_id) {
-        throw new BadRequestError('Data invalid');
-      }
-
-      // return BasketModel.addBillingToBasket(payload);
-    } catch (error) {
-      throw error;
-    }
-  }
 }
 
 export default new BasketService();
