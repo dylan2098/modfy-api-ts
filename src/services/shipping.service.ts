@@ -20,7 +20,7 @@ class ShippingService {
 
       const shipping = await ShippingModel.addShipping(payloadShipping);
 
-      // add Shipping to basket
+      // add shipping to basket
       const result = await ShippingModel.addShippingToBasket({
         shipping_id: shipping[0].shipping_id,
         basket_id: payload.basket_id
