@@ -23,9 +23,33 @@ class BasketModel {
 
   async findOne(payload: Basket) {
     const { basket_id } = payload;
-    const collect = ['basket_id', 'basket_items', 'billing_id', 'shipping_id', 'payment_method_id', 'basket_updated_at'];
+    const collect = [
+      'basket_id', 
+      'basket_items', 
+      'Billings.billing_id', 
+      'Billings.customer_email',
+      'Billings.customer_first_name',
+      'Billings.customer_last_name',
+      'Billings.customer_phone_number',
+      'Billings.customer_shipping_address',
+      'Billings.customer_note',
+      'Shippings.shipping_id',
+      'Shippings.shipping_method',
+      'Shippings.shipping_carrier', 
+      'Shippings.shipping_tracking_number',
+      'Shippings.shipping_date',
+      'PaymentMethods.payment_method_id',
+      'PaymentMethods.payment_method_name',
+      'basket_updated_at'
+    ];
 
-    let resp: Basket[] = await knex.select(collect).from(table.baskets).where('basket_id', basket_id);
+    let resp: Basket[] = await knex.select(collect)
+                              .from(table.baskets)
+                              .where('basket_id', basket_id)
+                              .innerJoin('Billings', 'Baskets.billing_id', 'Billings.billing_id') 
+                              .innerJoin('Shippings', 'Baskets.shipping_id', 'Shippings.shipping_id') 
+                              .innerJoin('PaymentMethods', 'Baskets.payment_method_id', 'PaymentMethods.payment_method_id') 
+                              ;
 
     if(resp.length === 0) {
       return [];
