@@ -4,9 +4,9 @@ import basketController from '../../controllers/basket.controller';
 
 const router = Router();
 
-router.post('/add-basket', asyncHandler(basketController.addBasket));
-router.put('/update-basket', asyncHandler(basketController.updateBasket));
-router.delete('/delete-basket/:basketId', asyncHandler(basketController.deleteBasket));
-router.get('/get-basket/:basketId', asyncHandler(basketController.getBasket));
+router.post('/create-basket', asyncHandler(basketController.create));
+router.put('/update-basket', asyncHandler(basketController.update));
+router.delete('/delete-basket/:basketId', asyncHandler(basketController.delete));
+router.get('/get-basket/:basketId', asyncHandler(basketController.get));
 
 export default router;

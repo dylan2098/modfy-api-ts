@@ -1,6 +1,9 @@
 export type Order = {
     order_id?: string;
     order_transaction_id?: string;
+    billing_id?: string;
+    shipping_id?: string;
+    payment_method_id?: string;
     order_total_gross_price?: number;
     order_total_net_price?: number;
     order_total_tax_price?: number;

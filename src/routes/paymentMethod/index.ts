@@ -4,5 +4,5 @@ import paymentMethodController from '../../controllers/paymentMethod.controller'
 
 const router = Router();
 
-router.post('/add-payment-method', asyncHandler(paymentMethodController.addPaymentMethod));
+router.post('/create-payment-method', asyncHandler(paymentMethodController.create));
 export default router;

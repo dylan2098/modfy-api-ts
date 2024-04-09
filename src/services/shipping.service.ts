@@ -5,7 +5,7 @@ import {
 } from '../utils/error.response';
 
 class ShippingService {
-  addShipping = async (payload: Shipping) => {
+  create = async (payload: Shipping) => {
     try {
       if(!payload) {
         throw new BadRequestError('Data invalid');
@@ -18,7 +18,7 @@ class ShippingService {
         shipping_date: payload.shipping_date,
       }
 
-      const shipping = await ShippingModel.addShipping(payloadShipping);
+      const shipping = await ShippingModel.create(payloadShipping);
 
       // add shipping to basket
       const result = await ShippingModel.addShippingToBasket({

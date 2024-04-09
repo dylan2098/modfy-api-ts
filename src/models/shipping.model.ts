@@ -4,7 +4,7 @@ import { Shipping } from '../core/types/shipping.type';
 import { Basket } from '../core/types/basket.type';
 
 class ShippingModel {
-  addShipping(payload: Shipping): Promise<Shipping[]>{
+  create (payload: Shipping): Promise<Shipping[]>{
     return knex(table.shippings)
       .insert(payload)
       .returning('shipping_id');

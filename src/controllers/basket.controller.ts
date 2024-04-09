@@ -3,13 +3,13 @@ import BasketService from '../services/basket.service';
 import { CreatedSuccessResponse, SuccessResponse } from '../utils/success.response';
 
 class BasketController {
-  addBasket = async (req: Request, res: Response) => {
+  create = async (req: Request, res: Response) => {
     new CreatedSuccessResponse({
       metadata: await BasketService.create(req.body),
     }).send(res);
   };
 
-  getBasket = async (req: Request, res: Response) => {
+  get = async (req: Request, res: Response) => {
     new SuccessResponse({
       metadata: await BasketService.find({
         basket_id: req.params.basketId,
@@ -17,13 +17,13 @@ class BasketController {
     }).send(res);
   }
 
-  updateBasket = async (req: Request, res: Response) => {
+  update = async (req: Request, res: Response) => {
     new SuccessResponse({
       metadata: await BasketService.update(req.body),
     }).send(res);
   }
 
-  deleteBasket = async (req: Request, res: Response) => {
+  delete = async (req: Request, res: Response) => {
     new SuccessResponse({
       metadata: await BasketService.delete({
         basket_id: req.params.basketId,

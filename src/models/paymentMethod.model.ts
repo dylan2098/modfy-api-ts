@@ -4,7 +4,7 @@ import { PaymentMethod } from '../core/types/paymentMethod.type';
 import { Basket } from '../core/types/basket.type';
 
 class PaymentMethodModel {
-  addPaymentMethod(payload: PaymentMethod): Promise<PaymentMethod[]>{
+  create(payload: PaymentMethod): Promise<PaymentMethod[]>{
     return knex(table.payment_methods)
       .insert(payload)
       .returning('payment_method_id');

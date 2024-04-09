@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
-import ShippingService from '../services/shipping.service';
+import OrderService from '../services/order.service';
 import { CreatedSuccessResponse, SuccessResponse } from '../utils/success.response';
 
-class ShippingController {
+class OrderController {
   create = async (req: Request, res: Response) => {
     new CreatedSuccessResponse({
-      metadata: await ShippingService.create(req.body),
+      metadata: await OrderService.create(req.body),
   }).send(res);
   }
 }
 
-export default new ShippingController();
+export default new OrderController();

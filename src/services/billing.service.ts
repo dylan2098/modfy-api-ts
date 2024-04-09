@@ -5,7 +5,7 @@ import {
 } from '../utils/error.response';
 
 class BillingService {
-  addBilling = async (payload: Billing) => {
+  create = async (payload: Billing) => {
     try {
       if(!payload || !payload.customer_email || !payload.customer_phone_number) {
         throw new BadRequestError('Data invalid');
@@ -19,7 +19,7 @@ class BillingService {
         customer_shipping_address: payload.customer_shipping_address,
       }
 
-      const billing = await BillingModel.addBilling(payloadBilling);
+      const billing = await BillingModel.create(payloadBilling);
 
       // add billing to basket
       const result = await BillingModel.addBillingToBasket({

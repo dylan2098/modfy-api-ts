@@ -14,6 +14,7 @@ import basketRoute from './basket';
 import billingRoute from './billing';
 import shippingRoute from './shipping';
 import paymentMethodRoute from './paymentMethod';
+import orderRoute from './order';
 
 const router = Router();
 
@@ -40,6 +41,7 @@ router.use((req: Request, res: Response, next: NextFunction) => {
     '/billing/',
     '/shipping/',
     '/payment-method/',
+    '/order'
   ];
 
   const isExcludedPath = excludeAuthorize.some(excludedPath => req.path.includes(excludedPath));
@@ -62,5 +64,6 @@ router.use('/v1/api/basket', basketRoute);
 router.use ('/v1/api/billing', billingRoute);
 router.use ('/v1/api/shipping', shippingRoute);
 router.use ('/v1/api/payment-method', paymentMethodRoute);
+router.use ('/v1/api/order', orderRoute);
 
 export default router;

@@ -4,5 +4,5 @@ import billingController from '../../controllers/billing.controller';
 
 const router = Router();
 
-router.post('/add-billing', asyncHandler(billingController.addBilling));
+router.post('/create-billing', asyncHandler(billingController.create));
 export default router;

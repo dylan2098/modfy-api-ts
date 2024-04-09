@@ -4,6 +4,6 @@ import shippingController from '../../controllers/shipping.controller';
 
 const router = Router();
 
-router.post('/add-shipping', asyncHandler(shippingController.addShipping));
+router.post('/create-shipping', asyncHandler(shippingController.create));
 
 export default router;

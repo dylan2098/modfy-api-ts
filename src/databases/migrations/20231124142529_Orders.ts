@@ -10,13 +10,14 @@ export async function up(knex: Knex): Promise<void> {
     })
     .createTable('Orders', (table) => {
         table.uuid('order_id').primary().unique().defaultTo(knex.fn.uuid());
-        table.uuid('order_transaction_id').notNullable();
-        table.float('order_total_gross_price').notNullable();
-        table.float('order_total_net_price').notNullable();
-        table.float('order_total_tax_price').notNullable();
-        table.string('order_expected_date', 20);
+        table.uuid('order_transaction_id').defaultTo(knex.fn.uuid());
+        table.uuid('billing_id').notNullable();
+        table.uuid('shipping_id').notNullable();
+        table.uuid('payment_method_id').notNullable();
+        table.float('order_total_price').notNullable();
+        table.string('order_expected_date', 20).notNullable();
         table.string('order_cancel_reason');
-        table.text('order_items');
+        table.text('order_items').notNullable();;
         table.smallint('order_status').defaultTo(0);
         table.datetime('order_created_at', { precision: 6 }).defaultTo(knex.fn.now(6))
         table.datetime('order_updated_at', { precision: 6 }).defaultTo(knex.fn.now(6))

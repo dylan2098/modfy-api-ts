@@ -4,7 +4,7 @@ import { Billing } from '../core/types/billing.type';
 import { Basket } from '../core/types/basket.type';
 
 class BasketModel {
-  addBilling(payload: Billing): Promise<Billing[]>{
+  create(payload: Billing): Promise<Billing[]>{
     return knex(table.billings)
       .insert(payload)
       .returning('billing_id');

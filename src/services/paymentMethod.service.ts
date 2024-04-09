@@ -5,17 +5,17 @@ import {
 } from '../utils/error.response';
 
 class PaymentMethodService {
-  addPaymentMethod = async (payload: PaymentMethod) => {
+  create = async (payload: PaymentMethod) => {
     try {
       if(!payload) {
         throw new BadRequestError('Data invalid');
       }
 
-      const payloadPaymentMethod = {
+      const payloadPM = {
         payment_method_name: payload.payment_method_name,
       }
 
-      const paymentMethod = await PaymentMethodModel.addPaymentMethod(payloadPaymentMethod);
+      const paymentMethod = await PaymentMethodModel.create(payloadPM);
 
       // add paymentMethod to basket
       const result = await PaymentMethodModel.addPaymentMethodToBasket({

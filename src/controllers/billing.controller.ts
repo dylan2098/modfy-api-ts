@@ -3,9 +3,9 @@ import BillingService from '../services/billing.service';
 import { CreatedSuccessResponse, SuccessResponse } from '../utils/success.response';
 
 class BillingController {
-  addBilling = async (req: Request, res: Response) => {
+  create = async (req: Request, res: Response) => {
     new CreatedSuccessResponse({
-      metadata: await BillingService.addBilling(req.body),
+      metadata: await BillingService.create(req.body),
   }).send(res);
   }
 }
