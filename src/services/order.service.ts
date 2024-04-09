@@ -31,6 +31,18 @@ class OrderService {
       throw error;
     }
   }
+
+  search = async (payload: Order) => {
+    try {
+      if(!payload || !payload.order_transaction_id) {
+        throw new BadRequestError('Data invalid');
+      }
+
+      return OrderModel.findOne(payload);
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new OrderService();

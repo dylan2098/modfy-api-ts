@@ -6,8 +6,15 @@ class OrderController {
   create = async (req: Request, res: Response) => {
     new CreatedSuccessResponse({
       metadata: await OrderService.create(req.body),
-  }).send(res);
-  }
+    }).send(res);
+  };
+
+  search = async (req: Request, res: Response) => {
+    new SuccessResponse({
+      metadata: await OrderService.search(req.body),
+    }).send(res);
+  };
+
 }
 
 export default new OrderController();
